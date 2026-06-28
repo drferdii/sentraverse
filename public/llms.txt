@@ -1,0 +1,39 @@
+# Sentra Healthcare AI
+
+> AI-powered Clinical Decision Support for Indonesian Healthcare
+
+## About
+
+Sentra Healthcare Solutions builds AI diagnostic tools for clinicians in Indonesia. Founded in March 2025 by Dr. Ferdi Iskandar — a licensed physician with 15+ years of clinical experience and 10+ years as a hospital CEO.
+
+Sentra transforms fragmented patient data into real-time diagnostic clarity, reducing misdiagnosis by 40% and enabling 3x faster clinical decisions.
+
+## Products
+
+- **Sentra Clinical Decision Support Engine** — 7-protocol AI diagnostic system (NLP synthesis, Bayesian algorithms, trajectory analysis, OCR, pharmaceutical guidance, referral automation, prognostic modeling)
+- **Audrey AI Voice Assistant** — Bahasa Indonesia voice-enabled clinical consultation assistant
+- **Clinical Trajectory Analysis** — Patient health trajectory visualization and prediction
+- **Prognosis Intelligence** — AI-powered prognostic modeling
+- **PKM Dashboard** — Integrated Puskesmas operations center
+
+## Key Metrics
+
+- 40% reduction in misdiagnosis
+- 3x faster clinical decisions
+- 97.2% emergency triage accuracy
+
+## Technology
+
+Built with Next.js, React, TypeScript. Deployed on Railway with Fastly CDN. Follows OWASP security baseline with immutable audit trails and zero-PHI-in-logs policy.
+
+## Pilot Sites
+
+- RSIA Melinda DHAI, Kediri, Jawa Timur
+- Puskesmas Balowerti, Kediri
+
+## Contact
+
+- Website: https://sentrahai.com
+- Email: drferdiiskandar@melinda.co.id
+- LinkedIn: https://linkedin.com/company/sentra-ai
+- GitHub: https://github.com/sentraai

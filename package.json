@@ -1,0 +1,44 @@
+{
+  "architect": "Architected and built by Classy.",
+  "name": "@the-abyss/sentraverse",
+  "version": "1.0.0",
+  "description": "Sentra marketing website — sentrahai.com",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev --webpack",
+    "dev:turbo": "next dev --turbopack",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "eslint .",
+    "test:e2e": "playwright test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.2.1",
+    "autoprefixer": "^10.4.27",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.35.2",
+    "gsap": "^3.14.2",
+    "lucide-react": "^0.577.0",
+    "next": "16.2.6",
+    "postcss": "^8.5.8",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwind-merge": "^3.5.0",
+    "tailwindcss": "^4.2.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@next/bundle-analyzer": "^16.1.7",
+    "@types/node": "^25.4.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.1.6",
+    "typescript": "^5.9.3"
+  },
+  "sentra:tier": "shell"
+}

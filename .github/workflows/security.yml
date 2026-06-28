@@ -1,0 +1,52 @@
+# NOTE: GitHub Actions only loads workflows from the repository root `.github/workflows/`.
+# For the monorepo, prefer root workflows.
+# Architected and built by Classy.
+name: Security — Dependency Audit
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  schedule:
+    # Run weekly on Monday at 08:00 UTC
+    - cron: "0 8 * * 1"
+
+jobs:
+  audit:
+    name: npm Dependency Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run npm audit (moderate+)
+        run: npm audit --audit-level=moderate
+
+  license-check:
+    name: License Compliance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: List licences
+        run: npx license-checker --summary --excludePrivatePackages || true

@@ -1,0 +1,101 @@
+// Architected and built by Classy.
+// [APPROVED]
+"use client";
+
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { Menu, ArrowUpRight } from "lucide-react";
+import { SentraKineticNav } from "@/components/ui/sentra-kinetic-nav";
+import ThemeToggle from "@/components/ThemeToggle";
+import { siteLinks } from "@/lib/site-links";
+
+const navLinks = [
+  { name: "Home", href: siteLinks.home },
+  { name: "About", href: siteLinks.about },
+  { name: "Services", href: siteLinks.services },
+  { name: "Audrey", href: siteLinks.audrey },
+  { name: "Insights", href: siteLinks.insights },
+];
+
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Lock body scroll when menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  return (
+    <>
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled ? "bg-background/80 backdrop-blur-md py-4" : "bg-transparent py-6"
+        }`}
+      >
+        <div className="max-w-[1440px] mx-auto px-6 md:px-12 flex justify-between items-center">
+          {/* Logo */}
+          <Link href={siteLinks.home} className="flex items-center">
+            <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-foreground leading-tight font-jakarta">
+              Sentra<span className="text-accent ml-0.5">.</span> Healthcare<br />
+              Artificial Intelligence
+            </span>
+          </Link>
+
+          {/* Desktop Links */}
+          <div className="hidden lg:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-sm font-medium text-muted hover:text-accent transition-colors"
+              >
+                {link.name}
+              </Link>
+            ))}
+            <Link
+              href={siteLinks.contact}
+              className="group flex items-center gap-1 text-sm font-medium text-muted hover:text-accent transition-all"
+            >
+              Get Started
+              <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+            </Link>
+          </div>
+
+          {/* Right cluster: Theme toggle + Menu - visible on all screens */}
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <button
+              className="text-foreground hover:text-accent transition-colors flex items-center gap-3"
+              onClick={() => setIsOpen(true)}
+              aria-label="Open menu"
+            >
+              <span className="hidden sm:block text-xs font-bold uppercase tracking-widest text-muted">
+                Menu
+              </span>
+              <Menu size={24} />
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Kinetic Sidebar Navigation */}
+      <SentraKineticNav isOpen={isOpen} onClose={() => setIsOpen(false)} />
+    </>
+  );
+}

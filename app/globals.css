@@ -1,0 +1,335 @@
+/* Designed and constructed by Classy. */
+/* Sentra Healthcare AI - Design System */
+/* Light theme: pure white + oxford blue (primary) + red orange (secondary). */
+@import "tailwindcss";
+
+@theme {
+  --color-background: var(--sentra-bg);
+  --color-foreground: var(--sentra-fg);
+  --color-primary: var(--sentra-primary);
+  --color-accent: var(--sentra-accent);
+  --color-muted: var(--sentra-muted-text);
+
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-inter: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ============================================================
+   LIGHT THEME (default)
+   White surface. Oxford blue primary. Red-orange secondary.
+   ============================================================ */
+:root {
+  color-scheme: light;
+
+  /* Core Palette */
+  --sentra-bg: #ffffff;
+  --sentra-fg: #002147;
+  --sentra-primary: #002147;          /* Oxford blue - PRIMARY accent */
+  --sentra-primary-rgb: 0 33 71;
+  --sentra-accent: #eb5939;            /* Red-orange - SECONDARY accent (Sentra signature) */
+  --sentra-white: #ffffff;
+
+  /* Oxford ramp */
+  --sentra-primary-dark: #001530;
+  --sentra-primary-mid: #0a2e5e;
+  --sentra-primary-soft: #1a4180;
+  --sentra-primary-tint: #e6ebf2;       /* Very pale oxford for surfaces */
+
+  /* Muted Scale (cool slate on white) */
+  --sentra-muted: #3a4d63;
+  --sentra-muted-text: #3a4d63d9;
+  --sentra-muted-half: #47556980;
+  --sentra-muted-subtle: #47556933;
+  --sentra-muted-faint: #4755691a;
+  --sentra-muted-line: #00214726;
+
+  /* Canvas (elevated surfaces - barely off-white) */
+  --sentra-canvas: #fafafa;
+  --sentra-canvas-dark: #f4f4f5;
+  --sentra-panel-1: #fafafa;
+  --sentra-panel-2: #f4f4f5;
+  --sentra-panel-3: #e4e4e7;
+
+  /* Semantic */
+  --sentra-critical: #dc2626;
+  --sentra-critical-rgb: 220 38 38;
+  --sentra-warning: #d97706;
+  --sentra-warning-rgb: 217 119 6;
+  --sentra-critical-faint: rgb(var(--sentra-critical-rgb) / 0.06);
+  --sentra-critical-border: rgb(var(--sentra-critical-rgb) / 0.25);
+  --sentra-warning-faint: rgb(var(--sentra-warning-rgb) / 0.07);
+  --sentra-warning-soft: rgb(var(--sentra-warning-rgb) / 0.35);
+  --sentra-warning-muted: rgb(var(--sentra-warning-rgb) / 0.7);
+  --sentra-grid-line-strong: rgb(0 33 71 / 0.18);
+  --sentra-neutral-soft: rgb(0 33 71 / 0.03);
+  --sentra-neutral-border: rgb(0 33 71 / 0.1);
+  --sentra-neutral-text: rgb(0 33 71 / 0.7);
+
+  /* Audrey AI - oxford blue persona on white */
+  --sentra-audrey: #002147;
+  --sentra-audrey-muted: #00214780;
+  --sentra-audrey-faint: #00214712;
+  --sentra-audrey-glow: #00214708;
+  --sentra-audrey-bubble: #002147;
+  --sentra-audrey-bubble-text: #ffffff;
+  --sentra-audrey-rgb: 0 33 71;
+  --sentra-audrey-ambient: rgb(var(--sentra-audrey-rgb) / 0.04);
+  --sentra-audrey-ring-border: rgb(var(--sentra-audrey-rgb) / 0.12);
+  --sentra-audrey-accent-border: rgb(var(--sentra-audrey-rgb) / 0.25);
+  --sentra-audrey-accent-bubble: rgb(var(--sentra-audrey-rgb) / 0.06);
+  --sentra-audrey-accent-bubble-border: rgb(var(--sentra-audrey-rgb) / 0.12);
+  --sentra-audrey-feature-divider: rgb(var(--sentra-audrey-rgb) / 0.1);
+  --sentra-audrey-corner-border: rgb(var(--sentra-audrey-rgb) / 0.1);
+  --sentra-audrey-line: rgb(var(--sentra-audrey-rgb) / 0.4);
+  --sentra-audrey-gradient-line: linear-gradient(
+    to right,
+    rgb(var(--sentra-audrey-rgb) / 0.6),
+    var(--sentra-audrey),
+    rgb(var(--sentra-audrey-rgb) / 0.6)
+  );
+  --sentra-audrey-teal: #475569;
+  --sentra-audrey-teal-faint: #47556918;
+  --sentra-audrey-teal-rgb: 71 85 105;
+
+  /* Shadows (clean sharp editorial elevation on white) */
+  --sentra-shadow-card:
+    0 1px 2px rgba(0, 33, 71, 0.04),
+    0 4px 16px rgba(0, 33, 71, 0.06);
+  --sentra-shadow-elevated:
+    0 2px 4px rgba(0, 33, 71, 0.05),
+    0 12px 28px rgba(0, 33, 71, 0.1);
+  --sentra-shadow-subtle:
+    0 1px 2px rgba(10, 10, 10, 0.04);
+  --sentra-shadow-accent: 0 0 24px rgba(235, 89, 57, 0.25);
+  --sentra-shadow-accent-strong: 0 0 32px rgba(235, 89, 57, 0.4);
+
+  /* SentraSim Section (token aliases - actual values overridden by [data-sentra-sim] block) */
+  --sdx-bg-canvas: var(--sentra-canvas);
+  --sdx-bg-page: var(--sentra-bg);
+  --sdx-text-main: var(--sentra-fg);
+  --sdx-text-muted: var(--sentra-muted-text);
+  --sdx-line-base: var(--sentra-muted-line);
+  --sdx-grid-faint: rgba(0, 33, 71, 0.04);
+  --sdx-c-anamnesa: var(--sentra-muted-text);
+  --sdx-c-asesmen: var(--sentra-accent);
+  --sdx-c-critical: var(--sentra-critical);
+  --sdx-c-warning: var(--sentra-warning);
+}
+
+/* ============================================================
+   DARK THEME (opt-in via [data-theme="dark"])
+   Verbatim copy of pre-2026-05-06 :root - byte-identical preservation.
+   ============================================================ */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Core Palette */
+  --sentra-bg: #0d0d0d;
+  --sentra-fg: #b7ab98;
+  --sentra-primary: #4a7bb5;            /* Oxford lifted for dark legibility */
+  --sentra-primary-rgb: 74 123 181;
+  --sentra-accent: #eb5939;
+  --sentra-white: #fff;
+
+  --sentra-primary-dark: #1a4180;
+  --sentra-primary-mid: #2d5d9c;
+  --sentra-primary-soft: #6e9bd1;
+  --sentra-primary-tint: #1a2a3f;
+
+  /* Muted Scale */
+  --sentra-muted: #b8ac99;
+  --sentra-muted-text: #b8ac99cc;
+  --sentra-muted-half: #b8ac9980;
+  --sentra-muted-subtle: #b8ac9933;
+  --sentra-muted-faint: #b8ac991a;
+  --sentra-muted-line: #b8ac9940;
+
+  /* Canvas (elevated surfaces) */
+  --sentra-canvas: #1c1b1a;
+  --sentra-canvas-dark: #141311;
+  --sentra-panel-1: #111110;
+  --sentra-panel-2: #17160f;
+  --sentra-panel-3: #1c1b17;
+
+  /* Semantic */
+  --sentra-critical: #e65a4c;
+  --sentra-critical-rgb: 230 90 76;
+  --sentra-warning: #fbbf24;
+  --sentra-warning-rgb: 251 191 36;
+  --sentra-critical-faint: rgb(var(--sentra-critical-rgb) / 0.04);
+  --sentra-critical-border: rgb(var(--sentra-critical-rgb) / 0.2);
+  --sentra-warning-faint: rgb(var(--sentra-warning-rgb) / 0.05);
+  --sentra-warning-soft: rgb(var(--sentra-warning-rgb) / 0.3);
+  --sentra-warning-muted: rgb(var(--sentra-warning-rgb) / 0.7);
+  --sentra-grid-line-strong: rgb(183 171 152 / 0.3);
+  --sentra-neutral-soft: rgb(183 171 152 / 0.04);
+  --sentra-neutral-border: rgb(183 171 152 / 0.1);
+  --sentra-neutral-text: rgb(183 171 152 / 0.6);
+
+  /* Audrey AI */
+  --sentra-audrey: #c4956a;
+  --sentra-audrey-muted: #c4956a80;
+  --sentra-audrey-faint: #c4956a15;
+  --sentra-audrey-glow: #c4956a08;
+  --sentra-audrey-bubble: #f2ebe0;
+  --sentra-audrey-bubble-text: #1a1510;
+  --sentra-audrey-rgb: 196 149 106;
+  --sentra-audrey-ambient: rgb(var(--sentra-audrey-rgb) / 0.04);
+  --sentra-audrey-ring-border: rgb(var(--sentra-audrey-rgb) / 0.08);
+  --sentra-audrey-accent-border: rgb(var(--sentra-audrey-rgb) / 0.19);
+  --sentra-audrey-accent-bubble: rgb(var(--sentra-audrey-rgb) / 0.06);
+  --sentra-audrey-accent-bubble-border: rgb(var(--sentra-audrey-rgb) / 0.09);
+  --sentra-audrey-feature-divider: rgb(var(--sentra-audrey-rgb) / 0.08);
+  --sentra-audrey-corner-border: rgb(var(--sentra-audrey-rgb) / 0.07);
+  --sentra-audrey-line: rgb(var(--sentra-audrey-rgb) / 0.31);
+  --sentra-audrey-gradient-line: linear-gradient(
+    to right,
+    rgb(var(--sentra-audrey-rgb) / 0.6),
+    var(--sentra-audrey),
+    rgb(var(--sentra-audrey-rgb) / 0.6)
+  );
+  --sentra-audrey-teal: #6b9b8a;
+  --sentra-audrey-teal-faint: #6b9b8a18;
+  --sentra-audrey-teal-rgb: 107 155 138;
+
+  /* Shadows (verbatim original neumorphic) */
+  --sentra-shadow-card:
+    8px 8px 20px #050505, -8px -8px 20px #1a1a1a, inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  --sentra-shadow-elevated: 6px 6px 16px #050505, -6px -6px 16px #1a1a1a;
+  --sentra-shadow-subtle: 3px 3px 8px #050505, -2px -2px 6px #2a2a2a;
+  --sentra-shadow-accent: 0 0 32px rgba(235, 89, 57, 0.4);
+  --sentra-shadow-accent-strong: 0 0 32px rgba(235, 89, 57, 0.5);
+
+  /* SentraSim Section */
+  --sdx-bg-canvas: var(--sentra-canvas);
+  --sdx-bg-page: var(--sentra-bg);
+  --sdx-text-main: var(--sentra-fg);
+  --sdx-text-muted: var(--sentra-muted-text);
+  --sdx-line-base: var(--sentra-muted-line);
+  --sdx-grid-faint: rgba(184, 172, 153, 0.03);
+  --sdx-c-anamnesa: var(--sentra-muted-text);
+  --sdx-c-asesmen: var(--sentra-accent);
+  --sdx-c-critical: var(--sentra-critical);
+  --sdx-c-warning: var(--sentra-warning);
+}
+
+/* ============================================================
+   SCOPED DARK SECTIONS
+   ============================================================ */
+[data-sentra-sim] {
+  color-scheme: dark;
+
+  --sentra-bg: #0d0d0d;
+  --sentra-fg: #b7ab98;
+  --sentra-muted: #b8ac99;
+  --sentra-muted-text: #b8ac99cc;
+  --sentra-muted-half: #b8ac9980;
+  --sentra-muted-subtle: #b8ac9933;
+  --sentra-muted-faint: #b8ac991a;
+  --sentra-muted-line: #b8ac9940;
+  --sentra-canvas: #1c1b1a;
+  --sentra-canvas-dark: #141311;
+  --sdx-grid-faint: rgba(184, 172, 153, 0.03);
+}
+
+body {
+  background: var(--sentra-bg);
+  color: var(--sentra-fg);
+  font-size: 19px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative;
+}
+
+/* Atmospheric mesh on light theme - subtle oxford tint at corners, white core.
+   Gives premium depth without compromising the pure white surface. */
+:root body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 0% 0%, rgba(0, 33, 71, 0.035), transparent 60%),
+    radial-gradient(ellipse 80% 50% at 100% 0%, rgba(235, 89, 57, 0.025), transparent 60%),
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(0, 33, 71, 0.02), transparent 70%);
+}
+
+/* Disable atmospheric mesh in dark mode - dark theme handles its own atmosphere */
+[data-theme="dark"] body::before { display: none; }
+
+/* Body content sits above the atmospheric layer */
+body > * { position: relative; z-index: 1; }
+
+/* Editorial selection - oxford highlight, white text */
+:root ::selection {
+  background: var(--sentra-fg);
+  color: var(--sentra-bg);
+}
+[data-theme="dark"] ::selection {
+  background: var(--sentra-accent);
+  color: var(--sentra-bg);
+}
+
+/* Oxford-tinted scrollbar (light) */
+:root::-webkit-scrollbar { width: 10px; height: 10px; }
+:root::-webkit-scrollbar-track { background: transparent; }
+:root::-webkit-scrollbar-thumb {
+  background: rgba(0, 33, 71, 0.18);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+:root::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 33, 71, 0.35);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+[data-theme="dark"]::-webkit-scrollbar-thumb {
+  background: rgba(184, 172, 153, 0.2);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+/* Editorial focus ring - oxford 2px halo on light, accent on dark */
+:root *:focus-visible {
+  outline: 2px solid var(--sentra-fg);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+[data-theme="dark"] *:focus-visible {
+  outline: 2px solid var(--sentra-accent);
+}
+
+[data-sentra-sim] * {
+  box-sizing: border-box;
+}
+
+@keyframes sdxPulse {
+  50% { opacity: 0.5; }
+}
+
+@keyframes sdxBlurReveal {
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0px);
+    color: var(--sdx-text-main);
+    text-shadow: 0 0 12px rgba(212, 122, 87, 0.15);
+  }
+}
+
+@keyframes sdxSmoothBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 60s linear infinite;
+}
