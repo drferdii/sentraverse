@@ -9,20 +9,21 @@ Last updated: 2026-06-28 | Owner: Chief
 
 - Name: Sentraverse (formerly Sentra Main)
 - Package: `@the-abyss/sentraverse`
-- Type: NestJS healthcare platform hub + marketing surface
-- Stack: NestJS + TypeScript
+- Type: Next.js healthcare platform hub + marketing surface
+- Stack: Next.js + TypeScript + Playwright
 - Owner: Chief (Dr. Ferdi Iskandar)
 
 ## Run
 
 ```powershell
-pnpm --filter @the-abyss/sentraverse format:check
 pnpm --filter @the-abyss/sentraverse lint
-pnpm --filter @the-abyss/sentraverse typecheck
-pnpm --filter @the-abyss/sentraverse test
 pnpm --filter @the-abyss/sentraverse build
 pnpm --filter @the-abyss/sentraverse dev
+pnpm --filter @the-abyss/sentraverse test:e2e
 ```
+
+No app-local `format:check`, `typecheck`, or general `test` script is defined as
+of this audit.
 
 ## Operating Rules (scoped)
 
