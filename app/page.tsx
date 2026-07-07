@@ -12,6 +12,7 @@ import Navbar from '@/components/Navbar'
 import News from '@/components/News'
 import ProjectSlider from '@/components/ProjectSlider'
 import ScrollGallery from '@/components/ScrollGallery'
+import SentraBlueprint from '@/components/SentraBlueprint'
 import SentraSim from '@/components/SentraSim'
 import Services from '@/components/Services'
 import Showcase from '@/components/Showcase'
@@ -25,6 +26,7 @@ export default function Home() {
       <About />
       <Clients />
       <SentraSim />
+      <SentraBlueprint />
       <Showcase />
       <Services />
       <Audrey />
