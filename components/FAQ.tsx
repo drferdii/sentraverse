@@ -4,6 +4,8 @@
 import { Plus, Minus } from 'lucide-react'
 import { useState } from 'react'
 
+import { Reveal } from '@/components/ui/reveal'
+
 const FAQ_ITEMS = [
   {
     q: 'Apa itu Sentra AI dan bagaimana cara kerjanya?',
@@ -48,27 +50,45 @@ export default function FAQ() {
   }
 
   return (
-    <section id="faq" className="py-24 md:py-32">
+    <section id="faq" className="relative overflow-hidden py-24 md:py-32">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12">
+      {/* Decorative hairlines in the empty right band — non-interactive, behind content */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-10 right-[9%] z-0 hidden lg:block"
+      >
+        <div className="relative h-full w-px overflow-hidden bg-muted/10">
+          <span className="sentra-scan absolute left-0 top-0 block h-[10%] w-px bg-gradient-to-b from-transparent via-accent/30 to-transparent" />
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-20 right-[17%] z-0 hidden lg:block"
+      >
+        <div className="relative h-full w-px overflow-hidden bg-muted/10">
+          <span className="sentra-scan sentra-scan--alt absolute left-0 top-0 block h-[10%] w-px bg-gradient-to-b from-transparent via-accent/20 to-transparent" />
+        </div>
+      </div>
+
+      <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-12">
         {/* Header */}
-        <div className="max-w-[600px] mb-16">
+        <Reveal className="max-w-[600px] mb-16">
           <p className="text-xs uppercase tracking-[0.2em] text-muted mb-4">Pertanyaan Umum</p>
           <h2 className="text-4xl md:text-5xl font-bold font-jakarta tracking-tight">
             Frequently Asked Questions
           </h2>
-        </div>
+        </Reveal>
 
         {/* Items */}
         <div className="max-w-[800px] divide-y divide-[--sentra-muted-subtle]">
           {FAQ_ITEMS.map((item, i) => {
             const isOpen = openIndex === i
             return (
-              <div key={i}>
+              <Reveal key={i} delay={Math.min(i * 0.05, 0.2)}>
                 <button
                   className="w-full flex items-start justify-between gap-4 py-6 text-left group"
                   onClick={() => setOpenIndex(isOpen ? null : i)}
@@ -83,7 +103,7 @@ export default function FAQ() {
                 </button>
 
                 {isOpen && <p className="pb-6 text-muted leading-relaxed text-[15px]">{item.a}</p>}
-              </div>
+              </Reveal>
             )
           })}
         </div>

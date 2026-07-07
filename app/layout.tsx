@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Inter, Plus_Jakarta_Sans } from 'next/font/google'
 import { cookies } from 'next/headers'
 
+import { MotionProvider } from '@/components/MotionProvider'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import {
   DEFAULT_THEME,
@@ -159,7 +160,9 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <ThemeProvider initialTheme={ssrTheme}>{children}</ThemeProvider>
+        <ThemeProvider initialTheme={ssrTheme}>
+          <MotionProvider>{children}</MotionProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

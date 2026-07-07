@@ -2,9 +2,11 @@
 // [APPROVED]
 'use client'
 
+import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 
+import { Reveal } from '@/components/ui/reveal'
 import { siteLinks } from '@/lib/site-links'
 
 export default function About() {
@@ -13,23 +15,37 @@ export default function About() {
       <div className="max-w-[1440px] mx-auto px-6 md:px-12 grid lg:grid-cols-[1fr_auto_1fr] gap-12 lg:gap-20">
         {/* Title Side */}
         <div className="flex flex-col gap-6">
-          <p className="text-xs font-bold tracking-widest text-accent uppercase">Tentang Sentra</p>
-          <h2 className="text-[32px] md:text-[45px] font-bold text-foreground leading-[1.2]">
-            Kami membangun <span className="text-accent">infrastruktur kecerdasan klinis</span> yang
-            mentransformasi data pasien terfragmentasi menjadi kejelasan diagnostik real-time bagi
-            dokter garis depan.
-          </h2>
+          <Reveal>
+            <p className="text-xs font-bold tracking-widest text-accent uppercase">
+              Tentang Sentra
+            </p>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <h2 className="text-[32px] md:text-[45px] font-bold text-foreground leading-[1.2]">
+              Kami membangun <span className="text-accent">infrastruktur kecerdasan klinis</span>{' '}
+              yang mentransformasi data pasien terfragmentasi menjadi kejelasan diagnostik real-time
+              bagi dokter garis depan.
+            </h2>
+          </Reveal>
         </div>
 
         {/* Vertical Divider */}
-        <div className="hidden lg:block w-px bg-muted/20 self-stretch" />
+        <motion.div
+          className="hidden lg:block w-px bg-muted/20 self-stretch origin-top"
+          initial={{ scaleY: 0 }}
+          whileInView={{ scaleY: 1 }}
+          viewport={{ once: true, margin: '0px 0px -80px 0px' }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        />
 
         {/* Content Side */}
         <div className="flex flex-col gap-8">
-          <h4 className="text-xl md:text-2xl font-bold text-foreground">
-            Arsitektur Konvergensi Human-AI: Sentra
-          </h4>
-          <div className="text-lg text-muted leading-relaxed flex flex-col gap-5">
+          <Reveal delay={0.1}>
+            <h4 className="text-xl md:text-2xl font-bold text-foreground">
+              Arsitektur Konvergensi Human-AI: Sentra
+            </h4>
+          </Reveal>
+          <Reveal delay={0.16} className="text-lg text-muted leading-relaxed flex flex-col gap-5">
             <p>
               Sentra adalah manifestasi dari visi strategis Dr. Ferdi Iskandar&mdash;seorang
               physician-technologist yang mengintegrasikan Artificial Intelligence sebagai mitra
@@ -61,16 +77,18 @@ export default function About() {
             <p className="text-foreground font-bold italic text-xl">
               &ldquo;Human as the Pilot. AI as the Copilot.&rdquo;
             </p>
-          </div>
+          </Reveal>
 
-          <Link href={siteLinks.about} className="flex items-center gap-4 group">
-            <div className="w-12 h-12 rounded-full border border-muted flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-all">
-              <ArrowUpRight size={20} />
-            </div>
-            <span className="text-sm font-bold uppercase tracking-widest text-muted group-hover:text-accent transition-all">
-              Selengkapnya
-            </span>
-          </Link>
+          <Reveal delay={0.22}>
+            <Link href={siteLinks.about} className="flex items-center gap-4 group">
+              <div className="w-12 h-12 rounded-full border border-muted flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-all">
+                <ArrowUpRight size={20} />
+              </div>
+              <span className="text-sm font-bold uppercase tracking-widest text-muted group-hover:text-accent transition-all">
+                Selengkapnya
+              </span>
+            </Link>
+          </Reveal>
         </div>
       </div>
     </section>

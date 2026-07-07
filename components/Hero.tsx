@@ -417,7 +417,7 @@ export default function Hero() {
           {/* Left Side — Text */}
           <div className="flex flex-col gap-12">
             {/* 01, 02, 03 Points */}
-            <div className="flex flex-col md:flex-row gap-8 md:gap-16">
+            <div className="sentra-load-reveal flex flex-col md:flex-row gap-8 md:gap-16">
               {[
                 { id: '01', text: 'Patient Safety Net Real-Time' },
                 { id: '02', text: 'Specializing in clinical intelligence' },
@@ -434,8 +434,9 @@ export default function Hero() {
               ))}
             </div>
 
-            {/* Main Title — static DOM (no motion) so headline never depends on Framer hydration */}
-            <div className="flex flex-col gap-6">
+            {/* Main Title — static DOM (no motion) so headline never depends on Framer hydration;
+                entrance uses CSS-only sentra-load-reveal, which still renders without JS */}
+            <div className="sentra-load-reveal sentra-load-reveal--d1 flex flex-col gap-6">
               <h1 className="text-[40px] md:text-[80px] lg:text-[100px] leading-[1] font-bold font-jakarta tracking-tighter text-foreground">
                 <span className="sr-only">
                   COMING SOON 2026 — Clinical Decision Support berbasis AI untuk Layanan Kesehatan
@@ -454,7 +455,7 @@ export default function Hero() {
             </div>
 
             {/* CTA — Baca Cerita Kami + Tes Pilot Login */}
-            <div className="flex flex-col sm:flex-row flex-wrap gap-4 items-stretch sm:items-center">
+            <div className="sentra-load-reveal sentra-load-reveal--d2 flex flex-col sm:flex-row flex-wrap gap-4 items-stretch sm:items-center">
               <Link
                 href="/story"
                 className="group inline-flex items-center justify-center gap-3 border border-muted/30 rounded-full px-8 py-4 hover:border-accent/50 hover:bg-accent/5 transition-all"

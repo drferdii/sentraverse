@@ -6,6 +6,7 @@ import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 
+import { Reveal } from '@/components/ui/reveal'
 import { siteLinks } from '@/lib/site-links'
 
 const services = [
@@ -55,97 +56,104 @@ export default function Services() {
         {/* Section Header */}
         <div className="grid lg:grid-cols-2 gap-12 mb-20">
           <div className="flex flex-col gap-6">
-            <p className="text-xs font-bold tracking-widest text-accent uppercase font-jakarta">
-              Our Service
-            </p>
-            <h2 className="text-[32px] md:text-[45px] font-bold text-foreground leading-[1.2] font-jakarta uppercase">
-              Introducing the Protocols 7
-            </h2>
+            <Reveal>
+              <p className="text-xs font-bold tracking-widest text-accent uppercase font-jakarta">
+                Our Service
+              </p>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <h2 className="text-[32px] md:text-[45px] font-bold text-foreground leading-[1.2] font-jakarta uppercase">
+                Introducing the Protocols 7
+              </h2>
+            </Reveal>
           </div>
           <div className="flex flex-col gap-10">
-            <p className="text-lg text-muted leading-relaxed">
-              Sentra menggunakan arsitektur Artificial Intelligence modular yang dirancang khusus
-              untuk alur kerja klinis. Setiap protokol beroperasi sebagai lapisan komputasi
-              independen — dari sintesis bahasa alami dan inferensi Bayesian hingga prognosis
-              prediktif — dirancang untuk mengaugmentasi pengambilan keputusan dokter tanpa
-              mengganggu standar klinis yang berlaku.
-            </p>
+            <Reveal delay={0.14}>
+              <p className="text-lg text-muted leading-relaxed">
+                Sentra menggunakan arsitektur Artificial Intelligence modular yang dirancang khusus
+                untuk alur kerja klinis. Setiap protokol beroperasi sebagai lapisan komputasi
+                independen — dari sintesis bahasa alami dan inferensi Bayesian hingga prognosis
+                prediktif — dirancang untuk mengaugmentasi pengambilan keputusan dokter tanpa
+                mengganggu standar klinis yang berlaku.
+              </p>
+            </Reveal>
           </div>
         </div>
 
         {/* Service List */}
         <div className="flex flex-col border-t border-muted/20">
-          {services.map((service) => {
+          {services.map((service, index) => {
             const isActive = activeId === service.id
 
             return (
-              <motion.article
-                key={service.id}
-                layout
-                className={`flex flex-col md:flex-row justify-between p-8 border-b border-muted/20 transition-colors duration-500 ${
-                  isActive ? 'bg-accent' : 'hover:bg-muted/5'
-                }`}
-              >
-                <button
-                  type="button"
-                  aria-controls={`service-panel-${service.id}`}
-                  aria-expanded={isActive}
-                  onClick={() => setActiveId(isActive ? null : service.id)}
-                  className="flex-1 flex flex-col gap-4 text-left"
+              <Reveal key={service.id} delay={Math.min(index * 0.06, 0.18)}>
+                <motion.article
+                  layout
+                  className={`flex flex-col md:flex-row justify-between p-8 border-b border-muted/20 transition-colors duration-500 ${
+                    isActive ? 'bg-accent' : 'hover:bg-muted/5'
+                  }`}
                 >
-                  <div className="flex justify-between items-center">
-                    <h3
-                      className={`text-2xl md:text-3xl font-bold font-jakarta transition-colors duration-300 ${
-                        isActive ? 'text-background' : 'text-foreground'
-                      }`}
-                    >
-                      {service.title}
-                    </h3>
-                    <span
-                      className={`text-xl font-bold font-jakarta transition-colors duration-300 ${
-                        isActive ? 'text-background' : 'text-foreground'
-                      }`}
-                    >
-                      {service.id}
-                    </span>
-                  </div>
-
-                  <AnimatePresence>
-                    {isActive && (
-                      <motion.p
-                        id={`service-panel-${service.id}`}
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.4, ease: 'easeInOut' }}
-                        className="text-background text-lg max-w-[800px] leading-relaxed mt-4 overflow-hidden"
-                      >
-                        {service.desc}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </button>
-
-                <div className="flex items-start justify-end mt-6 md:mt-0 md:pl-12">
-                  <Link
-                    href={siteLinks.contact}
-                    className={`flex items-center gap-2 px-6 py-3 rounded-full border transition-all ${
-                      isActive
-                        ? 'bg-background text-foreground border-transparent hover:scale-105'
-                        : 'border-muted text-muted hover:border-accent hover:text-accent'
-                    }`}
+                  <button
+                    type="button"
+                    aria-controls={`service-panel-${service.id}`}
+                    aria-expanded={isActive}
+                    onClick={() => setActiveId(isActive ? null : service.id)}
+                    className="flex-1 flex flex-col gap-4 text-left"
                   >
-                    <span className="text-xs font-bold uppercase tracking-wider">Active</span>
-                    <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center border ${
-                        isActive ? 'border-foreground/20' : 'border-muted/20'
+                    <div className="flex justify-between items-center">
+                      <h3
+                        className={`text-2xl md:text-3xl font-bold font-jakarta transition-colors duration-300 ${
+                          isActive ? 'text-background' : 'text-foreground'
+                        }`}
+                      >
+                        {service.title}
+                      </h3>
+                      <span
+                        className={`text-xl font-bold font-jakarta transition-colors duration-300 ${
+                          isActive ? 'text-background' : 'text-foreground'
+                        }`}
+                      >
+                        {service.id}
+                      </span>
+                    </div>
+
+                    <AnimatePresence>
+                      {isActive && (
+                        <motion.p
+                          id={`service-panel-${service.id}`}
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.4, ease: 'easeInOut' }}
+                          className="text-background text-lg max-w-[800px] leading-relaxed mt-4 overflow-hidden"
+                        >
+                          {service.desc}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </button>
+
+                  <div className="flex items-start justify-end mt-6 md:mt-0 md:pl-12">
+                    <Link
+                      href={siteLinks.contact}
+                      className={`flex items-center gap-2 px-6 py-3 rounded-full border transition-all ${
+                        isActive
+                          ? 'bg-background text-foreground border-transparent hover:scale-105'
+                          : 'border-muted text-muted hover:border-accent hover:text-accent'
                       }`}
                     >
-                      <ArrowUpRight size={16} />
-                    </div>
-                  </Link>
-                </div>
-              </motion.article>
+                      <span className="text-xs font-bold uppercase tracking-wider">Active</span>
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center border ${
+                          isActive ? 'border-foreground/20' : 'border-muted/20'
+                        }`}
+                      >
+                        <ArrowUpRight size={16} />
+                      </div>
+                    </Link>
+                  </div>
+                </motion.article>
+              </Reveal>
             )
           })}
         </div>

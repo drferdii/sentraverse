@@ -333,3 +333,57 @@ body > * { position: relative; z-index: 1; }
 .animate-marquee {
   animation: marquee 60s linear infinite;
 }
+
+/* Partner-strip image logos: flatten official artwork to a theme-matching tone
+   (dark ink on light theme, warm beige on dark theme). */
+.sentra-logo-img {
+  filter: brightness(0);
+}
+
+[data-theme='dark'] .sentra-logo-img {
+  filter: brightness(0) invert(0.73) sepia(0.15) saturate(0.6);
+}
+
+/* ── Entrance & decorative motion (additive, transform/opacity only) ── */
+
+/* Hero on-load reveal: pure CSS so the headline never depends on JS/Framer hydration. */
+@keyframes sentraFadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sentra-load-reveal { animation: sentraFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.sentra-load-reveal--d1 { animation-delay: 0.12s; }
+.sentra-load-reveal--d2 { animation-delay: 0.24s; }
+
+/* Slow decorative drift for sparse background layers (CTA band). */
+@keyframes sentraDriftY {
+  0%, 100% { transform: translate3d(0, -3%, 0); }
+  50% { transform: translate3d(0, 3%, 0); }
+}
+
+.sentra-drift-slow { animation: sentraDriftY 16s ease-in-out infinite; }
+
+/* Slow glint travelling along a decorative hairline (FAQ right band).
+   Glint is ~1/10 of the line height, so 1000% traverses the full line. */
+@keyframes sentraScanY {
+  0% { transform: translateY(-110%); opacity: 0; }
+  8%, 88% { opacity: 1; }
+  100% { transform: translateY(1010%); opacity: 0; }
+}
+
+.sentra-scan { animation: sentraScanY 14s linear infinite; }
+.sentra-scan--alt { animation-duration: 19s; animation-delay: -9s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sentra-load-reveal,
+  .sentra-load-reveal--d1,
+  .sentra-load-reveal--d2,
+  .sentra-drift-slow,
+  .sentra-scan {
+    animation: none;
+  }
+
+  /* .animate-marquee intentionally keeps running — Chief requires the partner
+     logo strip to always move (2026-07-07). */
+}

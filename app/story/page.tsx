@@ -32,6 +32,8 @@ import Link from 'next/link'
 import type React from 'react'
 import { useRef } from 'react'
 
+import { CountUp } from '@/components/ui/count-up'
+
 /* ─── Scroll Reveal ─────────────────────────────────────────── */
 function Reveal({
   children,
@@ -1065,7 +1067,7 @@ export default function StoryPage() {
               <Reveal delay={0.06}>
                 <div className="relative border border-muted/20 rounded-2xl p-8 md:p-10">
                   <span className="absolute top-6 right-8 text-[40px] md:text-[48px] font-black text-foreground/10 leading-none font-jakarta">
-                    4.100+
+                    <CountUp value={4100} idLocale suffix="+" />
                   </span>
                   <span className="text-xs font-bold tracking-widest text-accent uppercase font-jakarta">
                     Kematian Maternal
@@ -1093,7 +1095,7 @@ export default function StoryPage() {
               <Reveal delay={0.12}>
                 <div className="relative border border-muted/20 rounded-2xl p-8 md:p-10">
                   <span className="absolute top-6 right-8 text-[40px] md:text-[48px] font-black text-foreground/10 leading-none font-jakarta">
-                    51
+                    <CountUp value={51} />
                   </span>
                   <span className="text-xs font-bold tracking-widest text-accent uppercase font-jakarta">
                     Dugaan Malpraktik
@@ -1113,7 +1115,7 @@ export default function StoryPage() {
               <Reveal delay={0.18}>
                 <div className="relative border border-muted/20 rounded-2xl p-8 md:p-10">
                   <span className="absolute top-6 right-8 text-[40px] md:text-[48px] font-black text-foreground/10 leading-none font-jakarta">
-                    88%
+                    <CountUp value={88} suffix="%" />
                   </span>
                   <span className="text-xs font-bold tracking-widest text-accent uppercase font-jakarta">
                     Kesalahan Medikasi
@@ -1131,7 +1133,7 @@ export default function StoryPage() {
               <Reveal delay={0.24}>
                 <div className="relative border border-muted/20 rounded-2xl p-8 md:p-10">
                   <span className="absolute top-6 right-8 text-[40px] md:text-[48px] font-black text-foreground/10 leading-none font-jakarta">
-                    70%
+                    <CountUp value={70} suffix="%" />
                   </span>
                   <span className="text-xs font-bold tracking-widest text-accent uppercase font-jakarta">
                     Kanker
@@ -1198,7 +1200,7 @@ export default function StoryPage() {
                   </p>
                   <p className="text-base text-muted leading-relaxed mt-1">{TEAM[0].desc}</p>
                   <div className="grid grid-cols-2 gap-4 mt-3">
-                    {TEAM[0].stats?.map(s => (
+                    {TEAM[0].stats?.map((s) => (
                       <div key={s.label} className="flex flex-col gap-1">
                         <span className="text-[28px] md:text-[32px] font-bold text-foreground font-jakarta leading-none">
                           {s.value}
@@ -1353,7 +1355,7 @@ export default function StoryPage() {
 
                   {site.stats.length > 0 && (
                     <div className="flex gap-8 pt-4 border-t border-muted/10">
-                      {site.stats.map(s => (
+                      {site.stats.map((s) => (
                         <div key={s.label} className="flex flex-col gap-1">
                           <span className="text-2xl font-bold text-foreground font-jakarta">
                             {s.value}
@@ -1365,7 +1367,7 @@ export default function StoryPage() {
                   )}
 
                   <div className="flex flex-wrap gap-2 pt-2">
-                    {site.services.map(s => (
+                    {site.services.map((s) => (
                       <span
                         key={s}
                         className="text-[10px] font-bold tracking-widest text-muted uppercase border border-muted/20 px-3 py-1 rounded-full"
@@ -1502,7 +1504,7 @@ export default function StoryPage() {
                   <h3 className="text-xl font-bold text-foreground font-jakarta">{m.name}</h3>
                   <p className="text-lg text-muted leading-relaxed">{m.desc}</p>
                   <div className="flex flex-wrap gap-2 mt-auto pt-4">
-                    {m.tags.map(tag => (
+                    {m.tags.map((tag) => (
                       <span
                         key={tag}
                         className="text-[10px] font-bold tracking-widest text-muted uppercase border border-muted/20 px-3 py-1 rounded-full"
