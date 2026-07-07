@@ -1,166 +1,158 @@
 // Architected and built by Classy.
-"use client";
+'use client'
 
-import React from "react";
-import Link from "next/link";
-import { siteLinks } from "@/lib/site-links";
-import { MagneticText } from "@/components/ui/morphing-cursor";
+import Link from 'next/link'
+import { useState } from 'react'
 
+import { Reveal } from '@/components/ui/reveal'
+import { siteLinks } from '@/lib/site-links'
 
-const CAPABILITIES = [
-  "Clinical Decision Support",
-  "AI Diagnostic Engine",
-  "Trajectory Analysis",
-  "Prognosis Intelligence",
-  "Patient Risk Scoring",
-  "EMR Integration",
-  "Clinical Audit Trail",
-  "Real-time Monitoring",
-  "Audrey Voice AI",
-];
+// Intentional brand anomaly (approved 2026-07-07): acid-yellow plate footer,
+// replacing the former white footer. Hardcoded — identical in light & dark.
+const INK = '#111111'
+const PLATE = '#e9fb5b'
 
-const NAV_LINKS = [
-  { name: "Home", href: siteLinks.home },
-  { name: "Services", href: siteLinks.services },
-  { name: "About", href: siteLinks.about },
-  { name: "Audrey", href: siteLinks.audrey },
-  { name: "Insights", href: siteLinks.insights },
-  { name: "Contact", href: siteLinks.contact },
-];
+const CONTACT_LINES = [
+  {
+    label: 'Email',
+    value: 'drferdiiskandar@melinda.co.id',
+    href: 'mailto:drferdiiskandar@melinda.co.id',
+  },
+  { label: 'Instagram', value: '@sentraai', href: 'https://instagram.com/sentraai' },
+  { label: 'LinkedIn', value: 'sentra-ai', href: 'https://linkedin.com/company/sentra-ai' },
+  {
+    label: 'Alamat',
+    value: 'Laboratorium Technology RSIA Melinda DHAI, Kediri, Jawa Timur',
+  },
+]
 
-const SOCIALS = [
-  { name: "LinkedIn", href: "https://linkedin.com/company/sentra-ai" },
-  { name: "GitHub", href: "https://github.com/sentraai" },
-  { name: "X", href: "https://x.com/sentraai" },
-  { name: "Instagram", href: "https://instagram.com/sentraai" },
-];
+/** Blocky geometric "S" monogram, echoing the plate's constructivist language. */
+function Monogram({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 100 100" className={className} aria-hidden="true" fill={INK}>
+      <rect x="0" y="0" width="100" height="17" />
+      <rect x="0" y="21" width="17" height="20" />
+      <rect x="0" y="41" width="100" height="17" />
+      <rect x="83" y="58" width="17" height="21" />
+      <rect x="0" y="83" width="100" height="17" />
+    </svg>
+  )
+}
 
 export default function Footer() {
+  const [email, setEmail] = useState('')
+
+  const waitingListHref = `mailto:drferdiiskandar@melinda.co.id?subject=${encodeURIComponent(
+    'Join Waiting List — Sentra Test Pilot'
+  )}${email.trim() ? `&body=${encodeURIComponent(`Email: ${email.trim()}`)}` : ''}`
+
   return (
     <footer
+      id="contact"
       className="overflow-hidden"
       style={{
-        background: "#ffffff",
-        color: "#1a1a1a",
-        fontFamily: 'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+        background: PLATE,
+        color: INK,
+        fontFamily:
+          'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
       }}
     >
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12">
-        {/* ═══ Main Grid — 4 Columns ═══ */}
-        <div
-          className="grid md:grid-cols-2 lg:grid-cols-[300px_280px_180px_1fr] gap-10 lg:gap-8 pt-16 pb-48"
-          style={{ borderTop: "1px solid rgba(0,0,0,0.08)" }}
+      {/* ═══ Giant Brand Name — full width, top of plate ═══ */}
+      <Reveal y={40}>
+        <span
+          className="block px-2 pt-2 text-center text-[30.5vw] font-black leading-[0.8] tracking-[-0.06em] select-none"
+          aria-hidden="true"
         >
-          {/* Col 1: Magnetic Text + Company Info */}
-          <div className="flex items-baseline gap-4 lg:col-span-4 mb-4">
-            <MagneticText text="SENTRA" hoverText="ARTIFICIAL INTELLIGENCE" />
-            <Link
-              href="https://melinda.co.id/"
-              target="_blank"
-              className="text-5xl font-bold tracking-tighter tracking-wide transition-colors whitespace-nowrap"
-              style={{ color: "#1a1a1a" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#eb5939")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#1a1a1a")}
-            >
-              PART OF RSIA MELINDA DHAI
+          Sentra
+        </span>
+      </Reveal>
+      <span className="sr-only">Sentra Healthcare Solutions</span>
+
+      {/* ═══ Plate body: vast breathing room, then monogram + info column ═══ */}
+      <div className="px-6 md:px-12 mt-24 md:mt-[13vw]">
+        <div className="flex flex-col gap-16 lg:grid lg:grid-cols-[1fr_460px] lg:items-end">
+          {/* Monogram — bottom-left, like a printer's mark */}
+          <Monogram className="w-40 md:w-64 lg:w-80 lg:mb-2" />
+
+          {/* Info column */}
+          <div className="flex min-w-0 w-full flex-col gap-10 max-w-[460px]">
+            {/* Contact */}
+            <div className="border-t pt-4" style={{ borderColor: INK }}>
+              <ul className="flex flex-col gap-0.5 text-[15px] font-semibold leading-relaxed">
+                {CONTACT_LINES.map((line) => (
+                  <li key={line.label}>
+                    {line.label}:{' '}
+                    {line.href ? (
+                      <a
+                        href={line.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline"
+                      >
+                        {line.value}
+                      </a>
+                    ) : (
+                      line.value
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Waiting list */}
+            <div>
+              <p className="text-[15px] font-semibold mb-3">
+                Gabung waiting list Test Pilot Season:
+              </p>
+              <div className="flex gap-3">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Alamat Email"
+                  aria-label="Alamat email untuk waiting list"
+                  className="min-w-0 flex-1 border bg-transparent px-3 py-2.5 text-[15px] font-semibold placeholder:opacity-60"
+                  style={{ borderColor: INK, color: INK }}
+                />
+                <a
+                  href={waitingListHref}
+                  className="shrink-0 border px-4 py-2.5 text-[15px] font-semibold whitespace-nowrap transition-colors hover:bg-[#111111] hover:text-[#e9fb5b]"
+                  style={{ borderColor: INK }}
+                >
+                  Join Waiting List
+                </a>
+              </div>
+            </div>
+
+            {/* Stewardship statement */}
+            <div className="border-t pt-4" style={{ borderColor: INK }}>
+              <p className="text-[15px] font-semibold leading-relaxed">
+                Sentra dibangun di lingkungan klinis RSIA Melinda DHAI, Kediri, dengan satu prinsip
+                yang tidak bisa ditawar: Human as the Pilot, AI as the Copilot. Keputusan medis
+                final selalu berada di tangan tenaga medis yang berwenang.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* ═══ Bottom row ═══ */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2 pt-16 pb-6 text-[14px] font-semibold">
+          <div className="flex flex-wrap items-center gap-x-2">
+            <Link href="https://melinda.co.id/" target="_blank" className="hover:underline">
+              Part of RSIA Melinda DHAI
+            </Link>
+            <span aria-hidden="true">·</span>
+            <Link href={siteLinks.privacy} className="hover:underline">
+              Privacy Policy
+            </Link>
+            <span aria-hidden="true">·</span>
+            <Link href={siteLinks.terms} className="hover:underline">
+              Terms of Service
             </Link>
           </div>
-
-          {/* Col 1 row 2: Company Info */}
-          <div className="flex flex-col gap-4 lg:border-r lg:pr-8" style={{ borderColor: "rgba(0,0,0,0.1)" }}>
-            <p className="text-[20px] leading-relaxed" style={{ color: "#555" }}>
-              Sentra Healthcare Solutions
-              <br />
-              Kediri, Jawa Timur, Indonesia
-            </p>
-          </div>
-
-          {/* Col 2: Capabilities */}
-          <div className="flex flex-col gap-2 lg:border-r lg:pr-8" style={{ borderColor: "rgba(0,0,0,0.1)" }}>
-            {CAPABILITIES.map((cap) => (
-              <Link
-                key={cap}
-                href={siteLinks.services}
-                className="text-[20px] transition-colors"
-                style={{ color: "#1a1a1a" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#eb5939")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#1a1a1a")}
-              >
-                {cap}
-              </Link>
-            ))}
-          </div>
-
-          {/* Col 3: Navigation */}
-          <div className="flex flex-col gap-2 lg:border-r lg:pr-8" style={{ borderColor: "rgba(0,0,0,0.1)" }}>
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="text-[20px] transition-colors"
-                style={{ color: "#1a1a1a" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#eb5939")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#1a1a1a")}
-              >
-                {link.name}
-              </Link>
-            ))}
-          </div>
-
-          {/* Col 4: empty */}
-          <div />
+          <p>Sentra &copy; 2026</p>
         </div>
-
-        {/* ═══ Bottom Bar ═══ */}
-        <div
-          className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 py-6"
-          style={{ borderTop: "1px solid rgba(0,0,0,0.08)" }}
-        >
-          {/* Left: Copyright + Policies */}
-          <div className="flex flex-wrap items-center gap-1.5 text-[20px]" style={{ color: "#999" }}>
-            <span>&copy; Sentra 2026. All rights reserved</span>
-            <span>&middot;</span>
-            <Link href="/privacy" className="hover:underline transition-colors" style={{ color: "#999" }}>Privacy Policy</Link>
-            <span>&middot;</span>
-            <Link href="/terms" className="hover:underline transition-colors" style={{ color: "#999" }}>Terms of Service</Link>
-          </div>
-
-          {/* Right: Social links */}
-          <div className="flex flex-wrap items-center gap-1.5 text-[20px]">
-            {SOCIALS.map((social, i) => (
-              <React.Fragment key={social.name}>
-                {i > 0 && <span style={{ color: "#ccc" }}>&middot;</span>}
-                <Link
-                  href={social.href}
-                  target="_blank"
-                  className="transition-colors"
-                  style={{ color: "#666" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#eb5939")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#666")}
-                >
-                  {social.name}
-                </Link>
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ═══ Giant Brand Name ═══ */}
-      <div
-        className="relative select-none pointer-events-none"
-        aria-hidden="true"
-      >
-        <span
-          className="block text-[20vw] font-black leading-[1] tracking-[-0.04em] uppercase text-center pb-4"
-          style={{
-            color: "#1a1a1a",
-            fontFamily: 'ui-sans-serif, system-ui, sans-serif',
-          }}
-        >
-          sentra
-        </span>
       </div>
     </footer>
-  );
+  )
 }

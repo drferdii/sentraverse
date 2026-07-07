@@ -5,7 +5,6 @@ import About from '@/components/About'
 import Audrey from '@/components/Audrey'
 import Clients from '@/components/Clients'
 import ClinicalTrajectory from '@/components/ClinicalTrajectory'
-import CTA from '@/components/CTA'
 import FAQ from '@/components/FAQ'
 import Footer from '@/components/Footer'
 import Hero from '@/components/Hero'
@@ -33,7 +32,6 @@ export default function Home() {
       <News />
       <ScrollGallery />
       <FAQ />
-      <CTA />
       <Footer />
     </main>
   )
