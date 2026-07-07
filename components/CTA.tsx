@@ -1,15 +1,18 @@
 // Architected and built by Classy.
-"use client";
+'use client'
 
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import { siteLinks } from "@/lib/site-links";
+import { ArrowUpRight } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+
+import { siteLinks } from '@/lib/site-links'
 
 export default function CTA() {
   return (
-    <section id="contact" className="relative min-h-[600px] flex items-center overflow-hidden border-b border-muted/20">
+    <section
+      id="contact"
+      className="relative min-h-[600px] flex items-center overflow-hidden border-b border-muted/20"
+    >
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -22,12 +25,16 @@ export default function CTA() {
 
       <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-12 text-center flex flex-col items-center gap-10">
         <div className="flex flex-col gap-6">
-          <p className="text-xs font-bold tracking-widest text-accent uppercase font-jakarta">Test Pilot Season</p>
+          <p className="text-xs font-bold tracking-widest text-accent uppercase font-jakarta">
+            Test Pilot Season
+          </p>
           <h2 className="text-[32px] md:text-[56px] font-bold text-foreground leading-[1.1] max-w-[800px] font-jakarta">
             3 Bulan. Target Akurasi 92%. Buktikan Bersama Kami.
           </h2>
           <p className="text-lg text-muted max-w-[600px] mx-auto leading-relaxed">
-            Sentra membuka test pilot season untuk fasilitas kesehatan terpilih — dari Puskesmas hingga rumah sakit rujukan. Validasi klinis nyata, bukan sekadar demo. Bergabunglah ke waiting list kami.
+            Sentra membuka test pilot season untuk fasilitas kesehatan terpilih — dari Puskesmas
+            hingga rumah sakit rujukan. Validasi klinis nyata, bukan sekadar demo. Bergabunglah ke
+            waiting list kami.
           </p>
         </div>
 
@@ -44,5 +51,5 @@ export default function CTA() {
         </Link>
       </div>
     </section>
-  );
+  )
 }

@@ -1,8 +1,9 @@
 // Architected and built by Classy.
 // [APPROVED]
 import type { Metadata } from 'next'
-import { cookies } from 'next/headers'
 import { Inter, Plus_Jakarta_Sans } from 'next/font/google'
+import { cookies } from 'next/headers'
+
 import { ThemeProvider } from '@/components/ThemeProvider'
 import {
   DEFAULT_THEME,
@@ -141,17 +142,18 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   const cookieStore = await cookies()
-  const ssrTheme: Theme = normalizeTheme(cookieStore.get(SENTRA_THEME_COOKIE)?.value ?? DEFAULT_THEME)
+  const ssrTheme: Theme = normalizeTheme(
+    cookieStore.get(SENTRA_THEME_COOKIE)?.value ?? DEFAULT_THEME
+  )
 
   return (
     <html lang="id" data-theme={ssrTheme} suppressHydrationWarning>
       <head>
-        <script
-          dangerouslySetInnerHTML={{ __html: getThemeBootstrapScript(ssrTheme) }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: getThemeBootstrapScript(ssrTheme) }} />
       </head>
       <body
         className={`${plusJakartaSans.variable} ${inter.variable} font-sans antialiased`}
+        suppressHydrationWarning
       >
         <script
           type="application/ld+json"

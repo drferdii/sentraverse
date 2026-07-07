@@ -1,11 +1,11 @@
 // Architected and built by Classy.
-"use client";
+'use client'
 
-import React from "react";
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import { InteractiveImageAccordion } from "@/components/ui/interactive-image-accordion";
-import { siteLinks } from "@/lib/site-links";
+import { ArrowUpRight } from 'lucide-react'
+import Link from 'next/link'
+
+import { InteractiveImageAccordion } from '@/components/ui/interactive-image-accordion'
+import { siteLinks } from '@/lib/site-links'
 
 export default function Showcase() {
   return (
@@ -18,11 +18,13 @@ export default function Showcase() {
               Protokol Klinis
             </p>
             <h2 className="text-[32px] md:text-[45px] font-bold text-foreground leading-[1.2] font-jakarta">
-              Akselerasi Keputusan Klinis dengan{" "}
+              Akselerasi Keputusan Klinis dengan{' '}
               <span className="text-accent">Artificial Intelligence</span>
             </h2>
             <p className="mt-6 text-lg text-muted leading-relaxed">
-              Setiap protokol Sentra dirancang sebagai lapisan komputasi independen — dari ekstraksi bahasa klinis hingga prediksi prognostik — yang bekerja bersama dokter untuk presisi diagnostik real-time.
+              Setiap protokol Sentra dirancang sebagai lapisan komputasi independen — dari ekstraksi
+              bahasa klinis hingga prediksi prognostik — yang bekerja bersama dokter untuk presisi
+              diagnostik real-time.
             </p>
 
             <Link
@@ -43,5 +45,5 @@ export default function Showcase() {
         </div>
       </div>
     </section>
-  );
+  )
 }

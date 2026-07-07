@@ -1,195 +1,92 @@
 // Architected and built by Classy.
-"use client";
+'use client'
 
-import React, { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
-import ClinicalPrognosis from "./ClinicalPrognosis";
+import { motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
 
-// ═══════════════════════════════════════════════════
-// DEMO DATA — Clinical Trajectory Showcase
-// ═══════════════════════════════════════════════════
+import ClinicalPrognosis from './ClinicalPrognosis'
 
-const DEMO_VISITS = [
-  { label: "12/09", sbp: 140, dbp: 88, hr: 78, gds: 210 },
-  { label: "15/10", sbp: 148, dbp: 92, hr: 82, gds: 238 },
-  { label: "22/11", sbp: 155, dbp: 94, hr: 88, gds: 262 },
-  { label: "HARI INI", sbp: 168, dbp: 98, hr: 92, gds: 284 },
-];
-
-const VITAL_PARAMS = [
-  { label: "SBP", value: 168, unit: "mmHg", risk: "high" as const, note: "Tren naik +28 mmHg dalam 3 kunjungan" },
-  { label: "DBP", value: 98, unit: "mmHg", risk: "moderate" as const, note: "Mendekati hipertensi stage 2" },
-  { label: "HR", value: 92, unit: "bpm", risk: "low" as const, note: "Dalam batas normal" },
-  { label: "RR", value: 22, unit: "x/min", risk: "moderate" as const, note: "Sedikit di atas normal" },
-  { label: "TEMP", value: 36.8, unit: "°C", risk: "low" as const, note: "Normal" },
-  { label: "GDS", value: 284, unit: "mg/dL", risk: "critical" as const, note: "Hiperglikemia signifikan" },
-];
-
-const ACUTE_RISKS = [
-  { label: "Krisis Hipertensi", value: 72 },
-  { label: "Stroke / ACS", value: 58 },
-  { label: "Krisis Glikemik", value: 45 },
-  { label: "Sepsis-like", value: 12 },
-  { label: "Syok Dekompensasi", value: 8 },
-];
-
-const DRIVERS = [
-  "Tekanan darah stage 2 dengan tren kenaikan progresif",
-  "Hiperglikemia tidak terkontrol (GDS >250 mg/dL)",
-  "Riwayat DM Tipe 2 + Hipertensi — risiko kardiovaskular meningkat",
-  "Frekuensi kunjungan meningkat — kemungkinan deteriorasi",
-];
-
-const RECOMMENDATIONS = [
-  { priority: "high" as const, text: "Evaluasi segera risiko end-organ damage" },
-  { priority: "high" as const, text: "Kontrol GDS — pertimbangkan insulin sliding scale" },
-  { priority: "medium" as const, text: "EKG 12 lead untuk evaluasi iskemia" },
-];
-
-const RISK_COLORS: Record<string, string> = {
-  low: "#10b981",
-  moderate: "#eab308",
-  high: "#f97316",
-  critical: "#ef4444",
-};
-
-function riskBarColor(value: number): string {
-  if (value >= 70) return "#ef4444";
-  if (value >= 45) return "#f97316";
-  return "#10b981";
-}
-
-function buildPolyline(
-  data: number[],
-  min: number,
-  max: number,
-  width: number,
-  height: number,
-): string {
-  const pad = 8;
-  const w = width - pad * 2;
-  const h = height - pad * 2;
-  return data
-    .map((val, i) => {
-      const x = pad + (i / (data.length - 1)) * w;
-      const y = pad + h - ((val - min) / (max - min)) * h;
-      return `${x},${y}`;
-    })
-    .join(" ");
-}
-
-const SLIDE_LABELS = ["Trajectory", "Prognosis"];
-
-// Annotation line component — animated line + label
-function AnnotationLine({
-  text,
-  delay,
-  direction = "left",
-}: {
-  text: string;
-  delay: number;
-  direction?: "left" | "right";
-}) {
-  return (
-    <motion.div
-      className={`flex items-center gap-2 mb-2 ${direction === "right" ? "justify-end" : ""}`}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.3, delay }}
-    >
-      {direction === "right" && (
-        <span className="text-[8px] tracking-[0.12em] text-accent/70 uppercase whitespace-nowrap">
-          {text}
-        </span>
-      )}
-      <svg
-        width="48"
-        height="12"
-        viewBox="0 0 48 12"
-        fill="none"
-        className="shrink-0"
-      >
-        <motion.line
-          x1={direction === "left" ? 0 : 48}
-          y1="6"
-          x2={direction === "left" ? 40 : 8}
-          y2="6"
-          stroke="var(--color-accent)"
-          strokeWidth="1"
-          strokeOpacity="0.5"
-          initial={{ pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: delay + 0.1 }}
-        />
-        <motion.circle
-          cx={direction === "left" ? 44 : 4}
-          cy="6"
-          r="3"
-          fill="var(--color-accent)"
-          fillOpacity="0.6"
-          initial={{ scale: 0 }}
-          whileInView={{ scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.3, delay: delay + 0.5 }}
-        />
-      </svg>
-      {direction === "left" && (
-        <span className="text-[8px] tracking-[0.12em] text-accent/70 uppercase whitespace-nowrap">
-          {text}
-        </span>
-      )}
-    </motion.div>
-  );
-}
+import AnnotationLine from '@/components/clinical-trajectory/AnnotationLine'
+import {
+  ACUTE_RISKS,
+  buildPolyline,
+  DEMO_VISITS,
+  DRIVERS,
+  RECOMMENDATIONS,
+  RISK_COLORS,
+  riskBarColor,
+  SLIDE_LABELS,
+  VITAL_PARAMS,
+} from '@/components/clinical-trajectory/data'
 
 // ═══════════════════════════════════════════════════
 // COMPONENT
 // ═══════════════════════════════════════════════════
 
 export default function ClinicalTrajectory() {
-  const [activeSlide, setActiveSlide] = useState(0);
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const [activeSlide, setActiveSlide] = useState(0)
+  const sectionRef = useRef<HTMLDivElement>(null)
 
   // Auto-slide to prognosis after trajectory animations complete (~6s)
   useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
+    const el = sectionRef.current
+    if (!el) return
 
-    let timer: ReturnType<typeof setTimeout>;
+    let timer: ReturnType<typeof setTimeout>
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          timer = setTimeout(() => setActiveSlide(1), 6000);
-          observer.disconnect();
+          timer = setTimeout(() => setActiveSlide(1), 6000)
+          observer.disconnect()
         }
       },
-      { threshold: 0.3 },
-    );
-    observer.observe(el);
+      { threshold: 0.3 }
+    )
+    observer.observe(el)
     return () => {
-      clearTimeout(timer);
-      observer.disconnect();
-    };
-  }, []);
+      clearTimeout(timer)
+      observer.disconnect()
+    }
+  }, [])
 
   // Chart calculations
-  const chartW = 480;
-  const chartH = 200;
-  const vMin = 60;
-  const vMax = 200;
-  const pad = 8;
-  const usableH = chartH - pad * 2;
+  const chartW = 480
+  const chartH = 200
+  const vMin = 60
+  const vMax = 200
+  const pad = 8
+  const usableH = chartH - pad * 2
 
-  const sbpLine = buildPolyline(DEMO_VISITS.map((v) => v.sbp), vMin, vMax, chartW, chartH);
-  const dbpLine = buildPolyline(DEMO_VISITS.map((v) => v.dbp), vMin, vMax, chartW, chartH);
-  const hrLine = buildPolyline(DEMO_VISITS.map((v) => v.hr), vMin, vMax, chartW, chartH);
-  const y140 = pad + usableH - ((140 - vMin) / (vMax - vMin)) * usableH;
-  const y180 = pad + usableH - ((180 - vMin) / (vMax - vMin)) * usableH;
+  const sbpLine = buildPolyline(
+    DEMO_VISITS.map((v) => v.sbp),
+    vMin,
+    vMax,
+    chartW,
+    chartH
+  )
+  const dbpLine = buildPolyline(
+    DEMO_VISITS.map((v) => v.dbp),
+    vMin,
+    vMax,
+    chartW,
+    chartH
+  )
+  const hrLine = buildPolyline(
+    DEMO_VISITS.map((v) => v.hr),
+    vMin,
+    vMax,
+    chartW,
+    chartH
+  )
+  const y140 = pad + usableH - ((140 - vMin) / (vMax - vMin)) * usableH
+  const y180 = pad + usableH - ((180 - vMin) / (vMax - vMin)) * usableH
 
   return (
-    <section ref={sectionRef} data-theme="dark" className="py-20 border-b border-muted/20 overflow-hidden">
+    <section
+      ref={sectionRef}
+      data-theme="dark"
+      className="py-20 border-b border-muted/20 overflow-hidden"
+    >
       <div className="max-w-[1440px] mx-auto px-6 md:px-12">
         {/* Section header */}
         <div className="text-center mb-16">
@@ -223,8 +120,8 @@ export default function ClinicalTrajectory() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mx-auto mt-4 max-w-[620px] text-base leading-relaxed text-muted"
           >
-            Analisis trajektori klinis real-time dan prognosis komprehensif — memantau
-            deteriorasi, memprediksi risiko, dan memberikan rekomendasi evidence-based.
+            Analisis trajektori klinis real-time dan prognosis komprehensif — memantau deteriorasi,
+            memprediksi risiko, dan memberikan rekomendasi evidence-based.
           </motion.p>
         </div>
 
@@ -241,15 +138,14 @@ export default function ClinicalTrajectory() {
                 className="rounded-2xl border border-muted/10 overflow-hidden"
                 style={{
                   background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.015) 100%)",
-                  boxShadow:
-                    "0 20px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.03)",
+                    'linear-gradient(180deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.015) 100%)',
+                  boxShadow: '0 20px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.03)',
                 }}
               >
                 {/* Panel header */}
                 <div
                   className="flex flex-wrap items-center justify-between gap-2 px-5 py-3 border-b border-muted/10"
-                  style={{ background: "rgba(255,255,255,0.02)" }}
+                  style={{ background: 'rgba(255,255,255,0.02)' }}
                 >
                   <div className="flex items-center gap-3">
                     <span className="text-[10px] font-bold tracking-[0.14em] text-muted uppercase">
@@ -258,9 +154,9 @@ export default function ClinicalTrajectory() {
                     <span
                       className="text-[8px] font-bold tracking-[0.1em] px-2 py-0.5 rounded"
                       style={{
-                        color: "#f97316",
-                        background: "rgba(249,115,22,0.1)",
-                        border: "1px solid #f97316",
+                        color: '#f97316',
+                        background: 'rgba(249,115,22,0.1)',
+                        border: '1px solid #f97316',
                       }}
                     >
                       URGENT &lt;6H
@@ -268,9 +164,9 @@ export default function ClinicalTrajectory() {
                     <span
                       className="text-[8px] font-bold tracking-[0.1em] px-2 py-0.5 rounded"
                       style={{
-                        color: "#f97316",
-                        border: "1px solid #f97316",
-                        background: "rgba(249,115,22,0.1)",
+                        color: '#f97316',
+                        border: '1px solid #f97316',
+                        background: 'rgba(249,115,22,0.1)',
                       }}
                     >
                       MEMBURUK
@@ -303,7 +199,9 @@ export default function ClinicalTrajectory() {
                           }}
                         >
                           <div className="flex justify-between items-center mb-1">
-                            <span className="text-[8px] tracking-[0.08em] text-muted">{vt.label}</span>
+                            <span className="text-[8px] tracking-[0.08em] text-muted">
+                              {vt.label}
+                            </span>
                             <span
                               className="text-[7px] font-bold tracking-[0.08em] px-1 rounded"
                               style={{
@@ -315,12 +213,17 @@ export default function ClinicalTrajectory() {
                             </span>
                           </div>
                           <div className="flex items-baseline gap-1">
-                            <span className="text-xl font-light" style={{ color: RISK_COLORS[vt.risk] }}>
+                            <span
+                              className="text-xl font-light"
+                              style={{ color: RISK_COLORS[vt.risk] }}
+                            >
                               {vt.value}
                             </span>
                             <span className="text-[8px] text-muted">{vt.unit}</span>
                           </div>
-                          <div className="text-[9px] text-muted italic mt-1 leading-tight">{vt.note}</div>
+                          <div className="text-[9px] text-muted italic mt-1 leading-tight">
+                            {vt.note}
+                          </div>
                         </motion.div>
                       ))}
                     </div>
@@ -336,24 +239,39 @@ export default function ClinicalTrajectory() {
                       transition={{ duration: 0.6, delay: 0.4 }}
                       className="rounded-lg p-4 relative"
                       style={{
-                        border: "1px solid rgba(255,255,255,0.1)",
-                        background: "rgba(255,255,255,0.025)",
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        background: 'rgba(255,255,255,0.025)',
                       }}
                     >
                       <AnnotationLine text="Analisis tren temporal multi-kunjungan" delay={0.35} />
                       <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                        <span className="text-[10px] tracking-[0.14em] uppercase" style={{ color: "#FFCC8C" }}>
+                        <span
+                          className="text-[10px] tracking-[0.14em] uppercase"
+                          style={{ color: '#FFCC8C' }}
+                        >
                           Vital Trend — 4 Kunjungan
                         </span>
                         <div className="flex gap-3">
                           <span className="text-[9px] flex items-center gap-1 text-foreground/70">
-                            <span className="w-3 h-0.5 rounded inline-block" style={{ background: "#FFCC8C" }} /> SBP
+                            <span
+                              className="w-3 h-0.5 rounded inline-block"
+                              style={{ background: '#FFCC8C' }}
+                            />{' '}
+                            SBP
                           </span>
                           <span className="text-[9px] flex items-center gap-1 text-muted">
-                            <span className="w-3 h-0.5 rounded inline-block" style={{ background: "rgba(255,204,140,0.45)" }} /> DBP
+                            <span
+                              className="w-3 h-0.5 rounded inline-block"
+                              style={{ background: 'rgba(255,204,140,0.45)' }}
+                            />{' '}
+                            DBP
                           </span>
                           <span className="text-[9px] flex items-center gap-1 text-muted">
-                            <span className="w-3 h-0.5 rounded inline-block" style={{ background: "rgba(96,165,250,0.7)" }} /> HR
+                            <span
+                              className="w-3 h-0.5 rounded inline-block"
+                              style={{ background: 'rgba(96,165,250,0.7)' }}
+                            />{' '}
+                            HR
                           </span>
                         </div>
                       </div>
@@ -363,31 +281,104 @@ export default function ClinicalTrajectory() {
                         style={{ height: 200 }}
                         aria-label="Vital sign trend chart"
                       >
-                        <line x1={pad} y1={y140} x2={chartW - pad} y2={y140} stroke="rgba(249,115,22,0.4)" strokeWidth="1" strokeDasharray="5,5" />
-                        <text x={chartW - 6} y={y140 - 3} fill="rgba(249,115,22,0.6)" fontSize="8" textAnchor="end">140</text>
-                        <line x1={pad} y1={y180} x2={chartW - pad} y2={y180} stroke="rgba(239,68,68,0.4)" strokeWidth="1" strokeDasharray="5,5" />
-                        <text x={chartW - 6} y={y180 - 3} fill="rgba(239,68,68,0.6)" fontSize="8" textAnchor="end">180</text>
-                        <polyline points={hrLine} fill="none" stroke="rgba(96,165,250,0.7)" strokeWidth="1.8" strokeLinejoin="round" />
-                        <polyline points={dbpLine} fill="none" stroke="rgba(255,204,140,0.45)" strokeWidth="1.6" strokeDasharray="4,3" strokeLinejoin="round" />
-                        <polyline points={sbpLine} fill="none" stroke="#FFCC8C" strokeWidth="2.4" strokeLinejoin="round" />
+                        <line
+                          x1={pad}
+                          y1={y140}
+                          x2={chartW - pad}
+                          y2={y140}
+                          stroke="rgba(249,115,22,0.4)"
+                          strokeWidth="1"
+                          strokeDasharray="5,5"
+                        />
+                        <text
+                          x={chartW - 6}
+                          y={y140 - 3}
+                          fill="rgba(249,115,22,0.6)"
+                          fontSize="8"
+                          textAnchor="end"
+                        >
+                          140
+                        </text>
+                        <line
+                          x1={pad}
+                          y1={y180}
+                          x2={chartW - pad}
+                          y2={y180}
+                          stroke="rgba(239,68,68,0.4)"
+                          strokeWidth="1"
+                          strokeDasharray="5,5"
+                        />
+                        <text
+                          x={chartW - 6}
+                          y={y180 - 3}
+                          fill="rgba(239,68,68,0.6)"
+                          fontSize="8"
+                          textAnchor="end"
+                        >
+                          180
+                        </text>
+                        <polyline
+                          points={hrLine}
+                          fill="none"
+                          stroke="rgba(96,165,250,0.7)"
+                          strokeWidth="1.8"
+                          strokeLinejoin="round"
+                        />
+                        <polyline
+                          points={dbpLine}
+                          fill="none"
+                          stroke="rgba(255,204,140,0.45)"
+                          strokeWidth="1.6"
+                          strokeDasharray="4,3"
+                          strokeLinejoin="round"
+                        />
+                        <polyline
+                          points={sbpLine}
+                          fill="none"
+                          stroke="#FFCC8C"
+                          strokeWidth="2.4"
+                          strokeLinejoin="round"
+                        />
                         {DEMO_VISITS.map((v, i) => {
-                          const x = pad + (i / (DEMO_VISITS.length - 1)) * (chartW - pad * 2);
-                          const y = pad + usableH - ((v.sbp - vMin) / (vMax - vMin)) * usableH;
+                          const x = pad + (i / (DEMO_VISITS.length - 1)) * (chartW - pad * 2)
+                          const y = pad + usableH - ((v.sbp - vMin) / (vMax - vMin)) * usableH
                           return (
                             <g key={v.label}>
-                              <circle cx={x} cy={y} r="5" fill="var(--sentra-bg)" stroke="#FFCC8C" strokeWidth="2" />
-                              <text x={x} y={chartH - 2} fill="rgba(255,255,255,0.5)" fontSize="9" textAnchor="middle" fontWeight="600">{v.label}</text>
+                              <circle
+                                cx={x}
+                                cy={y}
+                                r="5"
+                                fill="var(--sentra-bg)"
+                                stroke="#FFCC8C"
+                                strokeWidth="2"
+                              />
+                              <text
+                                x={x}
+                                y={chartH - 2}
+                                fill="rgba(255,255,255,0.5)"
+                                fontSize="9"
+                                textAnchor="middle"
+                                fontWeight="600"
+                              >
+                                {v.label}
+                              </text>
                             </g>
-                          );
+                          )
                         })}
                       </svg>
                       <div className="flex gap-4 flex-wrap mt-2 text-[10px] text-muted">
                         <span className="inline-flex items-center gap-1.5">
-                          <span className="w-4 inline-block" style={{ borderTop: "2px dashed rgba(249,115,22,0.7)" }} />
+                          <span
+                            className="w-4 inline-block"
+                            style={{ borderTop: '2px dashed rgba(249,115,22,0.7)' }}
+                          />
                           SBP 140: batas hipertensi
                         </span>
                         <span className="inline-flex items-center gap-1.5">
-                          <span className="w-4 inline-block" style={{ borderTop: "2px dashed rgba(239,68,68,0.7)" }} />
+                          <span
+                            className="w-4 inline-block"
+                            style={{ borderTop: '2px dashed rgba(239,68,68,0.7)' }}
+                          />
                           SBP 180: krisis hipertensi
                         </span>
                       </div>
@@ -396,38 +387,86 @@ export default function ClinicalTrajectory() {
                     {/* Right column */}
                     <div className="flex flex-col gap-4">
                       <div>
-                        <AnnotationLine text="Skor deteriorasi global" delay={0.45} direction="right" />
+                        <AnnotationLine
+                          text="Skor deteriorasi global"
+                          delay={0.45}
+                          direction="right"
+                        />
                         <motion.div
                           initial={{ opacity: 0, x: 20 }}
                           whileInView={{ opacity: 1, x: 0 }}
                           viewport={{ once: true }}
                           transition={{ duration: 0.5, delay: 0.5 }}
                           className="rounded-lg p-3"
-                          style={{ border: "1px solid rgba(249,115,22,0.3)", background: "rgba(249,115,22,0.05)" }}
+                          style={{
+                            border: '1px solid rgba(249,115,22,0.3)',
+                            background: 'rgba(249,115,22,0.05)',
+                          }}
                         >
                           <div className="flex justify-between items-center mb-2">
-                            <span className="text-[9px] font-bold tracking-[0.1em]" style={{ color: "#f97316" }}>GLOBAL DETERIORATION — MEMBURUK</span>
-                            <span className="text-sm" style={{ color: "#f97316" }}>64<span className="text-[8px]">/100</span></span>
+                            <span
+                              className="text-[9px] font-bold tracking-[0.1em]"
+                              style={{ color: '#f97316' }}
+                            >
+                              GLOBAL DETERIORATION — MEMBURUK
+                            </span>
+                            <span className="text-sm" style={{ color: '#f97316' }}>
+                              64<span className="text-[8px]">/100</span>
+                            </span>
                           </div>
                           <div className="h-[3px] rounded-full bg-muted/20 mb-2">
-                            <motion.div className="h-full rounded-full" style={{ background: "#f97316" }} initial={{ width: "0%" }} whileInView={{ width: "64%" }} viewport={{ once: true }} transition={{ duration: 1.2, delay: 0.8 }} />
+                            <motion.div
+                              className="h-full rounded-full"
+                              style={{ background: '#f97316' }}
+                              initial={{ width: '0%' }}
+                              whileInView={{ width: '64%' }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 1.2, delay: 0.8 }}
+                            />
                           </div>
-                          <p className="text-[10px] text-foreground/80 m-0">Monitoring ketat — evaluasi risiko end-organ damage dalam 6 jam.</p>
+                          <p className="text-[10px] text-foreground/80 m-0">
+                            Monitoring ketat — evaluasi risiko end-organ damage dalam 6 jam.
+                          </p>
                         </motion.div>
                       </div>
 
                       <div>
-                        <AnnotationLine text="Probabilitas serangan akut 24 jam" delay={0.55} direction="right" />
-                        <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.6 }}>
-                          <span className="text-[8px] font-bold tracking-[0.12em] text-muted uppercase block mb-2">ACUTE ATTACK RISK 24H</span>
+                        <AnnotationLine
+                          text="Probabilitas serangan akut 24 jam"
+                          delay={0.55}
+                          direction="right"
+                        />
+                        <motion.div
+                          initial={{ opacity: 0, x: 20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.5, delay: 0.6 }}
+                        >
+                          <span className="text-[8px] font-bold tracking-[0.12em] text-muted uppercase block mb-2">
+                            ACUTE ATTACK RISK 24H
+                          </span>
                           <div className="flex flex-col gap-2">
                             {ACUTE_RISKS.map((r, i) => (
                               <div key={r.label} className="flex items-center gap-2">
-                                <span className="text-[9px] text-muted min-w-[120px]">{r.label}</span>
+                                <span className="text-[9px] text-muted min-w-[120px]">
+                                  {r.label}
+                                </span>
                                 <div className="flex-1 h-1 rounded-full bg-muted/15">
-                                  <motion.div className="h-full rounded-full" style={{ background: riskBarColor(r.value) }} initial={{ width: "0%" }} whileInView={{ width: `${r.value}%` }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.9 + i * 0.1 }} />
+                                  <motion.div
+                                    className="h-full rounded-full"
+                                    style={{ background: riskBarColor(r.value) }}
+                                    initial={{ width: '0%' }}
+                                    whileInView={{ width: `${r.value}%` }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.8, delay: 0.9 + i * 0.1 }}
+                                  />
                                 </div>
-                                <span className="text-[9px] font-bold min-w-[28px] text-right" style={{ color: riskBarColor(r.value) }}>{r.value}%</span>
+                                <span
+                                  className="text-[9px] font-bold min-w-[28px] text-right"
+                                  style={{ color: riskBarColor(r.value) }}
+                                >
+                                  {r.value}%
+                                </span>
                               </div>
                             ))}
                           </div>
@@ -435,21 +474,45 @@ export default function ClinicalTrajectory() {
                       </div>
 
                       <div>
-                        <AnnotationLine text="Estimasi waktu menuju kritis" delay={0.65} direction="right" />
+                        <AnnotationLine
+                          text="Estimasi waktu menuju kritis"
+                          delay={0.65}
+                          direction="right"
+                        />
                         <motion.div
                           initial={{ opacity: 0, x: 20 }}
                           whileInView={{ opacity: 1, x: 0 }}
                           viewport={{ once: true }}
                           transition={{ duration: 0.5, delay: 0.7 }}
                           className="rounded-md p-2.5"
-                          style={{ border: "1px solid rgba(249,115,22,0.3)", background: "rgba(249,115,22,0.04)" }}
+                          style={{
+                            border: '1px solid rgba(249,115,22,0.3)',
+                            background: 'rgba(249,115,22,0.04)',
+                          }}
                         >
-                          <span className="text-[8px] font-bold tracking-[0.12em] block mb-2" style={{ color: "#f97316" }}>TIME TO CRITICAL ESTIMATE</span>
+                          <span
+                            className="text-[8px] font-bold tracking-[0.12em] block mb-2"
+                            style={{ color: '#f97316' }}
+                          >
+                            TIME TO CRITICAL ESTIMATE
+                          </span>
                           <div className="flex flex-wrap gap-2">
-                            <span className="text-[9px] px-2 py-0.5 rounded" style={{ border: "1px solid rgba(249,115,22,0.25)", color: "var(--sentra-fg)" }}>
+                            <span
+                              className="text-[9px] px-2 py-0.5 rounded"
+                              style={{
+                                border: '1px solid rgba(249,115,22,0.25)',
+                                color: 'var(--sentra-fg)',
+                              }}
+                            >
                               SBP kritis ~<strong>4h</strong>
                             </span>
-                            <span className="text-[9px] px-2 py-0.5 rounded" style={{ border: "1px solid rgba(249,115,22,0.25)", color: "var(--sentra-fg)" }}>
+                            <span
+                              className="text-[9px] px-2 py-0.5 rounded"
+                              style={{
+                                border: '1px solid rgba(249,115,22,0.25)',
+                                color: 'var(--sentra-fg)',
+                              }}
+                            >
                               GDS kritis ~<strong>6h</strong>
                             </span>
                           </div>
@@ -462,12 +525,24 @@ export default function ClinicalTrajectory() {
                   <div className="grid md:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_auto] gap-4">
                     <div>
                       <AnnotationLine text="Faktor pendorong risiko utama" delay={0.75} />
-                      <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.8 }}>
-                        <span className="text-[8px] font-bold tracking-[0.12em] text-muted uppercase block mb-2">CLINICAL RISK DRIVERS</span>
+                      <motion.div
+                        initial={{ opacity: 0, y: 15 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.8 }}
+                      >
+                        <span className="text-[8px] font-bold tracking-[0.12em] text-muted uppercase block mb-2">
+                          CLINICAL RISK DRIVERS
+                        </span>
                         <div className="flex flex-col gap-1.5">
                           {DRIVERS.map((d, i) => (
                             <div key={i} className="flex gap-1.5 items-start">
-                              <span className="text-[9px] mt-0.5" style={{ color: "var(--sentra-accent)" }}>▸</span>
+                              <span
+                                className="text-[9px] mt-0.5"
+                                style={{ color: 'var(--sentra-accent)' }}
+                              >
+                                ▸
+                              </span>
                               <span className="text-[10px] text-foreground/80">{d}</span>
                             </div>
                           ))}
@@ -477,17 +552,33 @@ export default function ClinicalTrajectory() {
 
                     <div>
                       <AnnotationLine text="Rekomendasi tindakan evidence-based" delay={0.85} />
-                      <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.9 }}>
-                        <span className="text-[8px] font-bold tracking-[0.12em] text-muted uppercase block mb-2">REKOMENDASI KLINIS</span>
+                      <motion.div
+                        initial={{ opacity: 0, y: 15 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.9 }}
+                      >
+                        <span className="text-[8px] font-bold tracking-[0.12em] text-muted uppercase block mb-2">
+                          REKOMENDASI KLINIS
+                        </span>
                         <div className="flex flex-col gap-1.5">
                           {RECOMMENDATIONS.map((rec, i) => {
-                            const c = rec.priority === "high" ? "#ef4444" : "#f97316";
+                            const c = rec.priority === 'high' ? '#ef4444' : '#f97316'
                             return (
-                              <div key={i} className="rounded px-2.5 py-1.5" style={{ borderLeft: `3px solid ${c}`, background: `${c}08` }}>
-                                <span className="text-[7px] font-bold tracking-[0.1em] mr-1.5" style={{ color: c }}>{rec.priority.toUpperCase()}</span>
+                              <div
+                                key={i}
+                                className="rounded px-2.5 py-1.5"
+                                style={{ borderLeft: `3px solid ${c}`, background: `${c}08` }}
+                              >
+                                <span
+                                  className="text-[7px] font-bold tracking-[0.1em] mr-1.5"
+                                  style={{ color: c }}
+                                >
+                                  {rec.priority.toUpperCase()}
+                                </span>
                                 <span className="text-[10px] text-foreground/80">{rec.text}</span>
                               </div>
-                            );
+                            )
                           })}
                         </div>
                       </motion.div>
@@ -495,17 +586,38 @@ export default function ClinicalTrajectory() {
 
                     <div>
                       <AnnotationLine text="Metrik AI confidence" delay={0.95} direction="right" />
-                      <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 1.0 }} className="flex lg:flex-col gap-3">
-                        <div className="rounded-md p-2.5 flex-1" style={{ border: "1px solid var(--sentra-muted-line)" }}>
-                          <span className="text-[7px] text-muted tracking-[0.1em] block mb-1">CONFIDENCE</span>
+                      <motion.div
+                        initial={{ opacity: 0, y: 15 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 1.0 }}
+                        className="flex lg:flex-col gap-3"
+                      >
+                        <div
+                          className="rounded-md p-2.5 flex-1"
+                          style={{ border: '1px solid var(--sentra-muted-line)' }}
+                        >
+                          <span className="text-[7px] text-muted tracking-[0.1em] block mb-1">
+                            CONFIDENCE
+                          </span>
                           <span className="text-base font-light text-foreground">78%</span>
                         </div>
-                        <div className="rounded-md p-2.5 flex-1" style={{ border: "1px solid var(--sentra-muted-line)" }}>
-                          <span className="text-[7px] text-muted tracking-[0.1em] block mb-1">VOLATILITY</span>
+                        <div
+                          className="rounded-md p-2.5 flex-1"
+                          style={{ border: '1px solid var(--sentra-muted-line)' }}
+                        >
+                          <span className="text-[7px] text-muted tracking-[0.1em] block mb-1">
+                            VOLATILITY
+                          </span>
                           <span className="text-base font-light text-foreground">42</span>
                         </div>
-                        <div className="rounded-md p-2.5 flex-1" style={{ border: "1px solid var(--sentra-muted-line)" }}>
-                          <span className="text-[7px] text-muted tracking-[0.1em] block mb-1">STABILITY</span>
+                        <div
+                          className="rounded-md p-2.5 flex-1"
+                          style={{ border: '1px solid var(--sentra-muted-line)' }}
+                        >
+                          <span className="text-[7px] text-muted tracking-[0.1em] block mb-1">
+                            STABILITY
+                          </span>
                           <span className="text-xs text-foreground">MODERATELY UNSTABLE</span>
                         </div>
                       </motion.div>
@@ -521,14 +633,19 @@ export default function ClinicalTrajectory() {
                       viewport={{ once: true }}
                       transition={{ duration: 0.5, delay: 1.1 }}
                       className="rounded-md p-3"
-                      style={{ border: "1px solid var(--sentra-muted-line)", background: "rgba(255,255,255,0.02)" }}
+                      style={{
+                        border: '1px solid var(--sentra-muted-line)',
+                        background: 'rgba(255,255,255,0.02)',
+                      }}
                     >
-                      <span className="text-[8px] tracking-[0.1em] text-muted block mb-1">TRAJECTORY SUMMARY</span>
+                      <span className="text-[8px] tracking-[0.1em] text-muted block mb-1">
+                        TRAJECTORY SUMMARY
+                      </span>
                       <p className="text-[10px] text-muted italic m-0 leading-relaxed">
-                        Pasien menunjukkan tren deteriorasi progresif pada parameter hemodinamik
-                        dan metabolik. SBP naik konsisten +28 mmHg dalam 3 kunjungan terakhir
-                        dengan GDS tidak terkontrol. Diperlukan intervensi segera untuk mencegah
-                        krisis hipertensi dan komplikasi kardiovaskular.
+                        Pasien menunjukkan tren deteriorasi progresif pada parameter hemodinamik dan
+                        metabolik. SBP naik konsisten +28 mmHg dalam 3 kunjungan terakhir dengan GDS
+                        tidak terkontrol. Diperlukan intervensi segera untuk mencegah krisis
+                        hipertensi dan komplikasi kardiovaskular.
                       </p>
                     </motion.div>
                   </div>
@@ -551,8 +668,8 @@ export default function ClinicalTrajectory() {
               onClick={() => setActiveSlide(i)}
               className={`text-[10px] uppercase tracking-[0.15em] px-5 py-2 rounded-full border transition-all duration-300 cursor-pointer ${
                 i === activeSlide
-                  ? "bg-accent text-white border-accent"
-                  : "bg-transparent text-muted border-muted/30 hover:border-muted/60"
+                  ? 'bg-accent text-white border-accent'
+                  : 'bg-transparent text-muted border-muted/30 hover:border-muted/60'
               }`}
             >
               {label}
@@ -561,5 +678,5 @@ export default function ClinicalTrajectory() {
         </div>
       </div>
     </section>
-  );
+  )
 }

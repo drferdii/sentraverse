@@ -1,6 +1,7 @@
 import { ArrowLeft, ArrowUpRight, Clock } from 'lucide-react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+
 import { articles, formatDate } from './data'
 
 export const metadata: Metadata = {
@@ -53,7 +54,7 @@ export default function InsightsPage() {
 
         {/* Article List */}
         <div className="divide-y divide-[--sentra-muted-subtle]">
-          {articles.map((article, i) => (
+          {articles.map((article) => (
             <article key={article.slug} className="py-10 group">
               <Link href={`/insights/${article.slug}`}>
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">

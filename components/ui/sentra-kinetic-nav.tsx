@@ -1,62 +1,63 @@
 // Architected and built by Classy.
-"use client";
+'use client'
 
-import React, { useEffect, useRef, useCallback } from "react";
-import Link from "next/link";
-import gsap from "gsap";
-import { X } from "lucide-react";
+import gsap from 'gsap'
+import { X } from 'lucide-react'
+import Link from 'next/link'
+import { useCallback, useEffect, useRef } from 'react'
 
 // --- Types ---
 interface SentraKineticNavProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen: boolean
+  onClose: () => void
 }
 
 // --- Menu Items ---
 const menuItems = [
-  { label: "Our Story", href: "/story", shape: "1" },
-  { label: "Services", href: "#services", shape: "2" },
-  { label: "Audrey", href: "#audrey", shape: "3" },
-  { label: "Insights", href: "#insights", shape: "4" },
-];
+  { label: 'Our Story', href: '/story', shape: '1' },
+  { label: 'Services', href: '#services', shape: '2' },
+  { label: 'Audrey', href: '#audrey', shape: '3' },
+  { label: 'Insights', href: '#insights', shape: '4' },
+]
 
 // --- Main Component ---
 export function SentraKineticNav({ isOpen, onClose }: SentraKineticNavProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const hasInitialized = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null)
+  const hasInitialized = useRef(false)
 
   // Stable onClose reference
-  const onCloseRef = useRef(onClose);
+  const onCloseRef = useRef(onClose)
   useEffect(() => {
-    onCloseRef.current = onClose;
-  }, [onClose]);
+    onCloseRef.current = onClose
+  }, [onClose])
 
   // Initial Setup & Hover Effects (run once)
   useEffect(() => {
-    if (!containerRef.current) return;
+    const container = containerRef.current
+    if (!container) return
 
     if (!hasInitialized.current) {
-      gsap.defaults({ ease: "power2.out", duration: 0.7 });
-      hasInitialized.current = true;
+      gsap.defaults({ ease: 'power2.out', duration: 0.7 })
+      hasInitialized.current = true
     }
 
     const ctx = gsap.context(() => {
-      const items = containerRef.current!.querySelectorAll("[data-shape]");
-      const shapesBox = containerRef.current!.querySelector("[data-shapes]");
+      const items = container.querySelectorAll('[data-shape]')
+      const shapesBox = container.querySelector('[data-shapes]')
 
       items.forEach((item) => {
-        const idx = item.getAttribute("data-shape");
-        const shape = shapesBox?.querySelector(`[data-shape-id="${idx}"]`);
-        if (!shape) return;
+        const idx = item.getAttribute('data-shape')
+        const shape = shapesBox?.querySelector(`[data-shape-id="${idx}"]`)
+        if (!shape) return
 
-        const els = shape.querySelectorAll("[data-shape-el]");
+        const els = shape.querySelectorAll('[data-shape-el]')
 
         const onEnter = () => {
           shapesBox
-            ?.querySelectorAll("[data-shape-id]")
-            .forEach((s) => gsap.to(s, { opacity: 0, duration: 0.2 }));
+            ?.querySelectorAll('[data-shape-id]')
+            .forEach((s) => gsap.to(s, { opacity: 0, duration: 0.2 }))
 
-          gsap.to(shape, { opacity: 1, duration: 0.3 });
+          gsap.to(shape, { opacity: 1, duration: 0.3 })
           gsap.fromTo(
             els,
             { scale: 0.5, opacity: 0, rotation: -10 },
@@ -66,118 +67,111 @@ export function SentraKineticNav({ isOpen, onClose }: SentraKineticNavProps) {
               rotation: 0,
               duration: 0.6,
               stagger: 0.08,
-              ease: "back.out(1.7)",
-              overwrite: "auto",
+              ease: 'back.out(1.7)',
+              overwrite: 'auto',
             }
-          );
-        };
+          )
+        }
 
         const onLeave = () => {
           gsap.to(els, {
             scale: 0.8,
             opacity: 0,
             duration: 0.3,
-            ease: "power2.in",
-            overwrite: "auto",
-          });
-          gsap.to(shape, { opacity: 0, duration: 0.4, delay: 0.2 });
-        };
+            ease: 'power2.in',
+            overwrite: 'auto',
+          })
+          gsap.to(shape, { opacity: 0, duration: 0.4, delay: 0.2 })
+        }
 
-        item.addEventListener("mouseenter", onEnter);
-        item.addEventListener("mouseleave", onLeave);
+        item.addEventListener('mouseenter', onEnter)
+        item.addEventListener('mouseleave', onLeave)
 
-        (item as HTMLElement & { _cleanup?: () => void })._cleanup = () => {
-          item.removeEventListener("mouseenter", onEnter);
-          item.removeEventListener("mouseleave", onLeave);
-        };
-      });
-    }, containerRef);
+        ;(item as HTMLElement & { _cleanup?: () => void })._cleanup = () => {
+          item.removeEventListener('mouseenter', onEnter)
+          item.removeEventListener('mouseleave', onLeave)
+        }
+      })
+    }, containerRef)
 
-    const container = containerRef.current;
     return () => {
-      ctx.revert();
+      ctx.revert()
       if (container) {
-        container
-          .querySelectorAll("[data-shape]")
-          .forEach((item) => {
-            const el = item as HTMLElement & { _cleanup?: () => void };
-            el._cleanup?.();
-          });
+        container.querySelectorAll('[data-shape]').forEach((item) => {
+          const el = item as HTMLElement & { _cleanup?: () => void }
+          el._cleanup?.()
+        })
       }
-    };
-  }, []);
+    }
+  }, [])
 
   // Menu Open/Close Animation
   useEffect(() => {
-    if (!containerRef.current) return;
+    const container = containerRef.current
+    if (!container) return
 
     const ctx = gsap.context(() => {
-      const wrapper = containerRef.current!.querySelector("[data-nav-wrapper]");
-      const panel = containerRef.current!.querySelector("[data-nav-panel]");
-      const overlay = containerRef.current!.querySelector("[data-nav-overlay]");
-      const backdrops = containerRef.current!.querySelectorAll("[data-backdrop]");
-      const links = containerRef.current!.querySelectorAll("[data-nav-link]");
-      const fadeEls = containerRef.current!.querySelectorAll("[data-fade]");
-      const closeBtn = containerRef.current!.querySelector("[data-close-btn]");
+      const wrapper = container.querySelector('[data-nav-wrapper]')
+      const panel = container.querySelector('[data-nav-panel]')
+      const overlay = container.querySelector('[data-nav-overlay]')
+      const backdrops = container.querySelectorAll('[data-backdrop]')
+      const links = container.querySelectorAll('[data-nav-link]')
+      const fadeEls = container.querySelectorAll('[data-fade]')
+      const closeBtn = container.querySelector('[data-close-btn]')
 
-      const tl = gsap.timeline();
+      const tl = gsap.timeline()
 
       if (isOpen) {
-        tl.set(wrapper, { display: "block" })
+        tl.set(wrapper, { display: 'block' })
           .set(panel, { x: 0 })
           .fromTo(overlay, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 })
-          .fromTo(
-            backdrops,
-            { x: "101%" },
-            { x: "0%", stagger: 0.12, duration: 0.575 },
-            "<"
-          )
+          .fromTo(backdrops, { x: '101%' }, { x: '0%', stagger: 0.12, duration: 0.575 }, '<')
           .fromTo(
             closeBtn,
             { autoAlpha: 0, rotate: -90 },
             { autoAlpha: 1, rotate: 0, duration: 0.4 },
-            "<+=0.3"
+            '<+=0.3'
           )
           .fromTo(
             links,
-            { y: "140%", rotate: 10 },
-            { y: "0%", rotate: 0, stagger: 0.06 },
-            "<+=0.15"
-          );
+            { y: '140%', rotate: 10 },
+            { y: '0%', rotate: 0, stagger: 0.06 },
+            '<+=0.15'
+          )
 
         if (fadeEls.length) {
           tl.fromTo(
             fadeEls,
-            { autoAlpha: 0, y: "40%" },
-            { autoAlpha: 1, y: "0%", stagger: 0.04, clearProps: "all" },
-            "<+=0.2"
-          );
+            { autoAlpha: 0, y: '40%' },
+            { autoAlpha: 1, y: '0%', stagger: 0.04, clearProps: 'all' },
+            '<+=0.2'
+          )
         }
       } else {
         tl.to(overlay, { autoAlpha: 0, duration: 0.4 })
-          .to(panel, { x: "120%", duration: 0.5 }, "<")
-          .to(closeBtn, { autoAlpha: 0, duration: 0.2 }, "<")
-          .set(wrapper, { display: "none" });
+          .to(panel, { x: '120%', duration: 0.5 }, '<')
+          .to(closeBtn, { autoAlpha: 0, duration: 0.2 }, '<')
+          .set(wrapper, { display: 'none' })
       }
-    }, containerRef);
+    }, containerRef)
 
-    return () => ctx.revert();
-  }, [isOpen]);
+    return () => ctx.revert()
+  }, [isOpen])
 
   // Escape key
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onCloseRef.current();
-    };
-    if (isOpen) {
-      window.addEventListener("keydown", handleEsc);
-      return () => window.removeEventListener("keydown", handleEsc);
+      if (e.key === 'Escape') onCloseRef.current()
     }
-  }, [isOpen]);
+    if (isOpen) {
+      window.addEventListener('keydown', handleEsc)
+      return () => window.removeEventListener('keydown', handleEsc)
+    }
+  }, [isOpen])
 
   const handleLinkClick = useCallback(() => {
-    onCloseRef.current();
-  }, []);
+    onCloseRef.current()
+  }, [])
 
   return (
     <div ref={containerRef}>
@@ -185,7 +179,7 @@ export function SentraKineticNav({ isOpen, onClose }: SentraKineticNavProps) {
       <div
         data-nav-wrapper
         className="fixed inset-0 z-[100] pointer-events-auto"
-        style={{ display: "none" }}
+        style={{ display: 'none' }}
       >
         {/* Dark Overlay */}
         <div
@@ -198,24 +192,24 @@ export function SentraKineticNav({ isOpen, onClose }: SentraKineticNavProps) {
         <nav
           data-nav-panel
           className="absolute top-0 right-0 w-full max-w-[560px] h-full overflow-y-auto overflow-x-hidden sm:max-w-[560px]"
-          style={{ transform: "translateX(120%)" }}
+          style={{ transform: 'translateX(120%)' }}
         >
           {/* Layered Background */}
           <div className="absolute inset-0 overflow-hidden">
             <div
               data-backdrop
               className="absolute inset-0"
-              style={{ background: "#111110", transform: "translateX(101%)" }}
+              style={{ background: '#111110', transform: 'translateX(101%)' }}
             />
             <div
               data-backdrop
               className="absolute inset-0"
-              style={{ background: "#17160f", transform: "translateX(101%)" }}
+              style={{ background: '#17160f', transform: 'translateX(101%)' }}
             />
             <div
               data-backdrop
               className="absolute inset-0"
-              style={{ background: "#1c1b17", transform: "translateX(101%)" }}
+              style={{ background: '#1c1b17', transform: 'translateX(101%)' }}
             />
 
             {/* Ambient Shapes Container */}
@@ -224,7 +218,7 @@ export function SentraKineticNav({ isOpen, onClose }: SentraKineticNavProps) {
               <svg
                 data-shape-id="1"
                 className="absolute w-[85%] h-[85%] opacity-0"
-                style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
+                style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
                 viewBox="0 0 400 400"
                 fill="none"
               >
@@ -238,19 +232,31 @@ export function SentraKineticNav({ isOpen, onClose }: SentraKineticNavProps) {
               <svg
                 data-shape-id="2"
                 className="absolute w-[85%] h-[85%] opacity-0"
-                style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
+                style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
                 viewBox="0 0 400 400"
                 fill="none"
               >
-                <path data-shape-el d="M0 200 Q100 100, 200 200 T 400 200" stroke="rgba(235,89,57,0.18)" strokeWidth="60" fill="none" />
-                <path data-shape-el d="M0 280 Q100 180, 200 280 T 400 280" stroke="rgba(183,171,152,0.1)" strokeWidth="40" fill="none" />
+                <path
+                  data-shape-el
+                  d="M0 200 Q100 100, 200 200 T 400 200"
+                  stroke="rgba(235,89,57,0.18)"
+                  strokeWidth="60"
+                  fill="none"
+                />
+                <path
+                  data-shape-el
+                  d="M0 280 Q100 180, 200 280 T 400 280"
+                  stroke="rgba(183,171,152,0.1)"
+                  strokeWidth="40"
+                  fill="none"
+                />
               </svg>
 
               {/* Shape 3: Grid dots */}
               <svg
                 data-shape-id="3"
                 className="absolute w-[85%] h-[85%] opacity-0"
-                style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
+                style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
                 viewBox="0 0 400 400"
                 fill="none"
               >
@@ -271,12 +277,20 @@ export function SentraKineticNav({ isOpen, onClose }: SentraKineticNavProps) {
               <svg
                 data-shape-id="4"
                 className="absolute w-[85%] h-[85%] opacity-0"
-                style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
+                style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
                 viewBox="0 0 400 400"
                 fill="none"
               >
-                <path data-shape-el d="M100 100 Q150 50, 200 100 Q250 150, 200 200 Q150 250, 100 200 Q50 150, 100 100" fill="rgba(235,89,57,0.1)" />
-                <path data-shape-el d="M250 200 Q300 150, 350 200 Q400 250, 350 300 Q300 350, 250 300 Q200 250, 250 200" fill="rgba(183,171,152,0.08)" />
+                <path
+                  data-shape-el
+                  d="M100 100 Q150 50, 200 100 Q250 150, 200 200 Q150 250, 100 200 Q50 150, 100 100"
+                  fill="rgba(235,89,57,0.1)"
+                />
+                <path
+                  data-shape-el
+                  d="M250 200 Q300 150, 350 200 Q400 250, 350 300 Q300 350, 250 300 Q200 250, 250 200"
+                  fill="rgba(183,171,152,0.08)"
+                />
               </svg>
             </div>
           </div>
@@ -318,9 +332,7 @@ export function SentraKineticNav({ isOpen, onClose }: SentraKineticNavProps) {
                 <p className="text-[0.7rem] font-bold uppercase tracking-[0.15em] text-accent m-0">
                   Email
                 </p>
-                <p className="text-sm text-muted m-0">
-                  drferdiiskandar@melinda.co.id
-                </p>
+                <p className="text-sm text-muted m-0">drferdiiskandar@melinda.co.id</p>
               </div>
               <div className="flex flex-col gap-0.5 mb-4">
                 <p className="text-[0.7rem] font-bold uppercase tracking-[0.15em] text-accent m-0">
@@ -339,5 +351,5 @@ export function SentraKineticNav({ isOpen, onClose }: SentraKineticNavProps) {
         </nav>
       </div>
     </div>
-  );
+  )
 }

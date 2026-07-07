@@ -1,58 +1,60 @@
 // Architected and built by Classy.
 // [APPROVED]
-"use client";
+'use client'
 
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import { Menu, ArrowUpRight } from "lucide-react";
-import { SentraKineticNav } from "@/components/ui/sentra-kinetic-nav";
-import ThemeToggle from "@/components/ThemeToggle";
-import { siteLinks } from "@/lib/site-links";
+import { Menu, ArrowUpRight } from 'lucide-react'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+
+import ThemeToggle from '@/components/ThemeToggle'
+import { SentraKineticNav } from '@/components/ui/sentra-kinetic-nav'
+import { siteLinks } from '@/lib/site-links'
 
 const navLinks = [
-  { name: "Home", href: siteLinks.home },
-  { name: "About", href: siteLinks.about },
-  { name: "Services", href: siteLinks.services },
-  { name: "Audrey", href: siteLinks.audrey },
-  { name: "Insights", href: siteLinks.insights },
-];
+  { name: 'Home', href: siteLinks.home },
+  { name: 'About', href: siteLinks.about },
+  { name: 'Services', href: siteLinks.services },
+  { name: 'Audrey', href: siteLinks.audrey },
+  { name: 'Insights', href: siteLinks.insights },
+]
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+      setScrolled(window.scrollY > 20)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   // Lock body scroll when menu is open
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden'
     } else {
-      document.body.style.overflow = "";
+      document.body.style.overflow = ''
     }
     return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
+      document.body.style.overflow = ''
+    }
+  }, [isOpen])
 
   return (
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "bg-background/80 backdrop-blur-md py-4" : "bg-transparent py-6"
+          scrolled ? 'bg-background/80 backdrop-blur-md py-4' : 'bg-transparent py-6'
         }`}
       >
         <div className="max-w-[1440px] mx-auto px-6 md:px-12 flex justify-between items-center">
           {/* Logo */}
           <Link href={siteLinks.home} className="flex items-center">
             <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-foreground leading-tight font-jakarta">
-              Sentra<span className="text-accent ml-0.5">.</span> Healthcare<br />
+              Sentra<span className="text-accent ml-0.5">.</span> Healthcare
+              <br />
               Artificial Intelligence
             </span>
           </Link>
@@ -73,7 +75,10 @@ export default function Navbar() {
               className="group flex items-center gap-1 text-sm font-medium text-muted hover:text-accent transition-all"
             >
               Get Started
-              <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+              <ArrowUpRight
+                size={14}
+                className="opacity-0 group-hover:opacity-100 transition-opacity"
+              />
             </Link>
           </div>
 
@@ -97,5 +102,5 @@ export default function Navbar() {
       {/* Kinetic Sidebar Navigation */}
       <SentraKineticNav isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </>
-  );
+  )
 }

@@ -1,18 +1,18 @@
 // Architected and built by Classy.
-"use client";
+'use client'
 
-import React from "react";
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "@/components/ThemeProvider";
+import { Moon, Sun } from 'lucide-react'
+
+import { useTheme } from '@/components/ThemeProvider'
 
 type ThemeToggleProps = {
-  className?: string;
-};
+  className?: string
+}
 
-export default function ThemeToggle({ className = "" }: ThemeToggleProps) {
-  const { theme, toggle } = useTheme();
-  const isDark = theme === "dark";
-  const label = isDark ? "Switch to light theme" : "Switch to dark theme";
+export default function ThemeToggle({ className = '' }: ThemeToggleProps) {
+  const { theme, toggle } = useTheme()
+  const isDark = theme === 'dark'
+  const label = isDark ? 'Switch to light theme' : 'Switch to dark theme'
 
   return (
     <button
@@ -24,5 +24,5 @@ export default function ThemeToggle({ className = "" }: ThemeToggleProps) {
     >
       {isDark ? <Sun size={16} aria-hidden="true" /> : <Moon size={16} aria-hidden="true" />}
     </button>
-  );
+  )
 }

@@ -1,170 +1,71 @@
 // Architected and built by Classy.
-"use client";
+'use client'
 
-import React from "react";
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion'
 
-// ═══════════════════════════════════════════════════
-// DEMO DATA — Clinical Prognosis Showcase
-// ═══════════════════════════════════════════════════
-
-const KPI_CARDS = [
-  { label: "URGENSI KLINIS", value: "Urgent <6 Jam", color: "#F97316" },
-  { label: "MORTALITAS PROXY", value: "Menengah", color: "#E8A838" },
-  { label: "CONFIDENCE", value: "72%", color: "var(--sentra-fg)" },
-  { label: "TIER REVIEW", value: "HIGH", color: "#F97316" },
-];
-
-const SIGNAL_BARS = [
-  { label: "Mortalitas", value: 52 },
-  { label: "Deteriorasi", value: 64 },
-  { label: "Krisis HTN", value: 72 },
-  { label: "Glikemik", value: 45 },
-  { label: "Sepsis", value: 12 },
-  { label: "Syok", value: 8 },
-  { label: "Stroke/ACS", value: 58 },
-];
-
-const RADAR_DATA = [
-  { label: "Hemodinamik", value: 72 },
-  { label: "Infeksi", value: 12 },
-  { label: "Metabolik", value: 58 },
-  { label: "Neuro/ACS", value: 45 },
-  { label: "Deteriorasi", value: 64 },
-  { label: "Warning", value: 38 },
-];
-
-const SURVIVAL_DATA = [
-  { label: "24 jam", prob: 91.2, lower: 83.2, upper: 99.2 },
-  { label: "72 jam", prob: 84.8, lower: 76.8, upper: 92.8 },
-  { label: "7 hari", prob: 76.4, lower: 68.4, upper: 84.4 },
-  { label: "30 hari", prob: 68.1, lower: 60.1, upper: 76.1 },
-];
-
-const DOUGHNUT_SEGMENTS = [
-  { label: "Cadangan stabil", value: 38, color: "rgba(120,168,132,0.88)" },
-  { label: "Perlu review", value: 28, color: "rgba(232,168,56,0.9)" },
-  { label: "Tekanan risiko", value: 34, color: "rgba(222,130,104,0.92)" },
-];
-
-const HEATMAP = [
-  { label: "Hemodinamik", score: 72, note: "TD, nadi, perfusi, dan potensi dekompensasi sirkulasi." },
-  { label: "Infeksi / Sistemik", score: 12, note: "Demam, napas, dan pola sepsis-like hari ini." },
-  { label: "Metabolik", score: 58, note: "Glukosa, potensi krisis metabolik, dan stabilitas umum." },
-  { label: "Neuro / ACS", score: 45, note: "Sinyal stroke atau sindrom koroner akut." },
-  { label: "Deteriorasi Global", score: 64, note: "Kecenderungan kondisi saat ini memburuk." },
-  { label: "Beban Warning", score: 38, note: "Akumulasi breach warning dan volatilitas." },
-];
-
-const JOURNEY = [
-  { title: "Triase selesai", detail: "Data keluhan dan TTV hari ini sudah masuk ke engine.", state: "done" as const },
-  { title: "Dx kerja I11.9", detail: "Hipertensi esensial + DM Tipe 2 tidak terkontrol.", state: "done" as const },
-  { title: "Review prognosis AI", detail: "Window review 6 jam dengan urgensi urgent.", state: "active" as const },
-  { title: "Arah tindak lanjut", detail: "Observasi ketat dan review ulang prioritas.", state: "next" as const },
-];
-
-// ═══════════════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════════════
-
-function scoreColor(v: number): string {
-  if (v >= 75) return "rgba(239,68,68,0.9)";
-  if (v >= 50) return "rgba(249,115,22,0.88)";
-  if (v >= 25) return "rgba(234,179,8,0.84)";
-  return "rgba(16,185,129,0.84)";
-}
-
-function solidScoreColor(v: number): string {
-  if (v >= 75) return "#ef4444";
-  if (v >= 50) return "#f97316";
-  if (v >= 25) return "#eab308";
-  return "#10b981";
-}
-
-function survivalColor(p: number): string {
-  if (p <= 55) return "#ef4444";
-  if (p <= 72) return "#f97316";
-  if (p <= 85) return "#eab308";
-  return "rgba(120,168,132,0.9)";
-}
-
-// Radar SVG polygon helper
-function radarPolygon(
-  values: number[],
-  cx: number,
-  cy: number,
-  maxR: number,
-): string {
-  const n = values.length;
-  return values
-    .map((val, i) => {
-      const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
-      const r = (val / 100) * maxR;
-      return `${cx + r * Math.cos(angle)},${cy + r * Math.sin(angle)}`;
-    })
-    .join(" ");
-}
-
-// Radar axis endpoint
-function radarAxis(
-  cx: number,
-  cy: number,
-  maxR: number,
-  index: number,
-  total: number,
-): [number, number] {
-  const angle = (Math.PI * 2 * index) / total - Math.PI / 2;
-  return [cx + maxR * Math.cos(angle), cy + maxR * Math.sin(angle)];
-}
+import {
+  DOUGHNUT_SEGMENTS,
+  HEATMAP,
+  JOURNEY,
+  KPI_CARDS,
+  RADAR_DATA,
+  SIGNAL_BARS,
+  SURVIVAL_DATA,
+} from '@/components/clinical-prognosis/data'
+import {
+  radarAxis,
+  radarPolygon,
+  scoreColor,
+  solidScoreColor,
+  survivalColor,
+} from '@/components/clinical-prognosis/helpers'
 
 // ═══════════════════════════════════════════════════
 // COMPONENT
 // ═══════════════════════════════════════════════════
 
 export default function ClinicalPrognosis() {
-  const radarCx = 150;
-  const radarCy = 150;
-  const radarR = 110;
-  const radarN = RADAR_DATA.length;
+  const radarCx = 150
+  const radarCy = 150
+  const radarR = 110
+  const radarN = RADAR_DATA.length
 
   // Doughnut calculations
-  const doughnutR = 60;
-  const circumference = 2 * Math.PI * doughnutR;
+  const doughnutR = 60
+  const circumference = 2 * Math.PI * doughnutR
 
   // Survival curve coordinates
-  const svW = 380;
-  const svH = 160;
-  const svPad = 30;
-  const svYmin = 30;
-  const svYmax = 100;
-  const mapX = (i: number) => svPad + (i / 3) * (svW - svPad * 2);
-  const mapY = (v: number) =>
-    svPad + (svH - svPad * 2) * (1 - (v - svYmin) / (svYmax - svYmin));
+  const svW = 380
+  const svH = 160
+  const svPad = 30
+  const svYmin = 30
+  const svYmax = 100
+  const mapX = (i: number) => svPad + (i / 3) * (svW - svPad * 2)
+  const mapY = (v: number) => svPad + (svH - svPad * 2) * (1 - (v - svYmin) / (svYmax - svYmin))
 
   // Band polygon
-  const bandUpper = SURVIVAL_DATA.map((d, i) => `${mapX(i)},${mapY(d.upper)}`).join(" ");
+  const bandUpper = SURVIVAL_DATA.map((d, i) => `${mapX(i)},${mapY(d.upper)}`).join(' ')
   const bandLower = [...SURVIVAL_DATA]
     .reverse()
     .map((d, i) => `${mapX(3 - i)},${mapY(d.lower)}`)
-    .join(" ");
-  const bandPolygon = `${bandUpper} ${bandLower}`;
+    .join(' ')
+  const bandPolygon = `${bandUpper} ${bandLower}`
 
   // Main survival line
-  const survivalLine = SURVIVAL_DATA.map((d, i) => `${mapX(i)},${mapY(d.prob)}`).join(" ");
+  const survivalLine = SURVIVAL_DATA.map((d, i) => `${mapX(i)},${mapY(d.prob)}`).join(' ')
 
   // Guide lines
-  const guideY85 = mapY(85);
-  const guideY70 = mapY(70);
-  const guideY55 = mapY(55);
+  const guideY85 = mapY(85)
+  const guideY70 = mapY(70)
+  const guideY55 = mapY(55)
 
   return (
     <div
       className="rounded-2xl border border-muted/10 overflow-hidden"
       style={{
         background:
-          "linear-gradient(180deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.015) 100%)",
-        boxShadow:
-          "0 20px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.03)",
+          'linear-gradient(180deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.015) 100%)',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.03)',
       }}
     >
       {/* ═══ 2-COLUMN HORIZONTAL LAYOUT ═══ */}
@@ -172,7 +73,7 @@ export default function ClinicalPrognosis() {
         {/* ════════════ LEFT COLUMN — Title + Overview ════════════ */}
         <div
           className="p-5 flex flex-col gap-4 border-r border-muted/10"
-          style={{ background: "rgba(255,255,255,0.015)" }}
+          style={{ background: 'rgba(255,255,255,0.015)' }}
         >
           {/* Title header */}
           <div>
@@ -183,9 +84,9 @@ export default function ClinicalPrognosis() {
               <span
                 className="text-[8px] font-bold tracking-[0.1em] px-2 py-0.5 rounded"
                 style={{
-                  color: "#F97316",
-                  background: "rgba(249,115,22,0.1)",
-                  border: "1px solid #F97316",
+                  color: '#F97316',
+                  background: 'rgba(249,115,22,0.1)',
+                  border: '1px solid #F97316',
                 }}
               >
                 HIGH
@@ -209,15 +110,12 @@ export default function ClinicalPrognosis() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
                 className="rounded-md p-2.5"
-                style={{ border: "1px solid rgba(255,255,255,0.08)" }}
+                style={{ border: '1px solid rgba(255,255,255,0.08)' }}
               >
                 <span className="text-[8px] tracking-[0.12em] text-muted block mb-1.5">
                   {kpi.label}
                 </span>
-                <span
-                  className="text-base font-semibold"
-                  style={{ color: kpi.color }}
-                >
+                <span className="text-base font-semibold" style={{ color: kpi.color }}>
                   {kpi.value}
                 </span>
               </motion.div>
@@ -232,13 +130,13 @@ export default function ClinicalPrognosis() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="rounded-lg p-4"
             style={{
-              border: "1px solid rgba(255,255,255,0.1)",
-              background: "rgba(255,255,255,0.025)",
+              border: '1px solid rgba(255,255,255,0.1)',
+              background: 'rgba(255,255,255,0.025)',
             }}
           >
             <span
               className="text-[10px] tracking-[0.14em] uppercase block mb-3"
-              style={{ color: "var(--sentra-accent)" }}
+              style={{ color: 'var(--sentra-accent)' }}
             >
               Snapshot Prognosis
             </span>
@@ -246,14 +144,18 @@ export default function ClinicalPrognosis() {
               <div className="relative" style={{ width: 110, height: 110 }}>
                 <svg viewBox="0 0 140 140" className="w-full h-full">
                   {(() => {
-                    const offsets = DOUGHNUT_SEGMENTS.reduce<number[]>((acc, seg, i) => {
-                      acc.push(i === 0 ? 0 : acc[i - 1] + (DOUGHNUT_SEGMENTS[i - 1].value / 100) * circumference);
-                      return acc;
-                    }, []);
+                    const offsets = DOUGHNUT_SEGMENTS.reduce<number[]>((acc, _seg, i) => {
+                      acc.push(
+                        i === 0
+                          ? 0
+                          : acc[i - 1] + (DOUGHNUT_SEGMENTS[i - 1].value / 100) * circumference
+                      )
+                      return acc
+                    }, [])
                     return DOUGHNUT_SEGMENTS.map((seg, i) => {
-                      const len = (seg.value / 100) * circumference;
-                      const dash = `${len} ${circumference - len}`;
-                      const dashOff = -offsets[i];
+                      const len = (seg.value / 100) * circumference
+                      const dash = `${len} ${circumference - len}`
+                      const dashOff = -offsets[i]
                       return (
                         <circle
                           key={seg.label}
@@ -267,18 +169,13 @@ export default function ClinicalPrognosis() {
                           strokeDashoffset={dashOff}
                           transform="rotate(-90 70 70)"
                         />
-                      );
-                    });
+                      )
+                    })
                   })()}
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                  <span className="text-[8px] text-muted tracking-[0.12em]">
-                    7 HARI
-                  </span>
-                  <span
-                    className="text-xl font-bold"
-                    style={{ color: survivalColor(76.4) }}
-                  >
+                  <span className="text-[8px] text-muted tracking-[0.12em]">7 HARI</span>
+                  <span className="text-xl font-bold" style={{ color: survivalColor(76.4) }}>
                     76.4%
                   </span>
                 </div>
@@ -290,13 +187,8 @@ export default function ClinicalPrognosis() {
                       className="w-2.5 h-2.5 rounded-sm inline-block shrink-0"
                       style={{ background: seg.color }}
                     />
-                    <span className="text-[9px] text-muted flex-1">
-                      {seg.label}
-                    </span>
-                    <span
-                      className="text-[10px] font-semibold"
-                      style={{ color: seg.color }}
-                    >
+                    <span className="text-[9px] text-muted flex-1">{seg.label}</span>
+                    <span className="text-[10px] font-semibold" style={{ color: seg.color }}>
                       {seg.value}%
                     </span>
                   </div>
@@ -313,13 +205,13 @@ export default function ClinicalPrognosis() {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="rounded-lg p-4"
             style={{
-              border: "1px solid rgba(255,255,255,0.1)",
-              background: "rgba(255,255,255,0.025)",
+              border: '1px solid rgba(255,255,255,0.1)',
+              background: 'rgba(255,255,255,0.025)',
             }}
           >
             <span
               className="text-[10px] tracking-[0.14em] uppercase block mb-3"
-              style={{ color: "var(--sentra-accent)" }}
+              style={{ color: 'var(--sentra-accent)' }}
             >
               Patient Journey
             </span>
@@ -328,7 +220,7 @@ export default function ClinicalPrognosis() {
                 <div
                   key={m.title}
                   className="grid gap-2"
-                  style={{ gridTemplateColumns: "18px 1fr" }}
+                  style={{ gridTemplateColumns: '18px 1fr' }}
                 >
                   <div className="flex flex-col items-center">
                     <div
@@ -338,15 +230,12 @@ export default function ClinicalPrognosis() {
                         height: 8,
                         marginTop: 3,
                         background:
-                          m.state === "done"
-                            ? "var(--sentra-accent)"
-                            : m.state === "active"
-                              ? "#E8A838"
-                              : "rgba(255,255,255,0.18)",
-                        boxShadow:
-                          m.state !== "next"
-                            ? "0 0 0 3px rgba(235,89,57,0.08)"
-                            : "none",
+                          m.state === 'done'
+                            ? 'var(--sentra-accent)'
+                            : m.state === 'active'
+                              ? '#E8A838'
+                              : 'rgba(255,255,255,0.18)',
+                        boxShadow: m.state !== 'next' ? '0 0 0 3px rgba(235,89,57,0.08)' : 'none',
                       }}
                     />
                     {i < JOURNEY.length - 1 && (
@@ -355,18 +244,14 @@ export default function ClinicalPrognosis() {
                         style={{
                           width: 1,
                           minHeight: 20,
-                          background: "rgba(255,255,255,0.08)",
+                          background: 'rgba(255,255,255,0.08)',
                         }}
                       />
                     )}
                   </div>
                   <div className="pb-2">
-                    <span className="text-[10px] font-semibold text-foreground/80">
-                      {m.title}
-                    </span>
-                    <p className="text-[9px] text-muted mt-0.5 m-0 leading-relaxed">
-                      {m.detail}
-                    </p>
+                    <span className="text-[10px] font-semibold text-foreground/80">{m.title}</span>
+                    <p className="text-[9px] text-muted mt-0.5 m-0 leading-relaxed">{m.detail}</p>
                   </div>
                 </div>
               ))}
@@ -381,18 +266,18 @@ export default function ClinicalPrognosis() {
             transition={{ duration: 0.5, delay: 0.5 }}
             className="rounded-md p-3"
             style={{
-              border: "1px solid var(--sentra-muted-line)",
-              background: "rgba(255,255,255,0.02)",
+              border: '1px solid var(--sentra-muted-line)',
+              background: 'rgba(255,255,255,0.02)',
             }}
           >
             <span className="text-[8px] tracking-[0.1em] text-muted block mb-1">
               PROGNOSIS SUMMARY
             </span>
             <p className="text-[10px] text-muted italic m-0 leading-relaxed">
-              Pasien dengan hipertensi stage 2 dan DM tipe 2 menunjukkan profil risiko
-              multi-domain yang memerlukan review ketat. Proyeksi stabilitas 7 hari di
-              76.4% dengan confidence 72%. Rekomendasi: evaluasi end-organ damage,
-              kontrol glikemik, dan EKG untuk menyingkirkan iskemia.
+              Pasien dengan hipertensi stage 2 dan DM tipe 2 menunjukkan profil risiko multi-domain
+              yang memerlukan review ketat. Proyeksi stabilitas 7 hari di 76.4% dengan confidence
+              72%. Rekomendasi: evaluasi end-organ damage, kontrol glikemik, dan EKG untuk
+              menyingkirkan iskemia.
             </p>
           </motion.div>
         </div>
@@ -407,13 +292,13 @@ export default function ClinicalPrognosis() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="rounded-lg p-4"
             style={{
-              border: "1px solid rgba(255,255,255,0.1)",
-              background: "rgba(255,255,255,0.025)",
+              border: '1px solid rgba(255,255,255,0.1)',
+              background: 'rgba(255,255,255,0.025)',
             }}
           >
             <span
               className="text-[10px] tracking-[0.14em] uppercase block mb-4"
-              style={{ color: "var(--sentra-accent)" }}
+              style={{ color: 'var(--sentra-accent)' }}
             >
               Signal Prognosis — 7 Kategori
             </span>
@@ -447,28 +332,28 @@ export default function ClinicalPrognosis() {
               <span className="inline-flex items-center gap-1">
                 <span
                   className="w-3 inline-block"
-                  style={{ borderTop: "2px dashed rgba(16,185,129,0.7)" }}
+                  style={{ borderTop: '2px dashed rgba(16,185,129,0.7)' }}
                 />
                 &lt;25
               </span>
               <span className="inline-flex items-center gap-1">
                 <span
                   className="w-3 inline-block"
-                  style={{ borderTop: "2px dashed rgba(234,179,8,0.7)" }}
+                  style={{ borderTop: '2px dashed rgba(234,179,8,0.7)' }}
                 />
                 25-49
               </span>
               <span className="inline-flex items-center gap-1">
                 <span
                   className="w-3 inline-block"
-                  style={{ borderTop: "2px dashed rgba(249,115,22,0.7)" }}
+                  style={{ borderTop: '2px dashed rgba(249,115,22,0.7)' }}
                 />
                 50-74
               </span>
               <span className="inline-flex items-center gap-1">
                 <span
                   className="w-3 inline-block"
-                  style={{ borderTop: "2px dashed rgba(239,68,68,0.7)" }}
+                  style={{ borderTop: '2px dashed rgba(239,68,68,0.7)' }}
                 />
                 &ge;75
               </span>
@@ -483,13 +368,13 @@ export default function ClinicalPrognosis() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="rounded-lg p-4"
             style={{
-              border: "1px solid rgba(255,255,255,0.1)",
-              background: "rgba(255,255,255,0.025)",
+              border: '1px solid rgba(255,255,255,0.1)',
+              background: 'rgba(255,255,255,0.025)',
             }}
           >
             <span
               className="text-[10px] tracking-[0.14em] uppercase block mb-2"
-              style={{ color: "var(--sentra-accent)" }}
+              style={{ color: 'var(--sentra-accent)' }}
             >
               Radar Multi-Faktor
             </span>
@@ -497,19 +382,14 @@ export default function ClinicalPrognosis() {
               {[25, 50, 75, 100].map((pct) => (
                 <polygon
                   key={pct}
-                  points={radarPolygon(
-                    Array(radarN).fill(pct),
-                    radarCx,
-                    radarCy,
-                    radarR,
-                  )}
+                  points={radarPolygon(Array(radarN).fill(pct), radarCx, radarCy, radarR)}
                   fill="none"
                   stroke="rgba(255,255,255,0.08)"
                   strokeWidth="1"
                 />
               ))}
               {RADAR_DATA.map((_, i) => {
-                const [ex, ey] = radarAxis(radarCx, radarCy, radarR, i, radarN);
+                const [ex, ey] = radarAxis(radarCx, radarCy, radarR, i, radarN)
                 return (
                   <line
                     key={i}
@@ -520,25 +400,25 @@ export default function ClinicalPrognosis() {
                     stroke="rgba(255,255,255,0.06)"
                     strokeWidth="1"
                   />
-                );
+                )
               })}
               <polygon
                 points={radarPolygon(
                   RADAR_DATA.map((d) => d.value),
                   radarCx,
                   radarCy,
-                  radarR,
+                  radarR
                 )}
                 fill="rgba(255,82,190,0.12)"
                 stroke="rgba(255,82,190,0.96)"
                 strokeWidth="2"
               />
               {RADAR_DATA.map((d, i) => {
-                const angle = (Math.PI * 2 * i) / radarN - Math.PI / 2;
-                const r = (d.value / 100) * radarR;
-                const px = radarCx + r * Math.cos(angle);
-                const py = radarCy + r * Math.sin(angle);
-                const [lx, ly] = radarAxis(radarCx, radarCy, radarR + 18, i, radarN);
+                const angle = (Math.PI * 2 * i) / radarN - Math.PI / 2
+                const r = (d.value / 100) * radarR
+                const px = radarCx + r * Math.cos(angle)
+                const py = radarCy + r * Math.sin(angle)
+                const [lx, ly] = radarAxis(radarCx, radarCy, radarR + 18, i, radarN)
                 return (
                   <g key={d.label}>
                     <circle
@@ -560,12 +440,11 @@ export default function ClinicalPrognosis() {
                       {d.label}
                     </text>
                   </g>
-                );
+                )
               })}
             </svg>
             <p className="text-[9px] text-muted mt-1 leading-relaxed">
-              Semakin melebar area radar, semakin banyak domain yang perlu perhatian
-              klinis aktif.
+              Semakin melebar area radar, semakin banyak domain yang perlu perhatian klinis aktif.
             </p>
           </motion.div>
 
@@ -577,14 +456,14 @@ export default function ClinicalPrognosis() {
             transition={{ duration: 0.6, delay: 0.5 }}
             className="rounded-lg p-4"
             style={{
-              border: "1px solid rgba(255,255,255,0.1)",
-              background: "rgba(255,255,255,0.025)",
+              border: '1px solid rgba(255,255,255,0.1)',
+              background: 'rgba(255,255,255,0.025)',
             }}
           >
             <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
               <span
                 className="text-[10px] tracking-[0.14em] uppercase"
-                style={{ color: "var(--sentra-accent)" }}
+                style={{ color: 'var(--sentra-accent)' }}
               >
                 Kurva Kelangsungan Hidup Probabilistik
               </span>
@@ -592,15 +471,15 @@ export default function ClinicalPrognosis() {
                 <span className="flex items-center gap-1">
                   <span
                     className="w-3 h-0.5 rounded inline-block"
-                    style={{ background: "rgba(255,82,190,0.96)" }}
-                  />{" "}
+                    style={{ background: 'rgba(255,82,190,0.96)' }}
+                  />{' '}
                   Proyeksi
                 </span>
                 <span className="flex items-center gap-1">
                   <span
                     className="w-3 h-2 rounded-sm inline-block"
-                    style={{ background: "rgba(142,156,184,0.14)" }}
-                  />{" "}
+                    style={{ background: 'rgba(142,156,184,0.14)' }}
+                  />{' '}
                   Band
                 </span>
               </div>
@@ -611,15 +490,12 @@ export default function ClinicalPrognosis() {
                 <div
                   key={d.label}
                   className="rounded p-2"
-                  style={{ border: "1px solid rgba(255,255,255,0.08)" }}
+                  style={{ border: '1px solid rgba(255,255,255,0.08)' }}
                 >
                   <span className="text-[8px] tracking-[0.1em] text-muted block">
                     {d.label.toUpperCase()}
                   </span>
-                  <span
-                    className="text-lg font-semibold"
-                    style={{ color: survivalColor(d.prob) }}
-                  >
+                  <span className="text-lg font-semibold" style={{ color: survivalColor(d.prob) }}>
                     {d.prob}%
                   </span>
                 </div>
@@ -641,12 +517,7 @@ export default function ClinicalPrognosis() {
                 strokeWidth="1"
                 strokeDasharray="4,8"
               />
-              <text
-                x={svW - svPad + 4}
-                y={guideY85 + 3}
-                fill="rgba(120,168,132,0.5)"
-                fontSize="8"
-              >
+              <text x={svW - svPad + 4} y={guideY85 + 3} fill="rgba(120,168,132,0.5)" fontSize="8">
                 85%
               </text>
               <line
@@ -658,12 +529,7 @@ export default function ClinicalPrognosis() {
                 strokeWidth="1"
                 strokeDasharray="4,8"
               />
-              <text
-                x={svW - svPad + 4}
-                y={guideY70 + 3}
-                fill="rgba(166,178,198,0.4)"
-                fontSize="8"
-              >
+              <text x={svW - svPad + 4} y={guideY70 + 3} fill="rgba(166,178,198,0.4)" fontSize="8">
                 70%
               </text>
               <line
@@ -675,12 +541,7 @@ export default function ClinicalPrognosis() {
                 strokeWidth="1"
                 strokeDasharray="4,8"
               />
-              <text
-                x={svW - svPad + 4}
-                y={guideY55 + 3}
-                fill="rgba(239,68,68,0.4)"
-                fontSize="8"
-              >
+              <text x={svW - svPad + 4} y={guideY55 + 3} fill="rgba(239,68,68,0.4)" fontSize="8">
                 55%
               </text>
 
@@ -732,13 +593,13 @@ export default function ClinicalPrognosis() {
             transition={{ duration: 0.5, delay: 0.6 }}
             className="rounded-lg p-4"
             style={{
-              border: "1px solid rgba(255,255,255,0.1)",
-              background: "rgba(255,255,255,0.025)",
+              border: '1px solid rgba(255,255,255,0.1)',
+              background: 'rgba(255,255,255,0.025)',
             }}
           >
             <span
               className="text-[10px] tracking-[0.14em] uppercase block mb-3"
-              style={{ color: "var(--sentra-accent)" }}
+              style={{ color: 'var(--sentra-accent)' }}
             >
               Peta Panas Risiko
             </span>
@@ -748,8 +609,8 @@ export default function ClinicalPrognosis() {
                   key={item.label}
                   className="grid items-center gap-3 py-2"
                   style={{
-                    gridTemplateColumns: "110px 1fr 36px",
-                    borderTop: i > 0 ? `1px solid ${scoreColor(item.score)}30` : "none",
+                    gridTemplateColumns: '110px 1fr 36px',
+                    borderTop: i > 0 ? `1px solid ${scoreColor(item.score)}30` : 'none',
                   }}
                 >
                   <span className="text-[9px] text-foreground/80 tracking-[0.04em]">
@@ -760,7 +621,7 @@ export default function ClinicalPrognosis() {
                       <motion.div
                         className="h-full rounded-full"
                         style={{ background: scoreColor(item.score) }}
-                        initial={{ width: "0%" }}
+                        initial={{ width: '0%' }}
                         whileInView={{ width: `${item.score}%` }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.7 + i * 0.06 }}
@@ -783,5 +644,5 @@ export default function ClinicalPrognosis() {
         </div>
       </div>
     </div>
-  );
+  )
 }
