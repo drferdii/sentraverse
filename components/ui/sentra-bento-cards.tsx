@@ -22,10 +22,10 @@ const cardContents = [
       'Dokter mengambil keputusan klinis 3 kali lebih cepat dengan dukungan Clinical Decision Support yang menganalisis ratusan parameter dalam hitungan detik.',
   },
   {
-    stat: '97.2%',
+    stat: '95%',
     title: 'Akurasi Triase Darurat',
     description:
-      'Sistem triase otomatis Sentra mencapai akurasi 97.2% dalam mengklasifikasikan tingkat kegawatan pasien — memastikan kasus kritis mendapat penanganan prioritas tanpa penundaan. Protokol traffic light terintegrasi secara real-time dengan modul Emergency untuk memberikan rekomendasi triage berbasis evidence yang konsisten, mengurangi variabilitas penilaian klinis antar tenaga medis, dan menghasilkan audit trail lengkap untuk setiap keputusan triase.',
+      'Sistem triase otomatis Sentra mencapai akurasi sekitar 95% dalam mengklasifikasikan tingkat kegawatan pasien — memastikan kasus kritis mendapat penanganan prioritas tanpa penundaan. Protokol traffic light terintegrasi secara real-time dengan modul Emergency untuk memberikan rekomendasi triage berbasis evidence yang konsisten, mengurangi variabilitas penilaian klinis antar tenaga medis, dan menghasilkan audit trail lengkap untuk setiap keputusan triase.',
   },
   {
     stat: '10 Th',
@@ -45,7 +45,7 @@ const cardContents = [
 const STAT_COUNTS: Record<string, { value: number; decimals?: number; suffix: string }> = {
   '40%': { value: 40, suffix: '%' },
   '3×': { value: 3, suffix: '×' },
-  '97.2%': { value: 97.2, decimals: 1, suffix: '%' },
+  '95%': { value: 95, suffix: '%' },
   '10 Th': { value: 10, suffix: ' Th' },
   // '24/7' is intentionally not counted — intermediate values would read as nonsense.
 }
@@ -120,13 +120,21 @@ export default function SentraBentoCards() {
   return (
     <div className="mx-auto max-w-[1440px] px-6 md:px-12 py-24">
       {/* Section Header */}
-      <Reveal className="flex flex-col gap-6 mb-16">
+      <Reveal className="flex flex-col gap-6 mb-6">
         <p className="text-xs font-bold tracking-widest text-accent uppercase">
           Prediksi & Statistik
         </p>
         <h2 className="text-[32px] md:text-[45px] font-bold text-foreground font-jakarta">
           Keunggulan Artificial Intelligence dalam Klinis
         </h2>
+      </Reveal>
+
+      {/* Metodologi — angka di bawah bukan klaim hasil uji klinis */}
+      <Reveal className="mb-10 px-4">
+        <p className="text-[11px] leading-relaxed text-muted/70">
+          Metrik di bawah merupakan rasio hasil pengujian internal — disimulasikan ribuan kali
+          selama 14 bulan masa pengembangan, sebelum memasuki masa uji klinis (trial).
+        </p>
       </Reveal>
 
       {/* Bento Grid */}

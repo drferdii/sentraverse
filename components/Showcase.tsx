@@ -27,7 +27,7 @@ export default function Showcase() {
       className={cn('fi-section fi-thinking-editorial', layoutGovernance.sectionY.spacious)}
       id="expertise"
     >
-      <div className={cn('w-full', layoutGovernance.sectionX)}>
+      <div className={cn(layoutGovernance.container.wide, layoutGovernance.sectionX)}>
         <div aria-hidden="true" className="fi-editorial-page-rule"></div>
 
         <motion.header
@@ -146,22 +146,22 @@ export default function Showcase() {
                 preserveAspectRatio="none"
                 viewBox="0 0 1200 430"
               >
-                <path d="M 160 210 C 210 210 230 125 300 125"></path>
+                <path d="M 160 210 C 210 210 230 93 300 93"></path>
                 <path d="M 160 210 C 210 210 230 305 408 305"></path>
-                <path d="M 460 125 C 500 125 540 125 576 125"></path>
-                <path d="M 736 125 C 776 125 812 125 852 125"></path>
-                <path d="M 1012 125 C 1040 125 1050 210 1056 210"></path>
+                <path d="M 460 93 C 500 93 540 93 576 93"></path>
+                <path d="M 736 93 C 776 93 812 93 852 93"></path>
+                <path d="M 1012 93 C 1040 93 1050 210 1056 210"></path>
                 <path d="M 844 305 C 940 305 1040 210 1056 210"></path>
                 <path d="M 568 305 C 606 305 646 305 684 305"></path>
                 <path d="M 408 210 C 408 250 408 270 408 305"></path>
                 <path d="M 870 210 C 870 250 856 280 844 305"></path>
                 <circle cx="160" cy="210" r="5"></circle>
-                <circle cx="300" cy="125" r="5"></circle>
-                <circle cx="460" cy="125" r="5"></circle>
-                <circle cx="576" cy="125" r="5"></circle>
-                <circle cx="736" cy="125" r="5"></circle>
-                <circle cx="852" cy="125" r="5"></circle>
-                <circle cx="1012" cy="125" r="5"></circle>
+                <circle cx="300" cy="93" r="5"></circle>
+                <circle cx="460" cy="93" r="5"></circle>
+                <circle cx="576" cy="93" r="5"></circle>
+                <circle cx="736" cy="93" r="5"></circle>
+                <circle cx="852" cy="93" r="5"></circle>
+                <circle cx="1012" cy="93" r="5"></circle>
                 <circle cx="408" cy="305" r="5"></circle>
                 <circle cx="568" cy="305" r="5"></circle>
                 <circle cx="684" cy="305" r="5"></circle>

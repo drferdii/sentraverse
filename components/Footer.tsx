@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import { Reveal } from '@/components/ui/reveal'
+import { SketchLines } from '@/components/ui/sketch-lines'
 import { layoutGovernance, typeGovernance } from '@/lib/design-governance'
 import { siteLinks } from '@/lib/site-links'
 import { cn } from '@/lib/utils'
@@ -82,7 +83,8 @@ export default function Footer() {
       <span className="sr-only">Sentra Healthcare Solutions</span>
 
       {/* ═══ Plate body: vast breathing room, then monogram + info column ═══ */}
-      <div className={cn(layoutGovernance.sectionX, 'mt-16 md:mt-24 lg:mt-32')}>
+      <div className={cn(layoutGovernance.sectionX, 'relative mt-16 md:mt-24 lg:mt-32')}>
+        <SketchLines seed={20260709} count={10} colorClass="bg-[#111111]/25" persist />
         <div className="flex flex-col gap-16 lg:grid lg:grid-cols-[1fr_460px] lg:items-end">
           {/* Monogram — bottom-left, like a printer's mark */}
           <Monogram className="w-40 md:w-64 lg:w-80 lg:mb-2" />
@@ -151,18 +153,41 @@ export default function Footer() {
             </div>
 
             {/* Stewardship statement */}
-            <div className="border-t pt-4" style={{ borderColor: INK }}>
+            <div className="border-t pt-4 flex flex-col gap-3" style={{ borderColor: INK }}>
               <p className="text-[15px] font-semibold leading-relaxed">
-                Sentra dibangun di lingkungan klinis RSIA Melinda DHAI, Kediri, dengan satu prinsip
-                yang tidak bisa ditawar: Human as the Pilot, AI as the Copilot. Keputusan medis
-                final selalu berada di tangan tenaga medis yang berwenang.
+                Sentra dikembangkan dalam lingkungan klinis RSIA Melinda DHAI, Kediri, dengan
+                prinsip dasar yang tidak dapat dikompromikan:{' '}
+                <strong>Human as the Pilot, AI as the Copilot</strong>.
+              </p>
+              <p className="text-[15px] font-semibold leading-relaxed">
+                Sentra dirancang untuk mendukung proses kerja klinis, memperkuat kewaspadaan
+                terhadap risiko, dan membantu tenaga medis mengambil keputusan secara lebih cepat,
+                terstruktur, dan berbasis data. Namun, keputusan medis akhir tetap sepenuhnya berada
+                di tangan tenaga medis yang berwenang.
+              </p>
+            </div>
+
+            {/* Disclaimer medis/regulasi */}
+            <div>
+              <p className="text-[12px] leading-relaxed text-current/70">
+                Sentra AI merupakan alat bantu keputusan klinis (clinical decision support), bukan
+                pengganti penilaian medis profesional dan belum terdaftar sebagai alat kesehatan
+                resmi. Seluruh keputusan diagnostik dan terapeutik tetap menjadi tanggung jawab
+                tenaga medis berwenang.
               </p>
             </div>
           </div>
         </div>
 
+        {/* Garis — titik — garis, andalan Sentra */}
+        <div className="mt-12 flex w-full items-center gap-4" aria-hidden="true">
+          <span className="h-[2px] flex-1 bg-[#eb5939]/70" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#eb5939]" />
+          <span className="h-[2px] flex-1 bg-[#eb5939]/70" />
+        </div>
+
         {/* ═══ Bottom row ═══ */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2 pt-16 pb-6 text-[14px] font-semibold">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2 pt-6 pb-6 text-[14px] font-semibold">
           <div className="flex flex-wrap items-center gap-x-2">
             <Link href="https://melinda.co.id/" target="_blank" className="hover:underline">
               Part of RSIA Melinda DHAI
@@ -176,7 +201,7 @@ export default function Footer() {
               Terms of Service
             </Link>
           </div>
-          <p>Sentra &copy; 2026</p>
+          <p>&copy; 2026 Sentra Healthcare Solutions. All rights reserved.</p>
         </div>
       </div>
     </footer>

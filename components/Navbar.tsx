@@ -6,7 +6,6 @@ import { Menu, ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-import ThemeToggle from '@/components/ThemeToggle'
 import { SentraKineticNav } from '@/components/ui/sentra-kinetic-nav'
 import { siteLinks } from '@/lib/site-links'
 
@@ -82,9 +81,8 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Right cluster: Theme toggle + Menu - visible on all screens */}
+          {/* Right cluster: Menu - visible on all screens */}
           <div className="flex items-center gap-3">
-            <ThemeToggle />
             <button
               className="text-foreground hover:text-accent transition-colors flex items-center gap-3"
               onClick={() => setIsOpen(true)}

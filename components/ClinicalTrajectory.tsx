@@ -22,12 +22,24 @@ import {
 // COMPONENT
 // ═══════════════════════════════════════════════════
 
-export default function ClinicalTrajectory({ hideHeader = false }: { hideHeader?: boolean }) {
+type ClinicalTrajectoryProps = {
+  hideHeader?: boolean
+  /** Saat true: hanya render slide trajektori — tanpa slider, tanpa auto-advance
+   *  ke prognosis, tanpa navigasi pill. Dipakai saat Trajektori & Prognosis
+   *  ditampilkan sebagai tab terpisah di ClinicalSuite. */
+  trajectoryOnly?: boolean
+}
+
+export default function ClinicalTrajectory({
+  hideHeader = false,
+  trajectoryOnly = false,
+}: ClinicalTrajectoryProps) {
   const [activeSlide, setActiveSlide] = useState(0)
   const sectionRef = useRef<HTMLDivElement>(null)
 
   // Auto-slide to prognosis after trajectory animations complete (~6s)
   useEffect(() => {
+    if (trajectoryOnly) return
     const el = sectionRef.current
     if (!el) return
 
@@ -46,7 +58,7 @@ export default function ClinicalTrajectory({ hideHeader = false }: { hideHeader?
       clearTimeout(timer)
       observer.disconnect()
     }
-  }, [])
+  }, [trajectoryOnly])
 
   // Chart calculations
   const chartW = 480
@@ -124,7 +136,7 @@ export default function ClinicalTrajectory({ hideHeader = false }: { hideHeader?
       <div className="mx-auto max-w-[1100px] overflow-hidden rounded-2xl">
         <motion.div
           className="flex"
-          animate={{ x: `${-activeSlide * 100}%` }}
+          animate={trajectoryOnly ? undefined : { x: `${-activeSlide * 100}%` }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* ─── Slide 1: Trajectory ─── */}
@@ -134,7 +146,7 @@ export default function ClinicalTrajectory({ hideHeader = false }: { hideHeader?
               <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-muted/10">
                 <div className="flex items-center gap-3">
                   <span className="text-[10px] font-bold tracking-[0.14em] text-muted uppercase">
-                    ◈ CLINICAL TRAJECTORY
+                    ◈ TRAJEKTORI KLINIS
                   </span>
                   <span
                     className="text-[8px] font-bold tracking-[0.1em] px-2 py-0.5 rounded"
@@ -144,7 +156,7 @@ export default function ClinicalTrajectory({ hideHeader = false }: { hideHeader?
                       border: '1px solid #f97316',
                     }}
                   >
-                    URGENT &lt;6H
+                    MENDESAK &lt;6J
                   </span>
                   <span
                     className="text-[8px] font-bold tracking-[0.1em] px-2 py-0.5 rounded"
@@ -166,7 +178,7 @@ export default function ClinicalTrajectory({ hideHeader = false }: { hideHeader?
                 <div className="flex flex-col gap-3 justify-between">
                   <div>
                     <span className="text-[10px] font-bold tracking-[0.12em] text-muted uppercase block mb-2.5">
-                      CLINICAL PARAMETERS
+                      PARAMETER KLINIS
                     </span>
                     <div className="grid grid-cols-2 gap-2">
                       {VITAL_PARAMS.map((vt) => (
@@ -212,7 +224,7 @@ export default function ClinicalTrajectory({ hideHeader = false }: { hideHeader?
                     }}
                   >
                     <span className="text-[10px] tracking-[0.12em] text-muted block mb-2">
-                      TRAJECTORY SUMMARY
+                      RINGKASAN TRAJEKTORI
                     </span>
                     <p className="text-[11px] text-muted leading-relaxed m-0 italic">
                       Pasien menunjukkan tren deteriorasi progresif. SBP naik konsisten +28 mmHg
@@ -235,7 +247,7 @@ export default function ClinicalTrajectory({ hideHeader = false }: { hideHeader?
                         className="text-[11px] tracking-[0.14em] uppercase"
                         style={{ color: '#FFCC8C' }}
                       >
-                        Vital Trend — 4 Kunjungan
+                        Tren Vital — 4 Kunjungan
                       </span>
                       <div className="flex gap-2">
                         <span className="text-[10px] flex items-center gap-1 text-foreground/70">
@@ -357,7 +369,7 @@ export default function ClinicalTrajectory({ hideHeader = false }: { hideHeader?
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <span className="text-[10px] font-bold tracking-[0.12em] text-muted uppercase block mb-2">
-                        RISK DRIVERS
+                        PEMICU RISIKO
                       </span>
                       <div className="flex flex-col gap-1.5">
                         {DRIVERS.map((d, i) => (
@@ -413,7 +425,7 @@ export default function ClinicalTrajectory({ hideHeader = false }: { hideHeader?
                         className="text-[10px] font-bold tracking-[0.12em]"
                         style={{ color: '#f97316' }}
                       >
-                        GLOBAL DETERIORATION
+                        PERBURUKAN GLOBAL
                       </span>
                       <span className="text-[13px] font-bold" style={{ color: '#f97316' }}>
                         64%
@@ -429,7 +441,7 @@ export default function ClinicalTrajectory({ hideHeader = false }: { hideHeader?
 
                   <div>
                     <span className="text-[10px] font-bold tracking-[0.12em] text-muted uppercase block mb-2">
-                      ACUTE ATTACK RISK 24H
+                      RISIKO SERANGAN AKUT 24J
                     </span>
                     <div className="flex flex-col gap-1.5">
                       {ACUTE_RISKS.map((r) => (
@@ -463,18 +475,18 @@ export default function ClinicalTrajectory({ hideHeader = false }: { hideHeader?
                       }}
                     >
                       <span className="text-[9px] font-bold text-accent/80 block mb-1.5">
-                        TIME TO CRITICAL
+                        WAKTU MENUJU KRITIS
                       </span>
                       <span className="text-[10px] text-foreground/90 font-medium">SBP ~4h</span>
                       <span className="text-[10px] text-foreground/90 font-medium">GDS ~6h</span>
                     </div>
                     <div className="flex flex-col gap-1 justify-between">
                       <div className="border border-muted/15 rounded p-1 flex justify-between items-center">
-                        <span className="text-[9px] text-muted">CONFIDENCE</span>
+                        <span className="text-[9px] text-muted">KEYAKINAN</span>
                         <span className="text-[11px] font-bold">78%</span>
                       </div>
                       <div className="border border-muted/15 rounded p-1 flex justify-between items-center">
-                        <span className="text-[9px] text-muted">VOLATILITY</span>
+                        <span className="text-[9px] text-muted">VOLATILITAS</span>
                         <span className="text-[11px] font-bold">42</span>
                       </div>
                     </div>
@@ -485,28 +497,32 @@ export default function ClinicalTrajectory({ hideHeader = false }: { hideHeader?
           </div>
 
           {/* ─── Slide 2: Prognosis ─── */}
-          <div className="min-w-full w-full min-w-0 overflow-hidden">
-            <ClinicalPrognosis />
-          </div>
+          {!trajectoryOnly && (
+            <div className="min-w-full w-full min-w-0 overflow-hidden">
+              <ClinicalPrognosis />
+            </div>
+          )}
         </motion.div>
       </div>
 
       {/* ═══ Slide Navigation ═══ */}
-      <div className="flex justify-center gap-3 mt-8">
-        {SLIDE_LABELS.map((label, i) => (
-          <button
-            key={label}
-            onClick={() => setActiveSlide(i)}
-            className={`text-[10px] uppercase tracking-[0.15em] px-5 py-2 rounded-full border transition-all duration-300 cursor-pointer ${
-              i === activeSlide
-                ? 'bg-accent text-white border-accent'
-                : 'bg-transparent text-muted border-muted/30 hover:border-muted/60'
-            }`}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+      {!trajectoryOnly && (
+        <div className="flex justify-center gap-3 mt-8">
+          {SLIDE_LABELS.map((label, i) => (
+            <button
+              key={label}
+              onClick={() => setActiveSlide(i)}
+              className={`text-[10px] uppercase tracking-[0.15em] px-5 py-2 rounded-full border transition-all duration-300 cursor-pointer ${
+                i === activeSlide
+                  ? 'bg-accent text-white border-accent'
+                  : 'bg-transparent text-muted border-muted/30 hover:border-muted/60'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   )
 

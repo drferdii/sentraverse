@@ -2,17 +2,8 @@
 // [APPROVED]
 import type { Metadata } from 'next'
 import { Inter, Plus_Jakarta_Sans } from 'next/font/google'
-import { cookies } from 'next/headers'
 
 import { MotionProvider } from '@/components/MotionProvider'
-import { ThemeProvider } from '@/components/ThemeProvider'
-import {
-  DEFAULT_THEME,
-  SENTRA_THEME_COOKIE,
-  getThemeBootstrapScript,
-  normalizeTheme,
-  type Theme,
-} from '@/lib/theme'
 import './globals.css'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -64,6 +55,13 @@ export const metadata: Metadata = {
     google: '_Ha7v-xuoFfZ-vq7kkYBy5MOO83iO0gWV7uisS89rFs',
   },
 }
+
+// Cegah refresh landing di section tengah (mis. Blueprint): browser mencoba
+// mengembalikan scrollY lama dari histori, padahal pin-spacer GSAP belum
+// terukur ulang di titik ini, jadi offset lama itu jatuh di section yang
+// salah. 'manual' + scrollTo(0,0) memaksa reload selalu mulai dari atas,
+// kecuali URL memang membawa hash anchor (mis. /#contact).
+const SCROLL_RESET_SCRIPT = `(function(){try{if('scrollRestoration' in history){history.scrollRestoration='manual';}if(!location.hash){window.scrollTo(0,0);}}catch(e){}})();`
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -137,20 +135,15 @@ const jsonLd = {
   ],
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const cookieStore = await cookies()
-  const ssrTheme: Theme = normalizeTheme(
-    cookieStore.get(SENTRA_THEME_COOKIE)?.value ?? DEFAULT_THEME
-  )
-
   return (
-    <html lang="id" data-theme={ssrTheme} suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: getThemeBootstrapScript(ssrTheme) }} />
+        <script dangerouslySetInnerHTML={{ __html: SCROLL_RESET_SCRIPT }} />
       </head>
       <body
         className={`${plusJakartaSans.variable} ${inter.variable} font-sans antialiased`}
@@ -160,9 +153,7 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <ThemeProvider initialTheme={ssrTheme}>
-          <MotionProvider>{children}</MotionProvider>
-        </ThemeProvider>
+        <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
   )

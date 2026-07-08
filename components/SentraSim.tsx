@@ -4,7 +4,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 
-import { ChatAgent } from '@/components/sentrasim/ChatAgent'
+import { CodeTerminal } from '@/components/sentrasim/CodeTerminal'
 import { SIMULATION_BRANCHES } from '@/components/sentrasim/data'
 import {
   STATUS_TEXT,
@@ -144,10 +144,10 @@ export default function SentraSim() {
       ref={sectionRef}
       className={cn(
         'bg-[radial-gradient(circle_at_center,_#e8e8e8_0%,_#d9d9d9_100%)] border-t border-neutral-300 overflow-hidden scroll-mt-24',
-        layoutGovernance.sectionY.spacious
+        layoutGovernance.sectionY.compact
       )}
     >
-      <div className="mx-auto grid max-w-[1600px] grid-cols-1 items-start gap-8 px-4 md:px-8 lg:grid-cols-[1fr_360px] lg:gap-12 xl:grid-cols-[1fr_400px]">
+      <div className="mx-auto grid max-w-[1600px] grid-cols-1 items-start gap-8 px-4 md:px-8 lg:grid-cols-[1fr_320px] lg:gap-12 xl:grid-cols-[1fr_360px]">
         {/* iPad Device Frame (Double-Bezel Hardware Architecture) */}
         <div className="relative mx-auto rounded-[2.5rem] bg-neutral-900 p-3 md:p-4 shadow-[0_48px_96px_-24px_rgba(0,33,71,0.18),_0_16px_48px_-12px_rgba(0,33,71,0.08)] border border-neutral-800 ring-1 ring-white/10 dark:ring-white/5 w-full max-w-[1024px] transition-all duration-300">
           {/* Top bezel camera / speaker notch area */}
@@ -196,7 +196,7 @@ export default function SentraSim() {
             {/* Inner Screen Content - The actual Simulation Scroll Area */}
             <div
               ref={scrollContainerRef}
-              className="p-6 md:p-10 lg:p-12 overflow-y-auto overflow-x-hidden flex-1 scrollbar-thin max-h-[60vh]"
+              className="p-6 md:p-10 lg:p-12 overflow-y-auto overflow-x-hidden flex-1 scrollbar-thin max-h-[48vh]"
             >
               <SimulationHero
                 activeBranch={activeBranch}
@@ -231,8 +231,10 @@ export default function SentraSim() {
           </div>
         </div>
 
-        {/* Right Column: Sentra Assist Chat Agent (OUTSIDE THE TABLET) */}
-        <ChatAgent />
+        {/* Right Column: separate slim device bezel hosting the live "safe code" terminal */}
+        <div className="relative mx-auto w-full rounded-[1.5rem] border border-neutral-800 bg-neutral-900 p-2 shadow-[0_32px_64px_-16px_rgba(0,33,71,0.15)] ring-1 ring-white/10 transition-all duration-300">
+          <CodeTerminal key={selectedSeverity} simulation={simulation} />
+        </div>
       </div>
     </section>
   )

@@ -1,6 +1,6 @@
 /* Designed and constructed by Classy. */
 /* Sentra Healthcare AI - Design System */
-/* Light theme: pure white + oxford blue (primary) + red orange (secondary). */
+/* Dark theme only: #1e1e1e surface + oxford blue (primary) + red orange (secondary). */
 @import "tailwindcss";
 
 @theme {
@@ -15,116 +15,13 @@
 }
 
 /* ============================================================
-   LIGHT THEME (default)
-   White surface. Oxford blue primary. Red-orange secondary.
+   DARK THEME (only theme — site is permanently dark)
    ============================================================ */
 :root {
-  color-scheme: light;
+  color-scheme: dark;
   --sentra-font-editorial: Georgia, "Times New Roman", serif;
   --sentra-font-ui: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --sentra-font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-
-  /* Core Palette */
-  --sentra-bg: #ffffff;
-  --sentra-fg: #002147;
-  --sentra-primary: #002147;          /* Oxford blue - PRIMARY accent */
-  --sentra-primary-rgb: 0 33 71;
-  --sentra-accent: #eb5939;            /* Red-orange - SECONDARY accent (Sentra signature) */
-  --sentra-white: #ffffff;
-
-  /* Oxford ramp */
-  --sentra-primary-dark: #001530;
-  --sentra-primary-mid: #0a2e5e;
-  --sentra-primary-soft: #1a4180;
-  --sentra-primary-tint: #e6ebf2;       /* Very pale oxford for surfaces */
-
-  /* Muted Scale (cool slate on white) */
-  --sentra-muted: #3a4d63;
-  --sentra-muted-text: #3a4d63d9;
-  --sentra-muted-half: #47556980;
-  --sentra-muted-subtle: #47556933;
-  --sentra-muted-faint: #4755691a;
-  --sentra-muted-line: #00214726;
-
-  /* Canvas (elevated surfaces - barely off-white) */
-  --sentra-canvas: #fafafa;
-  --sentra-canvas-dark: #f4f4f5;
-  --sentra-panel-1: #fafafa;
-  --sentra-panel-2: #f4f4f5;
-  --sentra-panel-3: #e4e4e7;
-
-  /* Semantic */
-  --sentra-critical: #dc2626;
-  --sentra-critical-rgb: 220 38 38;
-  --sentra-warning: #d97706;
-  --sentra-warning-rgb: 217 119 6;
-  --sentra-critical-faint: rgb(var(--sentra-critical-rgb) / 0.06);
-  --sentra-critical-border: rgb(var(--sentra-critical-rgb) / 0.25);
-  --sentra-warning-faint: rgb(var(--sentra-warning-rgb) / 0.07);
-  --sentra-warning-soft: rgb(var(--sentra-warning-rgb) / 0.35);
-  --sentra-warning-muted: rgb(var(--sentra-warning-rgb) / 0.7);
-  --sentra-grid-line-strong: rgb(0 33 71 / 0.18);
-  --sentra-neutral-soft: rgb(0 33 71 / 0.03);
-  --sentra-neutral-border: rgb(0 33 71 / 0.1);
-  --sentra-neutral-text: rgb(0 33 71 / 0.7);
-
-  /* Audrey AI - oxford blue persona on white */
-  --sentra-audrey: #002147;
-  --sentra-audrey-muted: #00214780;
-  --sentra-audrey-faint: #00214712;
-  --sentra-audrey-glow: #00214708;
-  --sentra-audrey-bubble: #002147;
-  --sentra-audrey-bubble-text: #ffffff;
-  --sentra-audrey-rgb: 0 33 71;
-  --sentra-audrey-ambient: rgb(var(--sentra-audrey-rgb) / 0.04);
-  --sentra-audrey-ring-border: rgb(var(--sentra-audrey-rgb) / 0.12);
-  --sentra-audrey-accent-border: rgb(var(--sentra-audrey-rgb) / 0.25);
-  --sentra-audrey-accent-bubble: rgb(var(--sentra-audrey-rgb) / 0.06);
-  --sentra-audrey-accent-bubble-border: rgb(var(--sentra-audrey-rgb) / 0.12);
-  --sentra-audrey-feature-divider: rgb(var(--sentra-audrey-rgb) / 0.1);
-  --sentra-audrey-corner-border: rgb(var(--sentra-audrey-rgb) / 0.1);
-  --sentra-audrey-line: rgb(var(--sentra-audrey-rgb) / 0.4);
-  --sentra-audrey-gradient-line: linear-gradient(
-    to right,
-    rgb(var(--sentra-audrey-rgb) / 0.6),
-    var(--sentra-audrey),
-    rgb(var(--sentra-audrey-rgb) / 0.6)
-  );
-  --sentra-audrey-teal: #475569;
-  --sentra-audrey-teal-faint: #47556918;
-  --sentra-audrey-teal-rgb: 71 85 105;
-
-  /* Shadows (clean sharp editorial elevation on white) */
-  --sentra-shadow-card:
-    0 1px 2px rgba(0, 33, 71, 0.04),
-    0 4px 16px rgba(0, 33, 71, 0.06);
-  --sentra-shadow-elevated:
-    0 2px 4px rgba(0, 33, 71, 0.05),
-    0 12px 28px rgba(0, 33, 71, 0.1);
-  --sentra-shadow-subtle:
-    0 1px 2px rgba(10, 10, 10, 0.04);
-  --sentra-shadow-accent: 0 0 24px rgba(235, 89, 57, 0.25);
-  --sentra-shadow-accent-strong: 0 0 32px rgba(235, 89, 57, 0.4);
-
-  /* SentraSim Section (token aliases - actual values overridden by [data-sentra-sim] block) */
-  --sdx-bg-canvas: var(--sentra-canvas);
-  --sdx-bg-page: var(--sentra-bg);
-  --sdx-text-main: var(--sentra-fg);
-  --sdx-text-muted: var(--sentra-muted-text);
-  --sdx-line-base: var(--sentra-muted-line);
-  --sdx-grid-faint: rgba(0, 33, 71, 0.04);
-  --sdx-c-anamnesa: var(--sentra-muted-text);
-  --sdx-c-asesmen: var(--sentra-accent);
-  --sdx-c-critical: var(--sentra-critical);
-  --sdx-c-warning: var(--sentra-warning);
-}
-
-/* ============================================================
-   DARK THEME (opt-in via [data-theme="dark"])
-   Verbatim copy of pre-2026-05-06 :root - byte-identical preservation.
-   ============================================================ */
-[data-theme="dark"] {
-  color-scheme: dark;
 
   /* Core Palette */
   --sentra-bg: #1e1e1e;
@@ -203,7 +100,7 @@
   --sentra-shadow-accent: 0 0 24px rgba(235, 89, 57, 0.2);
   --sentra-shadow-accent-strong: 0 0 32px rgba(235, 89, 57, 0.3);
 
-  /* SentraSim Section */
+  /* SentraSim Section (token aliases - actual values overridden by [data-sentra-sim] block) */
   --sdx-bg-canvas: var(--sentra-canvas);
   --sdx-bg-page: var(--sentra-bg);
   --sdx-text-main: var(--sentra-fg);
@@ -290,64 +187,35 @@ body {
   position: relative;
 }
 
-/* Atmospheric mesh on light theme - subtle oxford tint at corners, white core.
-   Gives premium depth without compromising the pure white surface. */
-:root body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(ellipse 80% 50% at 0% 0%, rgba(0, 33, 71, 0.035), transparent 60%),
-    radial-gradient(ellipse 80% 50% at 100% 0%, rgba(235, 89, 57, 0.025), transparent 60%),
-    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(0, 33, 71, 0.02), transparent 70%);
-}
-
-/* Disable atmospheric mesh in dark mode - dark theme handles its own atmosphere */
-[data-theme="dark"] body::before { display: none; }
-
-/* Body content sits above the atmospheric layer */
+/* Body content sits above decorative layers */
 body > * { position: relative; z-index: 1; }
 
-/* Editorial selection - oxford highlight, white text */
-:root ::selection {
-  background: var(--sentra-fg);
-  color: var(--sentra-bg);
-}
-[data-theme="dark"] ::selection {
+/* Editorial selection */
+::selection {
   background: var(--sentra-accent);
   color: var(--sentra-bg);
 }
 
-/* Oxford-tinted scrollbar (light) */
+/* Oxford-tinted scrollbar */
 :root::-webkit-scrollbar { width: 10px; height: 10px; }
 :root::-webkit-scrollbar-track { background: transparent; }
 :root::-webkit-scrollbar-thumb {
-  background: rgba(0, 33, 71, 0.18);
+  background: rgba(184, 172, 153, 0.2);
   border-radius: 8px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
 :root::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 33, 71, 0.35);
-  background-clip: padding-box;
-  border: 2px solid transparent;
-}
-[data-theme="dark"]::-webkit-scrollbar-thumb {
-  background: rgba(184, 172, 153, 0.2);
+  background: rgba(184, 172, 153, 0.35);
   background-clip: padding-box;
   border: 2px solid transparent;
 }
 
-/* Editorial focus ring - oxford 2px halo on light, accent on dark */
+/* Editorial focus ring */
 :root *:focus-visible {
-  outline: 2px solid var(--sentra-fg);
+  outline: 2px solid var(--sentra-accent);
   outline-offset: 3px;
   border-radius: 2px;
-}
-[data-theme="dark"] *:focus-visible {
-  outline: 2px solid var(--sentra-accent);
 }
 
 [data-sentra-sim] * {
@@ -382,13 +250,8 @@ body > * { position: relative; z-index: 1; }
   animation: marquee 60s linear infinite;
 }
 
-/* Partner-strip image logos: flatten official artwork to a theme-matching tone
-   (dark ink on light theme, warm beige on dark theme). */
+/* Partner-strip image logos: flatten official artwork to a warm beige tone. */
 .sentra-logo-img {
-  filter: brightness(0);
-}
-
-[data-theme='dark'] .sentra-logo-img {
   filter: brightness(0) invert(0.73) sepia(0.15) saturate(0.6);
 }
 

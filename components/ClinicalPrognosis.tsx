@@ -78,7 +78,7 @@ export default function ClinicalPrognosis() {
                   border: '1px solid #F97316',
                 }}
               >
-                HIGH
+                TINGGI
               </span>
             </div>
             <span className="text-[9px] text-muted block">
@@ -202,7 +202,7 @@ export default function ClinicalPrognosis() {
               className="text-[10px] tracking-[0.14em] uppercase block mb-3"
               style={{ color: 'var(--sentra-accent)' }}
             >
-              Patient Journey
+              Perjalanan Pasien
             </span>
             <div className="flex flex-col gap-0">
               {JOURNEY.map((m, i) => (
@@ -260,12 +260,12 @@ export default function ClinicalPrognosis() {
             }}
           >
             <span className="text-[8px] tracking-[0.1em] text-muted block mb-1">
-              PROGNOSIS SUMMARY
+              RINGKASAN PROGNOSIS
             </span>
             <p className="text-[10px] text-muted italic m-0 leading-relaxed">
               Pasien dengan hipertensi stage 2 dan DM tipe 2 menunjukkan profil risiko multi-domain
-              yang memerlukan review ketat. Proyeksi stabilitas 7 hari di 76.4% dengan confidence
-              72%. Rekomendasi: evaluasi end-organ damage, kontrol glikemik, dan EKG untuk
+              yang memerlukan tinjauan ketat. Proyeksi stabilitas 7 hari di 76.4% dengan keyakinan
+              72%. Rekomendasi: evaluasi kerusakan organ akhir, kontrol glikemik, dan EKG untuk
               menyingkirkan iskemia.
             </p>
           </motion.div>
@@ -289,7 +289,7 @@ export default function ClinicalPrognosis() {
               className="text-[10px] tracking-[0.14em] uppercase block mb-4"
               style={{ color: 'var(--sentra-accent)' }}
             >
-              Signal Prognosis — 7 Kategori
+              Sinyal Prognosis — 7 Kategori
             </span>
             <div className="flex items-end gap-2" style={{ height: 160 }}>
               {SIGNAL_BARS.map((bar, i) => (
@@ -469,7 +469,7 @@ export default function ClinicalPrognosis() {
                     className="w-3 h-2 rounded-sm inline-block"
                     style={{ background: 'rgba(142,156,184,0.14)' }}
                   />{' '}
-                  Band
+                  Pita
                 </span>
               </div>
             </div>
