@@ -6,6 +6,10 @@ import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 import { type ReactNode, useEffect, useState } from 'react'
 
+import { SketchLines } from '@/components/ui/sketch-lines'
+import { getPilotLoginHref, layoutGovernance, typeGovernance } from '@/lib/design-governance'
+import { cn } from '@/lib/utils'
+
 // Phase durations (ms) — each phase shows then transitions
 const PHASE_TIMES = [9500, 16500, 24000] // P1→P2, P2→P3, P3→P4
 
@@ -116,24 +120,28 @@ function KonsultasiCard() {
 
   return (
     <div className="relative w-full rounded-2xl border border-[var(--sentra-audrey-accent-border)] bg-gradient-to-b from-[var(--sentra-canvas)] to-[var(--sentra-bg)] overflow-hidden">
-      {/* Header */}
+      <SketchLines />
+      {/* Header — mac window chrome */}
       <div className="flex items-center gap-3 px-5 py-3.5 border-b border-[var(--sentra-audrey-feature-divider)]">
-        <div className="flex items-center gap-2">
-          <div
-            className="w-2.5 h-2.5 rounded-full transition-colors duration-700"
-            style={{ background: h.color }}
-          />
-          <span
-            className="text-sm font-bold uppercase tracking-widest font-jakarta transition-colors duration-700"
-            style={{ color: h.color }}
-          >
-            {h.label}
-          </span>
+        <div className="flex items-center gap-1.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
         </div>
-        <div className="ml-auto">
+        <div className="h-3.5 w-px bg-[var(--sentra-audrey-feature-divider)]" />
+        <span
+          className="text-sm font-bold uppercase tracking-widest font-jakarta transition-colors duration-700"
+          style={{ color: h.color }}
+        >
+          {h.label}
+        </span>
+        <div className="ml-auto flex items-center gap-3">
+          <div className="hidden sm:block w-6 h-px bg-[var(--sentra-audrey-feature-divider)]" />
           <span className="text-xs text-muted/30 font-jakarta">{h.tag}</span>
         </div>
       </div>
+      {/* Double rule accent */}
+      <div className="mt-[3px] h-px bg-[var(--sentra-audrey-feature-divider)]" />
 
       {/* Chat area */}
       <div className="p-5 min-h-[420px]">
@@ -394,12 +402,34 @@ function KonsultasiCard() {
         </AnimatePresence>
       </div>
 
-      {/* Corner accents */}
+      {/* Footer strip — progres fase */}
+      <div className="flex items-center justify-between px-5 py-2.5 border-t border-[var(--sentra-audrey-feature-divider)]">
+        <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted/40">
+          Live Session
+        </span>
+        <div className="flex items-center gap-2">
+          {[1, 2, 3, 4].map((p) => (
+            <span
+              key={p}
+              className={`h-px w-5 transition-colors duration-500 ${
+                p <= phase ? 'bg-accent/60' : 'bg-[var(--sentra-audrey-feature-divider)]'
+              }`}
+            />
+          ))}
+          <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted/40">
+            Fase {phase}/4
+          </span>
+        </div>
+      </div>
+
+      {/* Line accents — corner ticks + side rails */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-2.5 left-2.5 w-3 h-3 border-t border-l border-[var(--sentra-audrey-corner-border)] rounded-tl" />
         <div className="absolute top-2.5 right-2.5 w-3 h-3 border-t border-r border-[var(--sentra-audrey-corner-border)] rounded-tr" />
         <div className="absolute bottom-2.5 left-2.5 w-3 h-3 border-b border-l border-[var(--sentra-audrey-corner-border)] rounded-bl" />
         <div className="absolute bottom-2.5 right-2.5 w-3 h-3 border-b border-r border-[var(--sentra-audrey-corner-border)] rounded-br" />
+        <div className="absolute top-8 bottom-8 left-2.5 w-px bg-[var(--sentra-audrey-corner-border)] opacity-50" />
+        <div className="absolute top-8 bottom-8 right-2.5 w-px bg-[var(--sentra-audrey-corner-border)] opacity-50" />
       </div>
     </div>
   )
@@ -407,50 +437,71 @@ function KonsultasiCard() {
 
 // --- Main Hero Component ---
 export default function Hero() {
-  const pilotLoginHref = process.env.NEXT_PUBLIC_PILOT_LOGIN_URL?.trim() || '/dashboard'
-  const pilotLoginExternal = /^https?:\/\//i.test(pilotLoginHref)
+  const pilotLogin = getPilotLoginHref(process.env.NEXT_PUBLIC_PILOT_LOGIN_URL)
 
   return (
-    <section className="relative pt-32 pb-20 overflow-hidden border-b border-muted/20">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12">
+    <section
+      className={cn(
+        'relative overflow-hidden border-b border-muted/20',
+        layoutGovernance.sectionY.hero
+      )}
+    >
+      <div className={cn('relative', layoutGovernance.container.wide, layoutGovernance.sectionX)}>
         <div className="grid lg:grid-cols-[1fr_480px] gap-12 items-start">
           {/* Left Side — Text */}
-          <div className="flex flex-col gap-12">
+          <div className="relative flex flex-col gap-12">
+            {/* Garis sketsa: vertikal di batas kiri teks hero — draw lalu stay */}
+            <motion.div
+              className="hidden md:block absolute -left-6 top-0 bottom-0 w-px bg-foreground/15 origin-top"
+              initial={{ scaleY: 0 }}
+              animate={{ scaleY: 1 }}
+              transition={{ delay: 0.5, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+              aria-hidden
+            />
+
             {/* 01, 02, 03 Points */}
-            <div className="sentra-load-reveal flex flex-col md:flex-row gap-8 md:gap-16">
-              {[
-                { id: '01', text: 'Patient Safety Net Real-Time' },
-                { id: '02', text: 'Specializing in clinical intelligence' },
-                { id: '03', text: 'Immutable Audit Trail + Human Authority' },
-              ].map((point) => (
-                <div key={point.id} className="flex flex-col gap-2">
-                  <span className="text-xs font-bold tracking-widest text-accent font-jakarta">
-                    {point.id}
-                  </span>
-                  <p className="text-xs font-medium tracking-widest text-muted uppercase max-w-[180px]">
-                    {point.text}
-                  </p>
-                </div>
-              ))}
+            <div className="sentra-load-reveal flex flex-col gap-5">
+              <div className="flex flex-col md:flex-row gap-8 md:gap-16">
+                {[
+                  { id: '01', text: 'Program Indonesia Sehat' },
+                  { id: '02', text: '6 Pilar Transformasi Kesehatan' },
+                  { id: '03', text: 'Hak Asasi Manusia' },
+                ].map((point) => (
+                  <div key={point.id} className="flex flex-col gap-2">
+                    <span className={cn(typeGovernance.eyebrow, 'text-xs md:text-xs')}>
+                      {point.id}
+                    </span>
+                    <p className="max-w-[180px] font-jakarta text-xs font-medium uppercase tracking-[0.14em] text-muted">
+                      {point.text}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              {/* Garis sketsa: horizontal di bawah susunan poin — draw lalu stay */}
+              <motion.div
+                className="h-px bg-foreground/15 origin-left"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 1.0, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                aria-hidden
+              />
             </div>
 
             {/* Main Title — static DOM (no motion) so headline never depends on Framer hydration;
                 entrance uses CSS-only sentra-load-reveal, which still renders without JS */}
-            <div className="sentra-load-reveal sentra-load-reveal--d1 flex flex-col gap-6">
-              <h1 className="text-[40px] md:text-[80px] lg:text-[100px] leading-[1] font-bold font-jakarta tracking-tighter text-foreground">
-                <span className="sr-only">
-                  COMING SOON 2026 — Clinical Decision Support berbasis AI untuk Layanan Kesehatan
-                  Indonesia
-                </span>
-                <span aria-hidden="true">
-                  COMING SOON <br />
-                  2026
-                </span>
+            <div className="sentra-load-reveal sentra-load-reveal--d1 flex flex-col gap-7">
+              <h1
+                className={cn(
+                  typeGovernance.editorialDisplay,
+                  'max-w-[980px] text-[42px] sm:text-[52px] md:text-[76px] lg:text-[84px] xl:text-[92px] leading-[0.92]'
+                )}
+              >
+                Bantu Dokter Ambil Keputusan Klinis Lebih Cepat & Presisi
               </h1>
-              <p className="text-lg text-muted max-w-[600px] leading-relaxed">
-                Sentra mentransformasi layanan kesehatan dengan kecerdasan klinis terintegrasi yang
-                memberdayakan tenaga medis untuk mengambil keputusan secara lebih cepat, akurat, dan
-                berbasis data.
+              <p className={cn(typeGovernance.editorialBody, 'max-w-[720px] text-base md:text-xl')}>
+                Sentra membaca keluhan pasien, menghitung kemungkinan diagnosis, dan menyiapkan
+                rekomendasi — dalam hitungan detik. Dokter tetap yang memutuskan, Sentra yang
+                mempercepat prosesnya. Hadir 2026 untuk fasilitas kesehatan Indonesia.
               </p>
             </div>
 
@@ -469,8 +520,8 @@ export default function Hero() {
                 />
               </Link>
               <Link
-                href={pilotLoginHref}
-                {...(pilotLoginExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                href={pilotLogin.href}
+                {...(pilotLogin.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 className="group inline-flex items-center justify-center gap-3 border border-accent/30 rounded-full px-8 py-4 hover:border-accent/60 hover:bg-accent/10 transition-all"
               >
                 <span className="text-sm font-bold uppercase tracking-widest text-accent/90 group-hover:text-accent transition-colors">

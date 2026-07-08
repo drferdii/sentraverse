@@ -218,7 +218,7 @@ function ChatBubble({ msg, isVisible }: { msg: ConversationMessage; isVisible: b
         </span>
 
         <div
-          className={`rounded-2xl px-4 py-3 text-[13px] leading-relaxed font-jakarta ${
+          className={`rounded-xl px-3.5 py-2 text-[11px] leading-relaxed font-jakarta ${
             isUser ? 'rounded-br-sm' : 'rounded-bl-sm text-foreground/70'
           }`}
           style={
@@ -346,7 +346,7 @@ function FeatureTypingList() {
   }, [inView])
 
   return (
-    <div ref={ref} className="flex flex-col gap-8 pt-4">
+    <div ref={ref} className="flex flex-col gap-4 pt-2">
       {features.map((feature, index) => {
         const isActive = index < visibleCount
 
@@ -358,23 +358,23 @@ function FeatureTypingList() {
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className={isActive ? '' : 'opacity-0'}
           >
-            <div className="mb-2 flex items-baseline gap-3">
+            <div className="mb-1 flex items-baseline gap-2">
               <span
-                className="text-[11px] font-bold tracking-[0.2em] font-jakarta"
+                className="text-[10px] font-bold tracking-[0.2em] font-jakarta"
                 style={{ color: AUD.amberMuted }}
               >
                 {feature.id}
               </span>
-              <h4 className="text-lg font-bold tracking-tight text-foreground font-jakarta md:text-xl">
+              <h4 className="text-sm font-bold tracking-tight text-foreground font-jakarta md:text-base">
                 {feature.title}
               </h4>
             </div>
-            <p className="pl-9 text-sm leading-relaxed text-muted/60 font-jakarta">
+            <p className="pl-6 text-xs leading-relaxed text-muted/60 font-jakarta">
               {feature.desc}
             </p>
             {index < features.length - 1 ? (
               <div
-                className="ml-8 mt-6 h-px"
+                className="ml-6 mt-3 h-px"
                 style={{
                   background: `linear-gradient(to right, ${AUD.featureDivider}, transparent)`,
                 }}
@@ -387,10 +387,12 @@ function FeatureTypingList() {
   )
 }
 
-export default function Audrey() {
-  const sectionRef = useRef<HTMLElement>(null)
+export default function Audrey({ hideHeader = false }: { hideHeader?: boolean }) {
+  const sectionRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
   const [visibleMessages, setVisibleMessages] = useState(0)
+
+  const chatContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!isInView) {
@@ -406,11 +408,234 @@ export default function Audrey() {
     return () => timers.forEach(window.clearTimeout)
   }, [isInView])
 
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight
+    }
+  }, [visibleMessages])
+
+  const renderContent = () => (
+    <div
+      className={
+        hideHeader ? 'relative z-10 w-full' : 'relative z-10 mx-auto max-w-[1440px] px-6 md:px-12'
+      }
+    >
+      {!hideHeader && (
+        <div className="mb-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-2 inline-flex items-center gap-2"
+          >
+            <div className="h-2 w-2 rounded-full animate-pulse" style={{ background: AUD.amber }} />
+            <span
+              className="text-[10px] font-bold uppercase tracking-[0.25em] font-jakarta"
+              style={{ color: AUD.amber }}
+            >
+              Audrey AI Assistant
+            </span>
+            <div className="h-px w-12" style={{ background: 'var(--sentra-audrey-line)' }} />
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="mx-auto max-w-[900px] text-lg font-bold leading-[1.15] tracking-tight text-foreground font-jakarta md:text-xl"
+          >
+            Your Clinical Co-Pilot,{' '}
+            <span className="relative inline-block">
+              <span style={{ color: AUD.amber }}>Always On</span>
+              <motion.div
+                className="absolute -bottom-0.5 left-0 h-[1.5px] w-full"
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                style={{
+                  transformOrigin: 'left',
+                  background: 'var(--sentra-audrey-gradient-line)',
+                }}
+              />
+            </span>
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mx-auto mt-2 max-w-[580px] text-xs leading-relaxed text-muted/80 font-jakarta"
+          >
+            Audrey memproses narasi klinis, menghitung probabilitas diagnostik, dan menghasilkan
+            rekomendasi evidence-based — dalam hitungan detik.
+          </motion.p>
+        </div>
+      )}
+
+      <div className="grid items-start gap-8 lg:grid-cols-[1.2fr_1fr]">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="relative"
+        >
+          <div
+            className="relative overflow-hidden rounded-2xl border border-muted/10 bg-background"
+            style={{ boxShadow: AUD.cardShadow }}
+          >
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <PulseRing delay={0} />
+              <PulseRing delay={1} />
+              <PulseRing delay={2} />
+            </div>
+
+            <div className="relative flex items-center justify-between border-b border-muted/8 px-4 py-3">
+              <div className="flex items-center gap-3.5">
+                <div className="relative">
+                  <div
+                    className="flex h-8 w-8 items-center justify-center rounded-lg"
+                    style={{
+                      background: AUD.amberFaint,
+                      border: `1px solid ${AUD.accentBorder}`,
+                    }}
+                  >
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 65 65"
+                      fill="currentColor"
+                      style={{ color: AUD.amber }}
+                    >
+                      <path d={SPARKLE_PATH} />
+                    </svg>
+                  </div>
+                  <div
+                    className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full border border-background"
+                    style={{ background: AUD.amber }}
+                  />
+                </div>
+                <div>
+                  <h3 className="text-xs font-bold tracking-tight text-foreground font-jakarta">
+                    Audrey
+                  </h3>
+                  <span
+                    className="text-[9px] font-medium font-jakarta"
+                    style={{ color: AUD.amberMuted }}
+                  >
+                    Online — Ready
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-[8px] font-bold uppercase tracking-[0.15em] text-muted/30 font-jakarta">
+                  Sentra Engine v3.5
+                </span>
+                <div className="flex gap-0.5">
+                  {[0, 1, 2].map((dot) => (
+                    <div key={dot} className="h-1 w-1 rounded-full bg-muted/15" />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div
+              ref={chatContainerRef}
+              className="relative flex h-[480px] flex-col gap-3 p-4 overflow-y-auto scrollbar-thin scroll-smooth"
+            >
+              {conversation.map((message, index) => (
+                <ChatBubble key={message.id} msg={message} isVisible={index < visibleMessages} />
+              ))}
+            </div>
+
+            <div className="relative border-t border-muted/8 px-4 py-3">
+              <div className="flex items-center gap-3 rounded-xl border border-muted/8 bg-foreground/[0.02] px-3.5 py-2">
+                <span className="flex-1 text-[11px] text-muted/30 font-jakarta">
+                  Ketik gejala klinis atau pertanyaan...
+                </span>
+                <div
+                  className="flex h-7 w-7 items-center justify-center rounded-lg"
+                  style={{ background: AUD.amberFaint }}
+                >
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M22 2L11 13" style={{ color: AUD.amberMuted }} />
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z" style={{ color: AUD.amberMuted }} />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="pointer-events-none absolute left-2 top-2 h-4 w-4 rounded-tl-md border-l border-t"
+              style={{ borderColor: AUD.cornerBorder }}
+            />
+            <div
+              className="pointer-events-none absolute right-2 top-2 h-4 w-4 rounded-tr-md border-r border-t"
+              style={{ borderColor: AUD.cornerBorder }}
+            />
+            <div
+              className="pointer-events-none absolute bottom-2 left-2 h-4 w-4 rounded-bl-md border-b border-l"
+              style={{ borderColor: AUD.cornerBorder }}
+            />
+            <div
+              className="pointer-events-none absolute bottom-2 right-2 h-4 w-4 rounded-br-md border-b border-r"
+              style={{ borderColor: AUD.cornerBorder }}
+            />
+          </div>
+        </motion.div>
+
+        <FeatureTypingList />
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-muted/8 bg-muted/5 md:grid-cols-4"
+        style={{ boxShadow: AUD.elevatedShadow }}
+      >
+        {audreyStats.map((stat) => (
+          <div key={stat.label} className="bg-background px-4 py-4 text-center">
+            <span
+              className="block text-lg font-bold tracking-tight font-jakarta md:text-xl"
+              style={{ color: AUD.amber }}
+            >
+              {stat.number}
+            </span>
+            <span className="mt-1 block text-[9px] uppercase tracking-[0.15em] text-muted/50 font-jakarta">
+              {stat.label}
+            </span>
+          </div>
+        ))}
+      </motion.div>
+    </div>
+  )
+
+  if (hideHeader) {
+    return (
+      <div ref={sectionRef} className="relative w-full">
+        {renderContent()}
+      </div>
+    )
+  }
+
   return (
     <section
       id="audrey"
       ref={sectionRef}
-      className="relative overflow-hidden border-b border-muted/20 py-32"
+      className="relative overflow-hidden border-b border-muted/20 py-8"
     >
       <div className="pointer-events-none absolute inset-0">
         <div
@@ -432,204 +657,7 @@ export default function Audrey() {
           }}
         />
       </div>
-
-      <div className="relative z-10 mx-auto max-w-[1440px] px-6 md:px-12">
-        <div className="mb-20 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mb-6 inline-flex items-center gap-2"
-          >
-            <div className="h-2 w-2 rounded-full animate-pulse" style={{ background: AUD.amber }} />
-            <span
-              className="text-xs font-bold uppercase tracking-[0.25em] font-jakarta"
-              style={{ color: AUD.amber }}
-            >
-              Audrey AI Assistant
-            </span>
-            <div className="h-px w-12" style={{ background: 'var(--sentra-audrey-line)' }} />
-          </motion.div>
-
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="mx-auto max-w-[900px] text-3xl font-bold leading-[1.1] tracking-tighter text-foreground font-jakarta md:text-5xl lg:text-6xl"
-          >
-            Your Clinical Co-Pilot,{' '}
-            <span className="relative inline-block">
-              <span style={{ color: AUD.amber }}>Always On</span>
-              <motion.div
-                className="absolute -bottom-1 left-0 h-[2px] w-full"
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                style={{
-                  transformOrigin: 'left',
-                  background: 'var(--sentra-audrey-gradient-line)',
-                }}
-              />
-            </span>
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="mx-auto mt-6 max-w-[600px] text-base leading-relaxed text-muted font-jakarta"
-          >
-            Audrey memproses narasi klinis, menghitung probabilitas diagnostik, dan menghasilkan
-            rekomendasi evidence-based — dalam hitungan detik.
-          </motion.p>
-        </div>
-
-        <div className="grid items-start gap-16 lg:grid-cols-[1fr_380px]">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative"
-          >
-            <div
-              className="relative overflow-hidden rounded-3xl border border-muted/10 bg-background"
-              style={{ boxShadow: AUD.cardShadow }}
-            >
-              <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                <PulseRing delay={0} />
-                <PulseRing delay={1} />
-                <PulseRing delay={2} />
-              </div>
-
-              <div className="relative flex items-center justify-between border-b border-muted/8 px-6 py-4">
-                <div className="flex items-center gap-3">
-                  <div className="relative">
-                    <div
-                      className="flex h-9 w-9 items-center justify-center rounded-xl"
-                      style={{
-                        background: AUD.amberFaint,
-                        border: `1px solid ${AUD.accentBorder}`,
-                      }}
-                    >
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 65 65"
-                        fill="currentColor"
-                        style={{ color: AUD.amber }}
-                      >
-                        <path d={SPARKLE_PATH} />
-                      </svg>
-                    </div>
-                    <div
-                      className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-background"
-                      style={{ background: AUD.amber }}
-                    />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-bold tracking-tight text-foreground font-jakarta">
-                      Audrey
-                    </h3>
-                    <span
-                      className="text-[10px] font-medium font-jakarta"
-                      style={{ color: AUD.amberMuted }}
-                    >
-                      Online — Ready
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-[9px] font-bold uppercase tracking-[0.15em] text-muted/30 font-jakarta">
-                    Sentra Engine v3.5
-                  </span>
-                  <div className="flex gap-1">
-                    {[0, 1, 2].map((dot) => (
-                      <div key={dot} className="h-1.5 w-1.5 rounded-full bg-muted/15" />
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="relative flex min-h-[420px] flex-col gap-5 p-6">
-                {conversation.map((message, index) => (
-                  <ChatBubble key={message.id} msg={message} isVisible={index < visibleMessages} />
-                ))}
-              </div>
-
-              <div className="relative border-t border-muted/8 px-6 py-4">
-                <div className="flex items-center gap-3 rounded-2xl border border-muted/8 bg-foreground/[0.02] px-4 py-3">
-                  <span className="flex-1 text-[12px] text-muted/30 font-jakarta">
-                    Ketik gejala klinis atau pertanyaan...
-                  </span>
-                  <div
-                    className="flex h-8 w-8 items-center justify-center rounded-xl"
-                    style={{ background: AUD.amberFaint }}
-                  >
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path d="M22 2L11 13" style={{ color: AUD.amberMuted }} />
-                      <path d="M22 2L15 22L11 13L2 9L22 2Z" style={{ color: AUD.amberMuted }} />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                className="pointer-events-none absolute left-2 top-2 h-5 w-5 rounded-tl-lg border-l border-t"
-                style={{ borderColor: AUD.cornerBorder }}
-              />
-              <div
-                className="pointer-events-none absolute right-2 top-2 h-5 w-5 rounded-tr-lg border-r border-t"
-                style={{ borderColor: AUD.cornerBorder }}
-              />
-              <div
-                className="pointer-events-none absolute bottom-2 left-2 h-5 w-5 rounded-bl-lg border-b border-l"
-                style={{ borderColor: AUD.cornerBorder }}
-              />
-              <div
-                className="pointer-events-none absolute bottom-2 right-2 h-5 w-5 rounded-br-lg border-b border-r"
-                style={{ borderColor: AUD.cornerBorder }}
-              />
-            </div>
-          </motion.div>
-
-          <FeatureTypingList />
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-20 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-muted/8 bg-muted/5 md:grid-cols-4"
-          style={{ boxShadow: AUD.elevatedShadow }}
-        >
-          {audreyStats.map((stat) => (
-            <div key={stat.label} className="bg-background px-6 py-8 text-center">
-              <span
-                className="block text-2xl font-bold tracking-tight font-jakarta md:text-3xl"
-                style={{ color: AUD.amber }}
-              >
-                {stat.number}
-              </span>
-              <span className="mt-2 block text-[11px] uppercase tracking-[0.15em] text-muted/50 font-jakarta">
-                {stat.label}
-              </span>
-            </div>
-          ))}
-        </motion.div>
-      </div>
+      {renderContent()}
     </section>
   )
 }

@@ -28,13 +28,13 @@ export function TimelineColumn({
   visibleTherapyCount,
 }: TimelineColumnProps) {
   return (
-    <div className="relative pl-16 flex flex-col gap-14 border-l border-muted/20">
-      <div className="relative">
+    <div className="sentra-sim-stack relative flex flex-col border-l border-muted/20 pl-16">
+      <div className="relative" data-sim-step="1">
         <div className={timelineMarkerClassName} />
-        <h3 className="text-accent text-sm uppercase tracking-widest mb-6">
+        <h3 className="sentra-sim-kicker mb-6 text-accent uppercase">
           01. Keluhan Utama & Anamnesis Terarah
         </h3>
-        <div className="bg-muted/5 border border-muted/10 p-8 relative overflow-hidden">
+        <div className="sentra-sim-card relative overflow-hidden border border-muted/10 bg-muted/5">
           <div
             className="absolute inset-0 z-0 opacity-20"
             style={{
@@ -47,7 +47,7 @@ export function TimelineColumn({
             <span className="text-accent text-xs uppercase tracking-widest mb-2 block">
               Keluhan Utama
             </span>
-            <p className="text-muted text-lg mb-6 leading-relaxed">
+            <p className="sentra-sim-body mb-6 text-muted">
               Pasien datang dengan keluhan{' '}
               <span className="text-foreground border-b border-dashed border-muted inline-block">
                 {simulation.anamnesaText}
@@ -71,9 +71,9 @@ export function TimelineColumn({
         </div>
       </div>
 
-      <div className="relative">
+      <div className="relative" data-sim-step="2">
         <div className={timelineMarkerClassName} />
-        <h3 className="text-accent text-sm uppercase tracking-widest mb-6">
+        <h3 className="sentra-sim-kicker mb-6 text-accent uppercase">
           02. Riwayat Penyakit, Alergi, dan Red Flag
         </h3>
         {simulation.historyPhase === 'loading' ? (
@@ -93,13 +93,13 @@ export function TimelineColumn({
                 <p className="text-muted text-xs uppercase font-medium mb-1">
                   Riwayat Penyakit Sekarang
                 </p>
-                <p className="text-foreground text-lg">{activeBranch.historyNow}</p>
+                <p className="sentra-sim-body text-foreground">{activeBranch.historyNow}</p>
               </div>
               <div>
                 <p className="text-muted text-xs uppercase font-medium mb-1">
                   Riwayat Penyakit Dahulu
                 </p>
-                <p className="text-foreground text-lg">{activeBranch.pastHistory}</p>
+                <p className="sentra-sim-body text-foreground">{activeBranch.pastHistory}</p>
               </div>
               <div className="grid gap-3 md:grid-cols-2">
                 <div className="border border-muted/20 p-4">
@@ -138,9 +138,9 @@ export function TimelineColumn({
         ) : null}
       </div>
 
-      <div className="relative">
+      <div className="relative" data-sim-step="3">
         <div className={timelineMarkerClassName} />
-        <h3 className="text-accent text-sm uppercase tracking-widest mb-6">
+        <h3 className="sentra-sim-kicker mb-6 text-accent uppercase">
           03. Tanda Vital, Lab, dan Bukti Objektif
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -251,9 +251,9 @@ export function TimelineColumn({
         onClose={() => onPatchSimulation({ trajectoryOpen: false })}
       />
 
-      <div className="relative">
+      <div className="relative" data-sim-step="4">
         <div className={timelineMarkerClassName} />
-        <h3 className="text-accent text-sm uppercase tracking-widest mb-6">
+        <h3 className="sentra-sim-kicker mb-6 text-accent uppercase">
           04. Pemeriksaan Fisik Head-to-Toe
         </h3>
         <div className="flex flex-col gap-5">
@@ -287,13 +287,15 @@ export function TimelineColumn({
         />
       ) : null}
 
-      <input
-        type="text"
-        readOnly
-        aria-label="Composer asesmen pratinjau"
-        placeholder="Ketik asesmen tambahan atau ketik '/' untuk perintah..."
-        className="w-full bg-transparent border-b border-muted/20 pb-4 text-foreground outline-none focus:border-accent transition-colors placeholder:italic placeholder:text-muted/30 mt-8"
-      />
+      <div data-sim-step="assessment" className="mt-8">
+        <input
+          type="text"
+          readOnly
+          aria-label="Composer asesmen pratinjau"
+          placeholder="Ketik asesmen tambahan atau ketik '/' untuk perintah..."
+          className="w-full bg-transparent border-b border-muted/20 pb-4 text-foreground outline-none focus:border-accent transition-colors placeholder:italic placeholder:text-muted/30"
+        />
+      </div>
     </div>
   )
 }

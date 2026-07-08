@@ -5,7 +5,9 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import { Reveal } from '@/components/ui/reveal'
+import { layoutGovernance, typeGovernance } from '@/lib/design-governance'
 import { siteLinks } from '@/lib/site-links'
+import { cn } from '@/lib/utils'
 
 // Intentional brand anomaly (approved 2026-07-07): acid-yellow plate footer,
 // replacing the former white footer. Hardcoded — identical in light & dark.
@@ -41,20 +43,31 @@ function Monogram({ className }: { className?: string }) {
 
 export default function Footer() {
   const [email, setEmail] = useState('')
+  const [waitingListMessage, setWaitingListMessage] = useState<string | null>(null)
 
   const waitingListHref = `mailto:drferdiiskandar@melinda.co.id?subject=${encodeURIComponent(
     'Join Waiting List — Sentra Test Pilot'
   )}${email.trim() ? `&body=${encodeURIComponent(`Email: ${email.trim()}`)}` : ''}`
 
+  const emailIsValid = email.trim() === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
+
+  const handleJoinWaitingList = () => {
+    if (!emailIsValid) {
+      setWaitingListMessage('Masukkan alamat email yang valid sebelum membuka mail client.')
+      return
+    }
+
+    setWaitingListMessage('Membuka mail client dengan draft waiting list Sentra.')
+    window.location.href = waitingListHref
+  }
+
   return (
     <footer
       id="contact"
-      className="overflow-hidden"
+      className="overflow-hidden font-inter"
       style={{
         background: PLATE,
         color: INK,
-        fontFamily:
-          'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
       }}
     >
       {/* ═══ Giant Brand Name — full width, top of plate ═══ */}
@@ -69,7 +82,7 @@ export default function Footer() {
       <span className="sr-only">Sentra Healthcare Solutions</span>
 
       {/* ═══ Plate body: vast breathing room, then monogram + info column ═══ */}
-      <div className="px-6 md:px-12 mt-24 md:mt-[13vw]">
+      <div className={cn(layoutGovernance.sectionX, 'mt-16 md:mt-24 lg:mt-32')}>
         <div className="flex flex-col gap-16 lg:grid lg:grid-cols-[1fr_460px] lg:items-end">
           {/* Monogram — bottom-left, like a printer's mark */}
           <Monogram className="w-40 md:w-64 lg:w-80 lg:mb-2" />
@@ -101,27 +114,40 @@ export default function Footer() {
 
             {/* Waiting list */}
             <div>
-              <p className="text-[15px] font-semibold mb-3">
+              <p
+                className={cn(typeGovernance.bodySm, 'mb-3 text-[15px] font-semibold text-current')}
+              >
                 Gabung waiting list Test Pilot Season:
               </p>
               <div className="flex gap-3">
                 <input
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value)
+                    if (waitingListMessage) {
+                      setWaitingListMessage(null)
+                    }
+                  }}
                   placeholder="Alamat Email"
                   aria-label="Alamat email untuk waiting list"
                   className="min-w-0 flex-1 border bg-transparent px-3 py-2.5 text-[15px] font-semibold placeholder:opacity-60"
                   style={{ borderColor: INK, color: INK }}
                 />
-                <a
-                  href={waitingListHref}
+                <button
+                  type="button"
+                  onClick={handleJoinWaitingList}
                   className="shrink-0 border px-4 py-2.5 text-[15px] font-semibold whitespace-nowrap transition-colors hover:bg-[#111111] hover:text-[#e9fb5b]"
                   style={{ borderColor: INK }}
                 >
                   Join Waiting List
-                </a>
+                </button>
               </div>
+              {waitingListMessage ? (
+                <p className="mt-2 text-[12px] leading-relaxed text-current/75">
+                  {waitingListMessage}
+                </p>
+              ) : null}
             </div>
 
             {/* Stewardship statement */}

@@ -23,27 +23,27 @@ export function SimulationHero({
   selectedSeverity,
 }: SimulationHeroProps) {
   return (
-    <div className="max-w-[1440px] mx-auto text-center mb-16">
-      <p className="text-accent text-sm uppercase tracking-widest mb-4">Simulasi Langsung</p>
+    <div className="mx-auto mb-10 max-w-[1440px] text-center md:mb-12">
+      <p className="sentra-sim-kicker mb-4 text-accent uppercase">SIMULASI KLINIS LANGSUNG</p>
       <TextScramble
         key={`hero-title-${selectedSeverity}`}
         as="h2"
         duration={0.9}
         speed={0.03}
-        className="text-foreground text-[32px] md:text-[45px] font-bold mb-6"
+        className="sentra-sim-title mb-6 font-jakarta font-bold text-foreground"
       >
-        Lihat Bagaimana Sentra Memproses Cabang Severity Nyata
+        Dari Data Pasien ke Keputusan Klinis Terstruktur
       </TextScramble>
       <TextScramble
         key={`hero-copy-${selectedSeverity}`}
         as="p"
         duration={0.9}
         speed={0.025}
-        className="text-muted text-lg max-w-[720px] mx-auto mb-4"
+        className="sentra-sim-body mx-auto mb-4 max-w-[720px] text-muted"
       >
-        Pilih cabang severity untuk melihat bagaimana hasil vital, pemeriksaan penunjang, keputusan
-        diagnosis, disposition, obat, dan terapi berubah secara real-time berdasarkan tingkat
-        keparahan kasus.
+        Pilih tingkat keparahan kasus untuk melihat bagaimana Sentra Assist memproses tanda vital,
+        gejala, pemeriksaan penunjang, probabilitas diagnosis, terapi, dan disposisi secara
+        real-time.
       </TextScramble>
       <div className="mb-6 flex flex-wrap items-center justify-center gap-3">
         {(Object.entries(branches) as [SeverityKey, SimulationBranch][]).map(([key, branch]) => (
@@ -77,7 +77,7 @@ export function SimulationHero({
         as="p"
         duration={0.75}
         speed={0.024}
-        className="mb-8 text-sm uppercase tracking-[0.28em] text-muted"
+        className="sentra-sim-kicker mb-8 whitespace-pre-line text-muted uppercase tracking-[0.28em]"
       >
         {activeBranch.headline}
       </TextScramble>
@@ -140,10 +140,10 @@ export function SimulationHero({
 
         <span className="relative">
           {isComplete
-            ? 'Simulasi Selesai'
+            ? 'SIMULASI SELESAI'
             : isRunning
-              ? 'Memproses Kasus...'
-              : `Mulai Cabang ${activeBranch.label}`}
+              ? 'MEMPROSES KASUS...'
+              : `JALANKAN SIMULASI ${activeBranch.label}`}
         </span>
       </button>
     </div>

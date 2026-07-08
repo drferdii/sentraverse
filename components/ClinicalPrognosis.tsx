@@ -5,7 +5,6 @@ import { motion } from 'framer-motion'
 
 import {
   DOUGHNUT_SEGMENTS,
-  HEATMAP,
   JOURNEY,
   KPI_CARDS,
   RADAR_DATA,
@@ -60,21 +59,11 @@ export default function ClinicalPrognosis() {
   const guideY55 = mapY(55)
 
   return (
-    <div
-      className="rounded-2xl border border-muted/10 overflow-hidden"
-      style={{
-        background:
-          'linear-gradient(180deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.015) 100%)',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.03)',
-      }}
-    >
+    <div className="w-full min-w-0 overflow-hidden">
       {/* ═══ 2-COLUMN HORIZONTAL LAYOUT ═══ */}
-      <div className="grid lg:grid-cols-[38%_62%]">
+      <div className="grid lg:grid-cols-[33%_67%] gap-6">
         {/* ════════════ LEFT COLUMN — Title + Overview ════════════ */}
-        <div
-          className="p-5 flex flex-col gap-4 border-r border-muted/10"
-          style={{ background: 'rgba(255,255,255,0.015)' }}
-        >
+        <div className="flex flex-col gap-4">
           {/* Title header */}
           <div>
             <div className="flex items-center gap-2 mb-2">
@@ -283,7 +272,7 @@ export default function ClinicalPrognosis() {
         </div>
 
         {/* ════════════ RIGHT COLUMN — Charts ════════════ */}
-        <div className="p-5 flex flex-col gap-4">
+        <div className="flex flex-col gap-4">
           {/* Signal Risk Bar Chart */}
           <motion.div
             initial={{ opacity: 0, x: 15 }}
@@ -586,61 +575,6 @@ export default function ClinicalPrognosis() {
           </motion.div>
 
           {/* Risk Heatmap */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="rounded-lg p-4"
-            style={{
-              border: '1px solid rgba(255,255,255,0.1)',
-              background: 'rgba(255,255,255,0.025)',
-            }}
-          >
-            <span
-              className="text-[10px] tracking-[0.14em] uppercase block mb-3"
-              style={{ color: 'var(--sentra-accent)' }}
-            >
-              Peta Panas Risiko
-            </span>
-            <div className="flex flex-col">
-              {HEATMAP.map((item, i) => (
-                <div
-                  key={item.label}
-                  className="grid items-center gap-3 py-2"
-                  style={{
-                    gridTemplateColumns: '110px 1fr 36px',
-                    borderTop: i > 0 ? `1px solid ${scoreColor(item.score)}30` : 'none',
-                  }}
-                >
-                  <span className="text-[9px] text-foreground/80 tracking-[0.04em]">
-                    {item.label}
-                  </span>
-                  <div>
-                    <div className="h-1.5 rounded-full bg-muted/10 relative">
-                      <motion.div
-                        className="h-full rounded-full"
-                        style={{ background: scoreColor(item.score) }}
-                        initial={{ width: '0%' }}
-                        whileInView={{ width: `${item.score}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: 0.7 + i * 0.06 }}
-                      />
-                    </div>
-                    <span className="text-[7px] text-muted mt-0.5 block leading-tight">
-                      {item.note}
-                    </span>
-                  </div>
-                  <span
-                    className="text-[11px] font-semibold text-right"
-                    style={{ color: solidScoreColor(item.score) }}
-                  >
-                    {item.score}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
         </div>
       </div>
     </div>

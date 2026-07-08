@@ -8,7 +8,7 @@ export default function OGImage() {
   return new ImageResponse(
     <div
       style={{
-        background: '#0d0d0d',
+        background: '#1e1e1e',
         width: '100%',
         height: '100%',
         display: 'flex',

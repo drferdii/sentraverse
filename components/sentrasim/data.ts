@@ -17,11 +17,7 @@ import type {
 export const FINAL_ANAMNESA_TEXT =
   'demam tinggi, batuk produktif kehijauan, sesak saat aktivitas ringan, dan nyeri dada kanan saat batuk'
 
-const CASE_METADATA = [
-  'Perempuan, 46 tahun',
-  'Keluhan sejak 3 hari',
-  'Triage prioritas kuning',
-] as const
+const CASE_METADATA = ['PEREMPUAN, 46 TAHUN', 'KELUHAN SEJAK 3 HARI', 'TRIASE KUNING'] as const
 
 const DIRECTED_HISTORY = [
   'Demam mencapai 38.8 C, menggigil, dan dahak berubah menjadi mukopurulen.',
@@ -162,7 +158,7 @@ const MEDICATION_ORDERS: readonly MedicationOrder[] = [
 ]
 
 const MILD_BRANCH: SimulationBranch = {
-  label: 'Ringan',
+  label: 'RINGAN',
   severityLabel: 'CAP Ringan',
   headline: 'Rawat jalan dengan monitoring ketat',
   finalAnamnesaText: 'demam, batuk berdahak, dan nyeri dada ringan saat batuk',
@@ -291,7 +287,7 @@ const MILD_BRANCH: SimulationBranch = {
 }
 
 const SEVERE_BRANCH: SimulationBranch = {
-  label: 'Berat',
+  label: 'BERAT',
   severityLabel: 'CAP Berat',
   headline: 'Rawat inap intensif dengan bundle sepsis/respirasi',
   finalAnamnesaText:
@@ -431,9 +427,10 @@ const SEVERE_BRANCH: SimulationBranch = {
 export const SIMULATION_BRANCHES: Record<SeverityKey, SimulationBranch> = {
   ringan: MILD_BRANCH,
   sedang: {
-    label: 'Sedang',
+    label: 'SEDANG',
     severityLabel: 'CAP Sedang',
-    headline: 'Observasi/rawat inap dengan antibiotik dan oksigen',
+    headline:
+      'ARAH KEPUTUSAN KLINIS:\nOBSERVASI KETAT · OKSIGEN · ANTIBIOTIK EMPIRIS · EVALUASI RAWAT INAP',
     finalAnamnesaText: FINAL_ANAMNESA_TEXT,
     caseMetadata: CASE_METADATA,
     directedHistory: DIRECTED_HISTORY,
