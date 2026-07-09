@@ -2,6 +2,7 @@
 // [APPROVED]
 import type { Metadata } from 'next'
 import { Inter, Plus_Jakarta_Sans } from 'next/font/google'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 import { MotionProvider } from '@/components/MotionProvider'
 import SmoothScrollProvider from '@/components/SmoothScrollProvider'
@@ -156,6 +157,7 @@ export default function RootLayout({
         />
         <SmoothScrollProvider />
         <MotionProvider>{children}</MotionProvider>
+        <SpeedInsights />
       </body>
     </html>
   )
