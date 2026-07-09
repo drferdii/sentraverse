@@ -4,22 +4,28 @@
 
 import { Menu, ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { SentraKineticNav } from '@/components/ui/sentra-kinetic-nav'
 import { siteLinks } from '@/lib/site-links'
+import { cn } from '@/lib/utils'
 
+// Semua halaman nyata (route). Section anchor homepage (About/Services/Audrey)
+// tetap dapat dijangkau lewat menu overlay + scroll.
 const navLinks = [
-  { name: 'Home', href: siteLinks.home },
-  { name: 'About', href: siteLinks.about },
-  { name: 'Services', href: siteLinks.services },
-  { name: 'Audrey', href: siteLinks.audrey },
+  { name: 'Home', href: '/' },
+  { name: 'Story', href: siteLinks.story },
   { name: 'Insights', href: siteLinks.insights },
+  { name: 'Sentrapedia', href: siteLinks.sentrapedia },
+  { name: 'Ekosistem', href: siteLinks.ekosistem },
+  { name: 'SentraWiki', href: siteLinks.sentrawiki },
 ]
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,26 +64,34 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop Links */}
-          <div className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="text-sm font-medium text-muted hover:text-accent transition-colors"
-              >
-                {link.name}
-              </Link>
-            ))}
+          {/* Desktop Links — semua halaman + indikator halaman aktif */}
+          <div className="hidden lg:flex items-center gap-6">
+            {navLinks.map((link) => {
+              const isActive =
+                link.href === '/' ? pathname === '/' : !!pathname?.startsWith(link.href)
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={cn(
+                    'relative text-sm font-medium transition-colors',
+                    isActive ? 'text-foreground' : 'text-muted hover:text-accent'
+                  )}
+                >
+                  {link.name}
+                  {isActive && (
+                    <span className="absolute -bottom-1.5 left-0 h-px w-full bg-accent" />
+                  )}
+                </Link>
+              )
+            })}
             <Link
               href={siteLinks.contact}
-              className="group flex items-center gap-1 text-sm font-medium text-muted hover:text-accent transition-all"
+              className="group ml-1 inline-flex items-center gap-1.5 rounded-full border border-accent/30 px-4 py-1.5 text-sm font-medium text-accent/90 transition-all hover:border-accent/60 hover:bg-accent/10 hover:text-accent"
             >
               Get Started
-              <ArrowUpRight
-                size={14}
-                className="opacity-0 group-hover:opacity-100 transition-opacity"
-              />
+              <ArrowUpRight size={14} />
             </Link>
           </div>
 

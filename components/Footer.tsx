@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import { Reveal } from '@/components/ui/reveal'
-import { SketchLines } from '@/components/ui/sketch-lines'
 import { layoutGovernance, typeGovernance } from '@/lib/design-governance'
 import { siteLinks } from '@/lib/site-links'
 import { cn } from '@/lib/utils'
@@ -18,8 +17,8 @@ const PLATE = '#e9fb5b'
 const CONTACT_LINES = [
   {
     label: 'Email',
-    value: 'drferdiiskandar@melinda.co.id',
-    href: 'mailto:drferdiiskandar@melinda.co.id',
+    value: 'drferdiiskandar@sentrahai.com',
+    href: 'mailto:drferdiiskandar@sentrahai.com',
   },
   { label: 'Instagram', value: '@sentraai', href: 'https://instagram.com/sentraai' },
   { label: 'LinkedIn', value: 'sentra-ai', href: 'https://linkedin.com/company/sentra-ai' },
@@ -46,7 +45,7 @@ export default function Footer() {
   const [email, setEmail] = useState('')
   const [waitingListMessage, setWaitingListMessage] = useState<string | null>(null)
 
-  const waitingListHref = `mailto:drferdiiskandar@melinda.co.id?subject=${encodeURIComponent(
+  const waitingListHref = `mailto:drferdiiskandar@sentrahai.com?subject=${encodeURIComponent(
     'Join Waiting List — Sentra Test Pilot'
   )}${email.trim() ? `&body=${encodeURIComponent(`Email: ${email.trim()}`)}` : ''}`
 
@@ -84,7 +83,6 @@ export default function Footer() {
 
       {/* ═══ Plate body: vast breathing room, then monogram + info column ═══ */}
       <div className={cn(layoutGovernance.sectionX, 'relative mt-16 md:mt-24 lg:mt-32')}>
-        <SketchLines seed={20260709} count={10} colorClass="bg-[#111111]/25" persist />
         <div className="flex flex-col gap-16 lg:grid lg:grid-cols-[1fr_460px] lg:items-end">
           {/* Monogram — bottom-left, like a printer's mark */}
           <Monogram className="w-40 md:w-64 lg:w-80 lg:mb-2" />
@@ -156,24 +154,26 @@ export default function Footer() {
             <div className="border-t pt-4 flex flex-col gap-3" style={{ borderColor: INK }}>
               <p className="text-[15px] font-semibold leading-relaxed">
                 Sentra dikembangkan dalam lingkungan klinis RSIA Melinda DHAI, Kediri, dengan
-                prinsip dasar yang tidak dapat dikompromikan:{' '}
-                <strong>Human as the Pilot, AI as the Copilot</strong>.
+                prinsip utama yang tidak dapat dikompromikan:{' '}
+                <strong>Guided by Human Insight, Powered by Artificial Intelligence</strong>.
               </p>
               <p className="text-[15px] font-semibold leading-relaxed">
                 Sentra dirancang untuk mendukung proses kerja klinis, memperkuat kewaspadaan
-                terhadap risiko, dan membantu tenaga medis mengambil keputusan secara lebih cepat,
-                terstruktur, dan berbasis data. Namun, keputusan medis akhir tetap sepenuhnya berada
-                di tangan tenaga medis yang berwenang.
+                terhadap risiko, serta membantu tenaga medis dalam mengambil keputusan secara lebih
+                cepat, terstruktur, dan berbasis data. Namun demikian, keputusan medis akhir tetap
+                sepenuhnya berada di tangan tenaga medis yang berwenang.
               </p>
             </div>
 
             {/* Disclaimer medis/regulasi */}
             <div>
               <p className="text-[12px] leading-relaxed text-current/70">
-                Sentra AI merupakan alat bantu keputusan klinis (clinical decision support), bukan
-                pengganti penilaian medis profesional dan belum terdaftar sebagai alat kesehatan
-                resmi. Seluruh keputusan diagnostik dan terapeutik tetap menjadi tanggung jawab
-                tenaga medis berwenang.
+                Sentra AI berfungsi sebagai{' '}
+                <strong className="font-semibold">clinical decision support system</strong>, yaitu
+                alat bantu dalam proses pengambilan keputusan klinis. Sentra bukan pengganti
+                penilaian medis profesional dan belum terdaftar sebagai alat kesehatan resmi. Oleh
+                karena itu, seluruh keputusan diagnostik, terapeutik, dan tindak lanjut klinis tetap
+                menjadi tanggung jawab penuh tenaga medis yang berwenang.
               </p>
             </div>
           </div>

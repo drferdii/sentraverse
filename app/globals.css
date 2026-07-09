@@ -132,6 +132,38 @@
   --sdx-grid-faint: rgba(184, 172, 153, 0.03);
 }
 
+/* ------------------------------------------------------------
+   WIKI PAPER — scoped "kertas krem" untuk artikel SentraWiki.
+   Membalik token ke tinta navy di atas krem (aturan: bg terang
+   → tinta hardcoded). Accent orange dipertahankan sebagai pop.
+   Semua utility text-foreground/bg-background/text-muted di dalam
+   scope ini otomatis resolve ke palet terang tanpa rewrite.
+   ------------------------------------------------------------ */
+[data-wiki-paper] {
+  color-scheme: light;
+
+  /* Utility Tailwind (bg-background/text-foreground/text-muted) membaca token
+     --color-*. Token itu ter-resolve dari var(--sentra-*) DI :root lalu nilai
+     final diwariskan; jadi override --sentra-* lokal tidak cukup — --color-*
+     harus di-set nilai literal langsung di sini agar diwariskan benar. */
+  --color-background: #f2ebe0;
+  --color-foreground: #002147;
+  --color-muted: #002147b3;
+  --color-primary: #002147;
+
+  /* Sinkron juga --sentra-* untuk komponen yang memakai var(--sentra-*) langsung. */
+  --sentra-bg: #f2ebe0;
+  --sentra-fg: #002147;
+  --sentra-primary: #002147;
+  --sentra-white: #fff;
+  --sentra-muted: #002147;
+  --sentra-muted-text: #002147b3;
+  --sentra-muted-half: #00214780;
+  --sentra-muted-subtle: #00214733;
+  --sentra-muted-faint: #0021471a;
+  --sentra-muted-line: #00214726;
+}
+
 /* Compact density variables for the embedded clinical screen. */
 .sentra-sim-density-compact {
   --sim-hero-gap: 2.5rem;

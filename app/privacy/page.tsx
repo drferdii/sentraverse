@@ -126,10 +126,10 @@ export default function PrivacyPage() {
             <p>
               Untuk pertanyaan terkait privasi, hubungi kami di:{' '}
               <a
-                href="mailto:drferdiiskandar@melinda.co.id"
+                href="mailto:drferdiiskandar@sentrahai.com"
                 className="text-accent hover:underline"
               >
-                drferdiiskandar@melinda.co.id
+                drferdiiskandar@sentrahai.com
               </a>
             </p>
             <p className="mt-2">

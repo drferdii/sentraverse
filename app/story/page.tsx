@@ -32,6 +32,7 @@ import Link from 'next/link'
 import type React from 'react'
 import { useRef } from 'react'
 
+import Footer from '@/components/Footer'
 import { CountUp } from '@/components/ui/count-up'
 
 /* ─── Scroll Reveal ─────────────────────────────────────────── */
@@ -1593,15 +1594,8 @@ export default function StoryPage() {
         </div>
       </section>
 
-      {/* ─── FOOTER ────────────────────────────────────────── */}
-      <footer className="py-10 max-w-[1440px] mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="font-jakarta text-sm font-bold text-muted tracking-tight">
-          Sentra<span className="text-accent ml-0.5">.</span> Healthcare AI
-        </div>
-        <div className="text-xs text-muted/50">
-          &copy; 2026 Sentra Healthcare Solutions. Part of RSIA Melinda DHAI.
-        </div>
-      </footer>
+      {/* ─── FOOTER (branded, konsisten dengan situs) ──────── */}
+      <Footer />
     </main>
   )
 }

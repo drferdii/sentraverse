@@ -162,6 +162,7 @@ export function CodeTerminal({ simulation }: CodeTerminalProps) {
         flexDirection: 'column',
         height: '100%',
         minHeight: 480,
+        maxHeight: 480,
         border: '1px solid #3a3a3a',
         borderRadius: 8,
         background: '#1e1e1e',

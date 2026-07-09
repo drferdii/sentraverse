@@ -36,6 +36,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: 'https://sentrahai.com/sentrapedia',
+      lastModified: SITE_LAST_MODIFIED,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://sentrahai.com/ekosistem',
+      lastModified: SITE_LAST_MODIFIED,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: 'https://sentrahai.com/sentrawiki',
+      lastModified: SITE_LAST_MODIFIED,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
       url: 'https://sentrahai.com/privacy',
       lastModified: LEGAL_LAST_MODIFIED,
       changeFrequency: 'yearly',

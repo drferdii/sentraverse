@@ -124,10 +124,10 @@ export default function TermsPage() {
             <p>
               Untuk pertanyaan terkait syarat dan ketentuan ini, hubungi:{' '}
               <a
-                href="mailto:drferdiiskandar@melinda.co.id"
+                href="mailto:drferdiiskandar@sentrahai.com"
                 className="text-accent hover:underline"
               >
-                drferdiiskandar@melinda.co.id
+                drferdiiskandar@sentrahai.com
               </a>
             </p>
             <p className="mt-2">

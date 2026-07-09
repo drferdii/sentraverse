@@ -13,11 +13,17 @@ interface SentraKineticNavProps {
 }
 
 // --- Menu Items ---
+// Menu global: seluruh halaman. Anchor section di-prefix '/' agar tetap
+// menuju homepage lalu scroll, berfungsi dari halaman mana pun.
 const menuItems = [
-  { label: 'Our Story', href: '/story', shape: '1' },
-  { label: 'Services', href: '#services', shape: '2' },
-  { label: 'Audrey', href: '#audrey', shape: '3' },
-  { label: 'Insights', href: '#insights', shape: '4' },
+  { label: 'Home', href: '/' },
+  { label: 'Our Story', href: '/story' },
+  { label: 'Insights', href: '/insights' },
+  { label: 'Sentrapedia', href: '/sentrapedia' },
+  { label: 'Ekosistem', href: '/ekosistem' },
+  { label: 'SentraWiki', href: '/sentrawiki' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Audrey', href: '/#audrey' },
 ]
 
 // --- Main Component ---
@@ -86,7 +92,6 @@ export function SentraKineticNav({ isOpen, onClose }: SentraKineticNavProps) {
 
         item.addEventListener('mouseenter', onEnter)
         item.addEventListener('mouseleave', onLeave)
-
         ;(item as HTMLElement & { _cleanup?: () => void })._cleanup = () => {
           item.removeEventListener('mouseenter', onEnter)
           item.removeEventListener('mouseleave', onLeave)
@@ -174,7 +179,12 @@ export function SentraKineticNav({ isOpen, onClose }: SentraKineticNavProps) {
   }, [])
 
   return (
-    <div ref={containerRef}>
+    // Inline z-index (bukan class): `body > * { position: relative; z-index: 1 }`
+    // di globals.css meng-cap tiap anak <body> ke z-1 dan MENGALAHKAN utility
+    // (un-layered > layered). Container menu ini anak <body>, jadi tanpa ini
+    // <main>/<footer> yang datang belakangan di DOM menimpa overlay menu.
+    // Inline style menang atas rule un-layered itu → overlay naik ke atas.
+    <div ref={containerRef} style={{ position: 'relative', zIndex: 200 }}>
       {/* Wrapper — fixed fullscreen */}
       <div
         data-nav-wrapper
@@ -306,18 +316,18 @@ export function SentraKineticNav({ isOpen, onClose }: SentraKineticNavProps) {
           </button>
 
           {/* Menu Content */}
-          <div className="relative z-10 flex flex-col justify-center h-full px-6 sm:px-10 pt-20 pb-8">
+          <div className="relative z-10 flex flex-col justify-center min-h-full px-6 sm:px-10 pt-24 pb-8">
             {/* Links */}
-            <ul className="list-none m-0 p-0 flex flex-col gap-1">
-              {menuItems.map((item) => (
-                <li key={item.label} className="overflow-hidden" data-shape={item.shape}>
+            <ul className="list-none m-0 p-0 flex flex-col gap-0.5">
+              {menuItems.map((item, idx) => (
+                <li key={item.label} className="overflow-hidden" data-shape={String((idx % 4) + 1)}>
                   <Link
                     href={item.href}
                     data-nav-link
-                    className="block relative py-2 px-3 rounded-lg no-underline group"
+                    className="block relative py-1.5 px-3 rounded-lg no-underline group"
                     onClick={handleLinkClick}
                   >
-                    <span className="relative z-[2] block font-jakarta font-bold text-foreground group-hover:text-accent transition-colors duration-300 text-[clamp(2.5rem,5vw,4rem)] leading-[1.15]">
+                    <span className="relative z-[2] block font-jakarta font-bold text-foreground group-hover:text-accent transition-colors duration-300 text-[clamp(1.75rem,4vw,3rem)] leading-[1.15]">
                       {item.label}
                     </span>
                     <div className="absolute inset-0 bg-accent/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -332,19 +342,28 @@ export function SentraKineticNav({ isOpen, onClose }: SentraKineticNavProps) {
                 <p className="text-[0.7rem] font-bold uppercase tracking-[0.15em] text-accent m-0">
                   Email
                 </p>
-                <p className="text-sm text-muted m-0">drferdiiskandar@melinda.co.id</p>
+                <a
+                  href="mailto:drferdiiskandar@sentrahai.com"
+                  className="text-sm text-muted m-0 transition-colors hover:text-accent"
+                >
+                  drferdiiskandar@sentrahai.com
+                </a>
               </div>
               <div className="flex flex-col gap-0.5 mb-4">
                 <p className="text-[0.7rem] font-bold uppercase tracking-[0.15em] text-accent m-0">
                   Lokasi
                 </p>
-                <p className="text-sm text-muted m-0">
-                  Laboratorium Technology RSIA Melinda DHAI, Kediri, Jawa Timur, Indonesia
+                <p className="text-sm text-muted m-0 leading-relaxed">
+                  Melinda Advanced Technology Laboratory
+                  <br />
+                  RSIA Melinda DHAI
+                  <br />
+                  Kediri, Jawa Timur, Indonesia
                 </p>
               </div>
               <div className="h-px bg-foreground/10 my-5" />
               <p className="text-xs text-foreground/30 m-0">
-                &copy;2026 Sentra Healthcare Solutions
+                &copy;2026 Sentra Healthcare Solutions. All rights reserved.
               </p>
             </div>
           </div>

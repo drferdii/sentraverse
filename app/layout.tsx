@@ -92,7 +92,7 @@ const jsonLd = {
         addressRegion: 'Jawa Timur',
         addressCountry: 'ID',
       },
-      email: 'drferdiiskandar@melinda.co.id',
+      email: 'drferdiiskandar@sentrahai.com',
       sameAs: [
         'https://linkedin.com/company/sentra-ai',
         'https://github.com/sentraai',

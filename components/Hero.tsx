@@ -2,9 +2,10 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
+import gsap from 'gsap'
 import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
-import { type ReactNode, useEffect, useState } from 'react'
+import { type ReactNode, useEffect, useRef, useState } from 'react'
 
 import { SketchLines } from '@/components/ui/sketch-lines'
 import { getPilotLoginHref, layoutGovernance, typeGovernance } from '@/lib/design-governance'
@@ -104,6 +105,118 @@ function Divider({ text, color = 'var(--sentra-audrey-teal)' }: { text: string; 
         style={{ background: `color-mix(in srgb, ${color} 15%, transparent)` }}
       />
     </div>
+  )
+}
+
+// --- Kata kunci judul yang berganti (GSAP slide-up) ---
+const TITLE_WORDS = ['Cepat', 'Presisi', 'Terstruktur', 'Aman']
+
+function RotatingWord() {
+  const ref = useRef<HTMLSpanElement>(null)
+  const [idx, setIdx] = useState(0)
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const id = setInterval(() => setIdx((p) => (p + 1) % TITLE_WORDS.length), 2600)
+    return () => clearInterval(id)
+  }, [])
+
+  useEffect(() => {
+    if (!ref.current) return
+    // Crossfade-rise (tanpa overflow clip agar ekor huruf tidak terpotong).
+    const tween = gsap.fromTo(
+      ref.current,
+      { y: 14, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }
+    )
+    return () => {
+      tween.kill()
+    }
+  }, [idx])
+
+  return (
+    <span ref={ref} className="inline-block text-accent">
+      {TITLE_WORDS[idx]}
+    </span>
+  )
+}
+
+// --- Metrik count-up (GSAP, dipicu saat masuk viewport) ---
+const METRICS: { label: string; value: number; suffix?: string }[] = [
+  { label: 'Rekam Medis', value: 45030 },
+  { label: 'Entitas Penyakit', value: 159 },
+  { label: 'Pemetaan ICD-10', value: 1930 },
+  { label: 'Safety Gate', value: 8 },
+]
+
+// Format ribuan deterministik (titik) — hindari mismatch locale SSR/klien.
+function formatCount(n: number) {
+  return Math.round(n)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+}
+
+function MetricCounter({ value, suffix = '' }: { value: number; suffix?: string }) {
+  const ref = useRef<HTMLSpanElement>(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.textContent = formatCount(value) + suffix
+      return
+    }
+    const proxy = { n: 0 }
+    let tween: gsap.core.Tween | null = null
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return
+        io.disconnect()
+        tween = gsap.to(proxy, {
+          n: value,
+          duration: 1.6,
+          ease: 'power2.out',
+          onUpdate: () => {
+            el.textContent = formatCount(proxy.n) + suffix
+          },
+        })
+      },
+      { threshold: 0.4 }
+    )
+    io.observe(el)
+    return () => {
+      io.disconnect()
+      tween?.kill()
+    }
+  }, [value, suffix])
+
+  return <span ref={ref}>0{suffix}</span>
+}
+
+// --- Scan-line ambient (GSAP): hairline menyapu pelan di latar hero ---
+function HeroScanLine() {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const tween = gsap.fromTo(
+      el,
+      { left: '-2%' },
+      { left: '102%', duration: 8, ease: 'none', repeat: -1, repeatDelay: 1.6 }
+    )
+    return () => {
+      tween.kill()
+    }
+  }, [])
+
+  return (
+    <div
+      ref={ref}
+      aria-hidden="true"
+      className="pointer-events-none absolute top-0 bottom-0 left-0 z-0 w-px bg-accent/15"
+    />
   )
 }
 
@@ -446,6 +559,7 @@ export default function Hero() {
         layoutGovernance.sectionY.hero
       )}
     >
+      <HeroScanLine />
       <div className={cn('relative', layoutGovernance.container.wide, layoutGovernance.sectionX)}>
         <div className="grid lg:grid-cols-[1fr_480px] gap-12 items-start">
           {/* Left Side — Text */}
@@ -496,13 +610,32 @@ export default function Hero() {
                   'max-w-[980px] text-[42px] sm:text-[52px] md:text-[76px] lg:text-[84px] xl:text-[92px] leading-[0.92]'
                 )}
               >
-                Bantu Dokter Ambil Keputusan Klinis Lebih Cepat & Presisi
+                Bantu Dokter Ambil Keputusan Klinis{' '}
+                <span className="whitespace-nowrap">
+                  Lebih <RotatingWord />
+                </span>
               </h1>
               <p className={cn(typeGovernance.editorialBody, 'max-w-[720px] text-base md:text-xl')}>
                 Sentra membaca keluhan pasien, menghitung kemungkinan diagnosis, dan menyiapkan
                 rekomendasi — dalam hitungan detik. Dokter tetap yang memutuskan, Sentra yang
                 mempercepat prosesnya. Hadir 2026 untuk fasilitas kesehatan Indonesia.
               </p>
+            </div>
+
+            {/* Ticker metrik — count-up saat masuk viewport */}
+            <div className="sentra-load-reveal sentra-load-reveal--d2 border-t border-muted/15 pt-6">
+              <div className="grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4">
+                {METRICS.map((m) => (
+                  <div key={m.label} className="flex flex-col gap-1.5">
+                    <span className="font-jakarta text-[26px] font-bold leading-none text-foreground tabular-nums md:text-[32px]">
+                      <MetricCounter value={m.value} suffix={m.suffix} />
+                    </span>
+                    <span className="font-jakarta text-[10px] font-bold uppercase tracking-[0.14em] text-muted/70">
+                      {m.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* CTA — Baca Cerita Kami + Tes Pilot Login */}
@@ -535,8 +668,8 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right Side — Konsultasi Card */}
-          <div className="hidden lg:block sticky top-32">
+          {/* Right Side — Konsultasi Card (kini tampil juga di mobile) */}
+          <div className="w-full lg:sticky lg:top-32">
             <KonsultasiCard />
           </div>
         </div>
