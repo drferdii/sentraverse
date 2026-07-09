@@ -18,10 +18,8 @@ export default function Interlude() {
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setShown(true)
-      return
-    }
+    // Reduced-motion ditangani via CSS (motion-reduce: di className) — bukan
+    // setState sinkron di badan effect (react-hooks/set-state-in-effect).
     const io = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
@@ -46,7 +44,9 @@ export default function Interlude() {
           layoutGovernance.container.wide,
           layoutGovernance.sectionX,
           'flex flex-col items-center text-center transition-all duration-700 ease-out',
-          shown ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+          shown ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0',
+          // Pengguna reduce-motion: langsung terlihat penuh, tanpa transisi.
+          'motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none'
         )}
       >
         <p className={typeGovernance.eyebrow}>Dari Simulasi ke Cetak Biru</p>
