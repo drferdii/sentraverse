@@ -1,270 +1,855 @@
 <div align="center">
 
-# Sentraverse
+<p>
+  <img src="https://i.postimg.cc/5yRHPkRV/sentraverse-logo.png" alt="Sentraverse official logo" width="170" />
+</p>
 
-### _Official website of Sentra Healthcare AI — clinical decision support for Indonesian primary care_
+### The official product universe of Sentra Healthcare AI
 
-[![Next.js](https://img.shields.io/badge/Next.js-16.2-black?style=flat-square&logo=next.js)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.2-06B6D4?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
-[![GSAP](https://img.shields.io/badge/GSAP-3.14-88CE02?style=flat-square)](https://gsap.com/)
-[![Framer Motion](https://img.shields.io/badge/Framer_Motion-12-BB4BFF?style=flat-square&logo=framer)](https://www.framer.com/motion/)
-[![Playwright](https://img.shields.io/badge/Playwright-e2e-2EAD33?style=flat-square&logo=playwright)](https://playwright.dev/)
-[![License: ISC](https://img.shields.io/badge/License-ISC-blue?style=flat-square)](./LICENSE)
+### Clinical intelligence for Indonesia’s frontline healthcare system
 
-**[sentrahai.com](https://sentrahai.com)** &nbsp;·&nbsp;
-**[Report a Bug](https://github.com/drferdii/sentraverse/issues)** &nbsp;·&nbsp;
-**[Request a Feature](https://github.com/drferdii/sentraverse/issues)**
+<p>
+  <img src="https://img.shields.io/badge/Surface-Sentraverse-EB5939?style=for-the-badge" alt="Surface badge" />
+  <img src="https://img.shields.io/badge/Mission-Indonesian%20Primary%20Care-4A7BB5?style=for-the-badge" alt="Mission badge" />
+  <img src="https://img.shields.io/badge/Posture-Clinical%20Decision%20Support-10B981?style=for-the-badge" alt="CDSS badge" />
+  <img src="https://img.shields.io/badge/Stack-Next.js%2016-111827?style=for-the-badge&logo=nextdotjs" alt="Next.js badge" />
+  <img src="https://img.shields.io/badge/UI-React%2019-61DAFB?style=for-the-badge&logo=react&logoColor=111111" alt="React badge" />
+  <img src="https://img.shields.io/badge/Language-TypeScript%205.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript badge" />
+  <img src="https://img.shields.io/badge/Styling-Tailwind%20CSS%20v4-38BDF8?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind badge" />
+  <img src="https://img.shields.io/badge/Motion-GSAP%20%2B%20Framer%20Motion-88CE02?style=for-the-badge" alt="Motion badge" />
+  <img src="https://img.shields.io/badge/Test-Playwright-2EAD33?style=for-the-badge&logo=playwright&logoColor=white" alt="Playwright badge" />
+  <img src="https://img.shields.io/badge/License-ISC-F59E0B?style=for-the-badge" alt="License badge" />
+</p>
 
-<br/>
+<p>
+  <strong>Sentraverse</strong> is the official website, product narrative layer, and public knowledge surface for <strong>Sentra Healthcare AI</strong>.
+  It translates clinical intelligence, founder vision, medical governance, product architecture, and Indonesian primary-care workflow into one coherent digital universe.
+</p>
 
-> _Guided by Human Insight, Powered by Artificial Intelligence._
+<p>
+  <strong>Guided by Human Insight, Powered by Artificial Intelligence.</strong>
+</p>
+
+<p>
+  <a href="https://sentrahai.com"><strong>Website</strong></a>
+  ·
+  <a href="#system-map"><strong>System Map</strong></a>
+  ·
+  <a href="#clinical-ai-boundary"><strong>Clinical Boundary</strong></a>
+  ·
+  <a href="#testing-and-governance"><strong>Governance</strong></a>
+  ·
+  <a href="#contact"><strong>Contact</strong></a>
+</p>
 
 </div>
 
 ---
 
-## Table of Contents
+## Executive Summary
 
-1. [Overview](#1-overview)
-2. [Pages](#2-pages)
-3. [Homepage Sections](#3-homepage-sections)
-4. [Key Features](#4-key-features)
-5. [Design System](#5-design-system)
-6. [Tech Stack](#6-tech-stack)
-7. [Project Structure](#7-project-structure)
-8. [Getting Started](#8-getting-started)
-9. [Scripts](#9-scripts)
-10. [Configuration](#10-configuration)
-11. [Testing](#11-testing)
-12. [SEO & Discoverability](#12-seo--discoverability)
-13. [Documentation](#13-documentation)
-14. [Medical Disclaimer](#14-medical-disclaimer)
-15. [License](#15-license)
-16. [Contact](#16-contact)
+**Sentraverse** is the official marketing, product, and knowledge hub for
+**Sentra Healthcare AI**.
+
+It is not a generic corporate website. It is the public trust layer for a
+clinical-AI ecosystem designed for Indonesian primary care: **Puskesmas**,
+**klinik pratama**, referral hospitals, clinicians, healthcare operators,
+public-sector stakeholders, and technical partners.
+
+Sentraverse connects six strategic surfaces inside one coherent website:
+
+| Surface               | Route          | Function                                                 |
+| --------------------- | -------------- | -------------------------------------------------------- |
+| Clinical-AI Landing   | `/`            | Main product narrative and scroll-driven introduction    |
+| Founder Story         | `/story`       | Founder journey, product milestones, and roadmap         |
+| Clinical-AI Editorial | `/insights`    | Thought leadership and article index                     |
+| Sentrapedia           | `/sentrapedia` | 144-disease primary-care clinical reference              |
+| Sentra Ecosystem      | `/ekosistem`   | Product ecosystem and application catalog                |
+| SentraWiki            | `/sentrawiki`  | Architecture, governance, compliance, and knowledge base |
+
+The center of gravity is simple:
+
+> Sentraverse explains why Sentra exists, how it supports clinical work, where
+> its boundaries are, and why it matters for Indonesia’s frontline healthcare
+> system.
 
 ---
 
-## 1. Overview
+## Product Thesis
 
-**Sentraverse** is the marketing and product hub for **Sentra Healthcare AI** —
-an AI-powered clinical decision support (CDSS) platform built for Indonesian
-primary care: Puskesmas, klinik pratama, and referral hospitals. The site
-presents the Sentra product ecosystem through a scroll-driven, editorial dark
-experience — pinned GSAP storytelling, a live clinical simulation, a 144-disease
-clinical reference, and a structured knowledge base.
+> A clinical-AI product does not earn trust through animation alone. It earns
+> trust by making its purpose, workflow, safety posture, and governance legible.
 
-The site communicates a single thesis: fragmented patient data, manual
-administrative burden, and slow clinical decision-making are solvable problems —
-and Sentra's engine suite is engineered specifically for Indonesia's national
-healthcare ecosystem (SATUSEHAT, BPJS P-Care, SIMRS).
+Sentraverse is built to answer four strategic questions:
 
-Founded and developed by **dr. Ferdi Iskandar** at RSIA Melinda DHAI, Kediri,
-under one uncompromising principle: **Guided by Human Insight, Powered by
-Artificial Intelligence.**
+| Strategic Question            | Sentraverse Answer                                                                                |
+| ----------------------------- | ------------------------------------------------------------------------------------------------- |
+| What is Sentra Healthcare AI? | A workflow-native clinical intelligence layer for Indonesian healthcare                           |
+| Why does it matter?           | It reduces fragmented information, slow escalation, and administrative burden                     |
+| How does the product think?   | Through triage intelligence, clinical trajectory, reference knowledge, and governed AI assistance |
+| How is safety protected?      | By positioning Sentra as clinical decision support, not a replacement for licensed clinicians     |
 
-## 2. Pages
+---
 
-| Route                 | Rendering | Description                                                                                                                      |
-| --------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `/`                   | Static    | Landing — 15-section scroll experience (see [Homepage Sections](#3-homepage-sections))                                           |
-| `/story`              | Static    | Founder & product story — animated milestones, product timeline, roadmap                                                         |
-| `/insights`           | Static    | Clinical-AI editorial — Substack-style article index (canonical articles on Medium/Substack)                                     |
-| `/sentrapedia`        | Static    | Clinical reference — **144 diseases** for primary care with search, category filter, and slide-in detail panel                   |
-| `/ekosistem`          | Static    | Product ecosystem — 14 Sentra products with status filter, plus real application catalog per domain                              |
-| `/sentrawiki`         | Static    | Knowledge base — Abyss architecture, five crown-jewel engines, governance & compliance, rendered on a scoped light "paper" theme |
-| `/privacy` · `/terms` | Static    | Legal pages                                                                                                                      |
-| `/api/*`              | Edge/Node | Supporting API routes (medical knowledge, assistant integrations)                                                                |
+## Sentra Design Language
 
-## 3. Homepage Sections
+Sentraverse follows the **Sentra Healthcare AI** design language: clinical,
+editorial, architectural, precise, and memorable.
 
-Rendered in order on `/` (`app/page.tsx`):
+| Element         | Direction                                                                     |
+| --------------- | ----------------------------------------------------------------------------- |
+| Visual tone     | Dark editorial clinical command center                                        |
+| Background      | Charcoal, warm ink, cream plates, and intentional high-contrast sections      |
+| Accent          | Red-orange, Oxford blue, violet, amber, emerald, and sky                      |
+| Typography      | Strong display headings, readable body copy, mono labels for system signals   |
+| Component shape | Thin-border cards, clinical panels, tactical badges, product command surfaces |
+| Motion          | Used for sequence, explanation, and orientation — never empty decoration      |
+| AI posture      | Supports clinical reasoning; does not replace professional judgment           |
+| Safety posture  | Clinical claims must remain bounded, transparent, and governed                |
 
-| #   | Section            | What it does                                                                                                 |
-| --- | ------------------ | ------------------------------------------------------------------------------------------------------------ |
-| 1   | **Hero**           | Rotating headline keyword (GSAP), count-up metrics, live 4-phase Audrey consultation card, ambient scan-line |
-| 2   | **ProjectSlider**  | Full-bleed clinical footage                                                                                  |
-| 3   | **AboutSentra**    | Platform introduction                                                                                        |
-| 4   | **About**          | Manifesto — light plate, GSAP draw-in rules, Asclepius clock mark                                            |
-| 5   | **Ecosystem**      | Horizontally-pinned product cards (GSAP scrub) with typing subtitle                                          |
-| 6   | **Clients**        | Technology & institution marks                                                                               |
-| 7   | **SentraSim**      | Embedded clinical screen simulation with live code terminal                                                  |
-| 8   | **Interlude**      | Static breather between the two pinned sequences                                                             |
-| 9   | **BlueprintStory** | Pinned multi-scene blueprint narrative (AADI, console, trajectory)                                           |
-| 10  | **Showcase**       | Orchestration agents & thinking-stack terminal                                                               |
-| 11  | **Services**       | Service accordion                                                                                            |
-| 12  | **ClinicalSuite**  | Tabbed clinical workspace — triage, trajectory, prognosis                                                    |
-| 13  | **ScrollGallery**  | Scroll-driven imagery                                                                                        |
-| 14  | **FAQ**            | 12 questions, two-column, cream plate, JSON-LD FAQPage                                                       |
-| 15  | **Footer**         | Acid-yellow plate — giant brand mark, contact, waiting list, stewardship & medical disclaimer                |
+---
 
-## 4. Key Features
+## Table of Contents
 
-- **Scroll-driven storytelling** — GSAP ScrollTrigger pins, scrubs, and
-  timelines; `anticipatePin` + `invalidateOnRefresh` discipline throughout
-- **Custom lerp smooth-scroll** — wheel smoothing (`lerp 0.15`, delta caps)
-  ported from the founder's portfolio; touch devices, keyboard, and scrollbar
-  stay native; ScrollTrigger-safe (drives real `window.scrollTo`)
-- **Editorial dark design system** — single accent, thin-border cards,
-  mac-window chrome, corner ticks, line-dot-line signature divider
-- **Scoped theming without a theme switch** — light "paper" scopes
-  (`[data-wiki-paper]` cream/navy for SentraWiki; hardcoded plates for
-  About/FAQ/Footer) inside a permanently dark site
-- **Live clinical simulations** — 4-phase Audrey consultation flow (Puskesmas →
-  Sp.JP consult → EKG confirmation → hospital referral) and SentraSim embedded
-  screen
-- **Accessibility-aware motion** — entrance animations honor
-  `prefers-reduced-motion`; scrub-driven motion follows the user's own scroll
+- [Executive Summary](#executive-summary)
+- [Product Thesis](#product-thesis)
+- [Sentra Design Language](#sentra-design-language)
+- [System Map](#system-map)
+- [Experience Loop](#experience-loop)
+- [Product Surfaces](#product-surfaces)
+- [Homepage Topology](#homepage-topology)
+- [Clinical-AI Boundary](#clinical-ai-boundary)
+- [Medical Safety Model](#medical-safety-model)
+- [Route Map](#route-map)
+- [Architecture Folder Map](#architecture-folder-map)
+- [Technology Stack](#technology-stack)
+- [Design Tokens](#design-tokens)
+- [Motion System](#motion-system)
+- [Local Runbook](#local-runbook)
+- [Environment Variables](#environment-variables)
+- [Testing and Governance](#testing-and-governance)
+- [SEO and Discoverability](#seo-and-discoverability)
+- [Documentation](#documentation)
+- [Most Important Files](#most-important-files)
+- [Product Truth Principles](#product-truth-principles)
+- [Medical Disclaimer](#medical-disclaimer)
+- [License](#license)
+- [Contact](#contact)
 
-## 5. Design System
+---
 
-Tokens are governed centrally — `app/globals.css` (CSS custom properties +
-Tailwind `@theme`) and `lib/design-governance.ts` (layout & typography
-governance).
+## System Map
 
-| Token              | Value                 | Role                                    |
-| ------------------ | --------------------- | --------------------------------------- |
-| `--sentra-bg`      | `#1e1e1e`             | Site background (dark-only)             |
-| `--sentra-fg`      | `#b7ab98`             | Foreground ink                          |
-| `--sentra-accent`  | `#eb5939`             | The single accent (red-orange)          |
-| `--sentra-primary` | `#4a7bb5`             | Oxford blue, lifted for dark legibility |
-| Paper scope        | `#f2ebe0` / `#002147` | SentraWiki cream plate / navy ink       |
-| Footer plate       | `#e9fb5b` / `#111111` | Intentional acid-yellow brand anomaly   |
+```mermaid
+flowchart LR
+    Public["Public Visitor<br/>clinicians, patients, institutions, partners"]
+    Home["Sentraverse Landing<br/>/"]
+    Story["Founder Story<br/>/story"]
+    Insights["Clinical-AI Editorial<br/>/insights"]
+    Pedia["Sentrapedia<br/>144-disease reference"]
+    Ecosystem["Sentra Ecosystem<br/>/ekosistem"]
+    Wiki["SentraWiki<br/>architecture + governance"]
+    APIs["App Router APIs<br/>/app/api/**"]
+    Clinical["Clinical Intelligence<br/>triage, trajectory, prognosis"]
+    Governance["Medical Governance<br/>boundaries, disclaimer, safety"]
+    Sentra["Sentra Healthcare AI<br/>product universe"]
 
-Layout: 1440px container, `px-6/12` gutters, four section-rhythm steps
-(`compact/standard/spacious/hero`). Typography: Plus Jakarta Sans (UI), Inter
-(body), Georgia serif (editorial display), 16px body.
+    Public --> Home
+    Home --> Story
+    Home --> Insights
+    Home --> Pedia
+    Home --> Ecosystem
+    Home --> Wiki
+    Home --> APIs
 
-## 6. Tech Stack
+    Pedia --> Clinical
+    Wiki --> Clinical
+    Wiki --> Governance
+    Ecosystem --> Sentra
+    Story --> Sentra
+    Clinical --> Sentra
+    Governance --> Sentra
 
-| Layer     | Technology                                           |
-| --------- | ---------------------------------------------------- |
-| Framework | Next.js **16.2** (App Router, webpack), React **19** |
-| Language  | TypeScript **5.9** (strict)                          |
-| Styling   | Tailwind CSS **v4** (`@theme`, zero-config)          |
-| Animation | GSAP **3.14** + ScrollTrigger, Framer Motion **12**  |
-| Testing   | Playwright (e2e smoke)                               |
-| Runtime   | Node.js 22+, pnpm                                    |
+    classDef visitor fill:#FFF7D6,stroke:#D97706,color:#422006,stroke-width:2px;
+    classDef home fill:#FFE8EE,stroke:#EB5939,color:#4A1020,stroke-width:3px;
+    classDef content fill:#F5F3FF,stroke:#8B5CF6,color:#2D1B69,stroke-width:2px;
+    classDef clinical fill:#E0F2FE,stroke:#0284C7,color:#0C4A6E,stroke-width:2px;
+    classDef governance fill:#ECFDF5,stroke:#10B981,color:#064E3B,stroke-width:2px;
+    classDef sentra fill:#111827,stroke:#EB5939,color:#FFFFFF,stroke-width:4px;
 
-## 7. Project Structure
-
+    class Public visitor;
+    class Home home;
+    class Story,Insights,Pedia,Ecosystem,Wiki content;
+    class APIs,Clinical clinical;
+    class Governance governance;
+    class Sentra sentra;
 ```
+
+---
+
+## Experience Loop
+
+Sentraverse is not a static homepage. It is a guided trust-building loop.
+
+```mermaid
+flowchart TD
+    A["Visitor Arrives<br/>clinical, institutional, public, technical"] --> B["Hero Thesis<br/>Guided by Human Insight"]
+    B --> C["Problem Framing<br/>fragmented data, slow decisions, admin burden"]
+    C --> D["Product Ecosystem<br/>Sentra engine suite"]
+    D --> E["Clinical Simulation<br/>Audrey consultation flow"]
+    E --> F["Blueprint Story<br/>AADI, console, trajectory"]
+    F --> G["Clinical Suite<br/>triage, trajectory, prognosis"]
+    G --> H["Sentrapedia<br/>primary-care reference"]
+    H --> I["SentraWiki<br/>architecture + governance"]
+    I --> J["Medical Disclaimer<br/>CDSS boundary"]
+    J --> K["Contact / Pilot / Waiting List"]
+
+    classDef entry fill:#FFF7D6,stroke:#D97706,color:#422006,stroke-width:2px;
+    classDef story fill:#FFE8EE,stroke:#EB5939,color:#4A1020,stroke-width:2px;
+    classDef product fill:#F5F3FF,stroke:#8B5CF6,color:#2D1B69,stroke-width:2px;
+    classDef clinical fill:#E0F2FE,stroke:#0284C7,color:#0C4A6E,stroke-width:2px;
+    classDef governance fill:#ECFDF5,stroke:#10B981,color:#064E3B,stroke-width:2px;
+    classDef action fill:#111827,stroke:#EB5939,color:#FFFFFF,stroke-width:3px;
+
+    class A entry;
+    class B,C,F story;
+    class D,K product;
+    class E,G,H clinical;
+    class I,J governance;
+```
+
+---
+
+## Product Surfaces
+
+```mermaid
+mindmap
+  root((Sentraverse))
+    Landing Page
+      Hero
+      Project Slider
+      About Sentra
+      Ecosystem
+      SentraSim
+      Clinical Suite
+      FAQ
+      Footer
+    Story
+      Founder Journey
+      Product Timeline
+      Milestones
+      Roadmap
+    Insights
+      Clinical AI Editorial
+      Article Index
+      Medium
+      Substack
+    Sentrapedia
+      144 Diseases
+      Search
+      Category Filter
+      Detail Panel
+    Ekosistem
+      Sentra Products
+      Product Status
+      Application Catalog
+      Domain Map
+    SentraWiki
+      Abyss Architecture
+      Crown Jewel Engines
+      Governance
+      Compliance
+    API
+      Medical Knowledge
+      Assistant Integrations
+      Dashboard Rewrite
+```
+
+---
+
+## Homepage Topology
+
+The landing page is rendered from `app/page.tsx` as a 15-section scroll-driven
+editorial experience.
+
+```mermaid
+flowchart TB
+    Page["Landing Page<br/>app/page.tsx"]
+
+    Hero["Hero<br/>rotating keyword + Audrey card"]
+    Slider["ProjectSlider<br/>clinical footage"]
+    AboutSentra["AboutSentra<br/>platform introduction"]
+    About["About<br/>manifesto + Asclepius clock"]
+    Ecosystem["Ecosystem<br/>pinned product cards"]
+    Clients["Clients<br/>technology + institution marks"]
+    SentraSim["SentraSim<br/>clinical screen + terminal"]
+    Interlude["Interlude<br/>visual breather"]
+    Blueprint["BlueprintStory<br/>AADI + console + trajectory"]
+    Showcase["Showcase<br/>agents + thinking stack"]
+    Services["Services<br/>accordion"]
+    ClinicalSuite["ClinicalSuite<br/>triage + trajectory + prognosis"]
+    Gallery["ScrollGallery<br/>scroll-driven imagery"]
+    FAQ["FAQ<br/>JSON-LD FAQPage"]
+    Footer["Footer<br/>brand plate + disclaimer"]
+
+    Page --> Hero
+    Page --> Slider
+    Page --> AboutSentra
+    Page --> About
+    Page --> Ecosystem
+    Page --> Clients
+    Page --> SentraSim
+    Page --> Interlude
+    Page --> Blueprint
+    Page --> Showcase
+    Page --> Services
+    Page --> ClinicalSuite
+    Page --> Gallery
+    Page --> FAQ
+    Page --> Footer
+
+    classDef page fill:#111827,stroke:#EB5939,color:#FFFFFF,stroke-width:4px;
+    classDef hero fill:#FFE8EE,stroke:#EB5939,color:#4A1020,stroke-width:3px;
+    classDef product fill:#F5F3FF,stroke:#8B5CF6,color:#2D1B69,stroke-width:2px;
+    classDef clinical fill:#E0F2FE,stroke:#0284C7,color:#0C4A6E,stroke-width:2px;
+    classDef content fill:#FFF7D6,stroke:#D97706,color:#422006,stroke-width:2px;
+    classDef governance fill:#ECFDF5,stroke:#10B981,color:#064E3B,stroke-width:2px;
+
+    class Page page;
+    class Hero,About,Footer hero;
+    class Ecosystem,Showcase,Services product;
+    class SentraSim,Blueprint,ClinicalSuite clinical;
+    class Slider,AboutSentra,Clients,Interlude,Gallery content;
+    class FAQ governance;
+```
+
+---
+
+## Homepage Sections
+
+|   # | Section          | Function                                                                                              |
+| --: | ---------------- | ----------------------------------------------------------------------------------------------------- |
+|   1 | `Hero`           | Rotating GSAP headline keyword, count-up metrics, 4-phase Audrey consultation card, ambient scan-line |
+|   2 | `ProjectSlider`  | Full-bleed clinical footage and product atmosphere                                                    |
+|   3 | `AboutSentra`    | Platform introduction and positioning                                                                 |
+|   4 | `About`          | Manifesto section with light plate, GSAP draw-in rules, and Asclepius clock mark                      |
+|   5 | `Ecosystem`      | Horizontally pinned product cards with GSAP scrub and typing subtitle                                 |
+|   6 | `Clients`        | Technology and institution marks                                                                      |
+|   7 | `SentraSim`      | Embedded clinical screen simulation with live code terminal                                           |
+|   8 | `Interlude`      | Static visual breather between pinned sequences                                                       |
+|   9 | `BlueprintStory` | Pinned multi-scene blueprint narrative covering AADI, console, and trajectory                         |
+|  10 | `Showcase`       | Orchestration agents and thinking-stack terminal                                                      |
+|  11 | `Services`       | Service accordion                                                                                     |
+|  12 | `ClinicalSuite`  | Tabbed clinical workspace for triage, trajectory, and prognosis                                       |
+|  13 | `ScrollGallery`  | Scroll-driven product and clinical imagery                                                            |
+|  14 | `FAQ`            | 12-question FAQ section with two-column cream plate and JSON-LD FAQPage                               |
+|  15 | `Footer`         | Acid-yellow brand plate with contact, waiting list, stewardship, and medical disclaimer               |
+
+---
+
+## Clinical-AI Boundary
+
+Sentraverse must explain Sentra clearly without overstating clinical capability.
+
+```mermaid
+flowchart LR
+    Data["Clinical Context<br/>symptoms, signals, workflow, references"] --> CDSS["Clinical Decision Support"]
+    CDSS --> Triage["Triage Awareness"]
+    CDSS --> Trajectory["Clinical Trajectory"]
+    CDSS --> Reference["Clinical Reference"]
+    CDSS --> Escalation["Escalation Support"]
+
+    Clinician["Licensed Clinician"] --> Judgment["Professional Medical Judgment"]
+    CDSS --> Judgment
+    Judgment --> Decision["Diagnosis, Therapy, Referral, Follow-up"]
+
+    AI["Generative AI Layer"] --> Explain["Explanation + Summarization"]
+    AI --> Education["Editorial + Knowledge Support"]
+    AI -. must not replace .-> Judgment
+
+    classDef source fill:#FFF7D6,stroke:#D97706,color:#422006,stroke-width:2px;
+    classDef cdss fill:#E0F2FE,stroke:#0284C7,color:#0C4A6E,stroke-width:3px;
+    classDef clinical fill:#ECFDF5,stroke:#10B981,color:#064E3B,stroke-width:2px;
+    classDef human fill:#FFE8EE,stroke:#EB5939,color:#4A1020,stroke-width:3px;
+    classDef ai fill:#F5F3FF,stroke:#8B5CF6,color:#2D1B69,stroke-width:2px;
+    classDef decision fill:#111827,stroke:#EB5939,color:#FFFFFF,stroke-width:4px;
+
+    class Data source;
+    class CDSS cdss;
+    class Triage,Trajectory,Reference,Escalation clinical;
+    class Clinician,Judgment human;
+    class AI,Explain,Education ai;
+    class Decision decision;
+```
+
+### Boundary Rules
+
+| Layer               | Allowed                                                     | Not Allowed                                           |
+| ------------------- | ----------------------------------------------------------- | ----------------------------------------------------- |
+| Website             | Explain mission, workflow, product surfaces, and governance | Claim autonomous diagnosis or treatment               |
+| Sentrapedia         | Provide structured clinical reference                       | Replace clinical examination                          |
+| Clinical simulation | Demonstrate workflow and escalation logic                   | Pretend to be real patient management                 |
+| AI explanation      | Clarify, summarize, and support comprehension               | Override licensed clinician judgment                  |
+| Product claim       | State CDSS support role                                     | State medical-device equivalence without registration |
+
+---
+
+## Medical Safety Model
+
+```mermaid
+flowchart TD
+    Claim["Clinical or Product Claim"] --> Check{"Is it bounded?"}
+    Check -->|Yes| Source{"Has source/context?"}
+    Check -->|No| Block["Block or Rewrite Claim"]
+
+    Source -->|Yes| Label{"Correctly labeled?"}
+    Source -->|No| Caution["Mark as reference / educational only"]
+
+    Label -->|Yes| Display["Display Safely"]
+    Label -->|No| Revise["Revise with CDSS boundary"]
+
+    Display --> Disclaimer["Medical Disclaimer"]
+    Caution --> Disclaimer
+    Revise --> Disclaimer
+    Block --> SafeCopy["Use safer product language"]
+
+    classDef claim fill:#FFF7D6,stroke:#D97706,color:#422006,stroke-width:2px;
+    classDef check fill:#E0F2FE,stroke:#0284C7,color:#0C4A6E,stroke-width:2px;
+    classDef safe fill:#ECFDF5,stroke:#10B981,color:#064E3B,stroke-width:3px;
+    classDef warn fill:#FEF3C7,stroke:#D97706,color:#78350F,stroke-width:2px;
+    classDef block fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D,stroke-width:3px;
+    classDef disclaimer fill:#111827,stroke:#EB5939,color:#FFFFFF,stroke-width:3px;
+
+    class Claim claim;
+    class Check,Source,Label check;
+    class Display safe;
+    class Caution,Revise warn;
+    class Block,SafeCopy block;
+    class Disclaimer disclaimer;
+```
+
+---
+
+## Route Map
+
+| Route          | Rendering   | Purpose                                                                |
+| -------------- | ----------- | ---------------------------------------------------------------------- |
+| `/`            | Static      | Landing page with 15-section scroll-driven product experience          |
+| `/story`       | Static      | Founder story, product milestones, timeline, and roadmap               |
+| `/insights`    | Static      | Clinical-AI editorial index                                            |
+| `/sentrapedia` | Static      | 144-disease clinical reference for primary care                        |
+| `/ekosistem`   | Static      | Sentra product ecosystem and application catalog                       |
+| `/sentrawiki`  | Static      | Knowledge base, architecture, governance, and compliance               |
+| `/privacy`     | Static      | Privacy policy                                                         |
+| `/terms`       | Static      | Terms of use                                                           |
+| `/api/*`       | Edge / Node | Supporting API routes for medical knowledge and assistant integrations |
+
+```mermaid
+flowchart TB
+    Root["sentraverse"] --> Home["/"]
+    Root --> Story["/story"]
+    Root --> Insights["/insights"]
+    Root --> Pedia["/sentrapedia"]
+    Root --> Ecosystem["/ekosistem"]
+    Root --> Wiki["/sentrawiki"]
+    Root --> Legal["/privacy + /terms"]
+    Root --> API["/api"]
+
+    API --> Knowledge["medical knowledge"]
+    API --> Assistant["assistant integrations"]
+    API --> Dashboard["dashboard rewrites"]
+
+    classDef root fill:#111827,stroke:#EB5939,color:#FFFFFF,stroke-width:4px;
+    classDef public fill:#FFE8EE,stroke:#EB5939,color:#4A1020,stroke-width:2px;
+    classDef content fill:#F5F3FF,stroke:#8B5CF6,color:#2D1B69,stroke-width:2px;
+    classDef clinical fill:#E0F2FE,stroke:#0284C7,color:#0C4A6E,stroke-width:2px;
+    classDef legal fill:#ECFDF5,stroke:#10B981,color:#064E3B,stroke-width:2px;
+
+    class Root root;
+    class Home,Story public;
+    class Insights,Ecosystem,Wiki content;
+    class Pedia,API,Knowledge,Assistant,Dashboard clinical;
+    class Legal legal;
+```
+
+---
+
+## Architecture Folder Map
+
+```text
 sentraverse/
 ├── app/
-│   ├── page.tsx               # Landing (15 sections)
-│   ├── layout.tsx             # Root layout — fonts, JSON-LD, SmoothScrollProvider
+│   ├── page.tsx               # Landing page — 15 sections
+│   ├── layout.tsx             # Root layout, fonts, JSON-LD, SmoothScrollProvider
 │   ├── globals.css            # Design tokens, scoped themes, keyframes
-│   ├── story/                 # Founder & product story
-│   ├── insights/              # Editorial index + article data
+│   ├── story/                 # Founder and product story
+│   ├── insights/              # Editorial index and article data
 │   ├── sentrapedia/           # 144-disease clinical reference
 │   ├── ekosistem/             # Product ecosystem catalog
-│   ├── sentrawiki/            # Knowledge base (paper theme)
-│   ├── privacy/ · terms/      # Legal
+│   ├── sentrawiki/            # Knowledge base with paper theme
+│   ├── privacy/               # Privacy policy
+│   ├── terms/                 # Terms of use
 │   ├── api/                   # Supporting API routes
-│   ├── sitemap.ts · robots.ts # SEO conventions
-│   └── opengraph-image.tsx    # Generated OG image
+│   ├── sitemap.ts             # Dynamic sitemap
+│   ├── robots.ts              # Robots convention
+│   └── opengraph-image.tsx    # Generated OpenGraph image
+│
 ├── components/
-│   ├── *.tsx                  # Section components (Hero, Ecosystem, SentraSim, …)
+│   ├── *.tsx                  # Section components
 │   ├── blueprint-story/       # Pinned blueprint scenes
 │   ├── sentrasim/             # Simulation columns, code terminal, sequence
-│   ├── sentrapedia/           # Disease dataset + helpers
-│   ├── sentrawiki/            # Engine cards, engine graph, doc library
-│   ├── ekosistem/             # Product & application data
-│   └── ui/                    # Primitives — reveal, sketch-lines, kinetic nav, …
+│   ├── sentrapedia/           # Disease dataset and helpers
+│   ├── sentrawiki/            # Engine cards, engine graph, document library
+│   ├── ekosistem/             # Product and application data
+│   └── ui/                    # UI primitives
+│
 ├── lib/
-│   ├── design-governance.ts   # Layout & typography governance tokens
+│   ├── design-governance.ts   # Layout and typography governance
 │   ├── use-smooth-scroll.ts   # Custom lerp wheel-smoothing hook
-│   ├── site-links.ts          # Single source of truth for internal links
+│   ├── site-links.ts          # Internal link single source of truth
 │   └── utils.ts               # cn() helper
-├── docs/                      # Documentation — see docs/README.md
+│
+├── docs/                      # Project documentation
 ├── e2e/                       # Playwright smoke tests
-└── public/                    # Static assets (~2 MB, pruned)
+└── public/                    # Static assets
 ```
 
-## 8. Getting Started
+---
 
-**Prerequisites:** Node.js ≥ 22, pnpm ≥ 9.
+## Technology Stack
+
+| Layer           | Technology                                 |
+| --------------- | ------------------------------------------ |
+| Framework       | Next.js 16.2, App Router, webpack          |
+| Runtime UI      | React 19                                   |
+| Language        | TypeScript 5.9, strict mode                |
+| Styling         | Tailwind CSS v4 with `@theme`              |
+| Animation       | GSAP 3.14, ScrollTrigger, Framer Motion 12 |
+| Testing         | Playwright E2E smoke                       |
+| Runtime         | Node.js 22+                                |
+| Package manager | pnpm                                       |
+
+```mermaid
+flowchart LR
+    Next["Next.js 16.2<br/>App Router + webpack"] --> App["Sentraverse App"]
+    React["React 19"] --> App
+    TS["TypeScript 5.9<br/>strict"] --> App
+    Tailwind["Tailwind CSS v4"] --> UI["Design System"]
+    GSAP["GSAP 3.14<br/>ScrollTrigger"] --> Motion["Motion Layer"]
+    Framer["Framer Motion 12"] --> Motion
+    Motion --> UI
+    Playwright["Playwright"] --> Tests["E2E Smoke Suite"]
+    Node["Node.js 22+"] --> Runtime["Runtime"]
+    Pnpm["pnpm"] --> Runtime
+
+    App --> UI
+    App --> Runtime
+    App --> Tests
+
+    classDef framework fill:#111827,stroke:#EB5939,color:#FFFFFF,stroke-width:4px;
+    classDef ui fill:#FFE8EE,stroke:#EB5939,color:#4A1020,stroke-width:2px;
+    classDef motion fill:#F5F3FF,stroke:#8B5CF6,color:#2D1B69,stroke-width:2px;
+    classDef test fill:#ECFDF5,stroke:#10B981,color:#064E3B,stroke-width:2px;
+    classDef runtime fill:#E0F2FE,stroke:#0284C7,color:#0C4A6E,stroke-width:2px;
+
+    class Next,React,TS,App framework;
+    class Tailwind,UI ui;
+    class GSAP,Framer,Motion motion;
+    class Playwright,Tests test;
+    class Node,Pnpm,Runtime runtime;
+```
+
+---
+
+## Design Tokens
+
+Core design tokens are governed through:
+
+- `app/globals.css`
+- Tailwind CSS `@theme`
+- `lib/design-governance.ts`
+
+| Token              | Value               | Role                                    |
+| ------------------ | ------------------- | --------------------------------------- |
+| `--sentra-bg`      | `#1e1e1e`           | Permanent dark site background          |
+| `--sentra-fg`      | `#b7ab98`           | Primary foreground ink                  |
+| `--sentra-accent`  | `#eb5939`           | Sentra red-orange accent                |
+| `--sentra-primary` | `#4a7bb5`           | Oxford blue lifted for dark readability |
+| Paper scope        | `#f2ebe0 / #002147` | SentraWiki cream plate and navy ink     |
+| Footer plate       | `#e9fb5b / #111111` | Acid-yellow brand anomaly               |
+
+---
+
+## Motion System
+
+Sentraverse uses motion as a product explanation layer.
+
+| Motion Pattern               | Purpose                                                |
+| ---------------------------- | ------------------------------------------------------ |
+| GSAP pinned sections         | Explain long-form product narrative                    |
+| ScrollTrigger scrub          | Tie animation to user intent                           |
+| Rotating hero keyword        | Communicate product scope quickly                      |
+| Count-up metrics             | Create executive-level energy                          |
+| Clinical simulation sequence | Show workflow without claiming real patient management |
+| Framer Motion entrances      | Improve orientation and section rhythm                 |
+| Reduced-motion support       | Respect accessibility preferences                      |
+
+Implementation discipline:
+
+- use `anticipatePin` for stable pinned transitions
+- use `invalidateOnRefresh` for responsive recalculation
+- avoid motion that hides information
+- avoid autoplay clinical claims
+- keep animation subordinate to product meaning
+
+---
+
+## Local Runbook
+
+### Prerequisites
+
+| Requirement | Version |
+| ----------- | ------- |
+| Node.js     | `>= 22` |
+| pnpm        | `>= 9`  |
+
+### Install
 
 ```bash
 pnpm install
-pnpm dev          # http://localhost:3000
 ```
 
-Production:
+### Development
+
+```bash
+pnpm dev
+```
+
+Local server:
+
+```text
+http://localhost:3000
+```
+
+### Production
 
 ```bash
 pnpm build
 pnpm start
 ```
 
-## 9. Scripts
-
-| Script           | Command                | Purpose                        |
-| ---------------- | ---------------------- | ------------------------------ |
-| `pnpm dev`       | `next dev --webpack`   | Development server             |
-| `pnpm dev:turbo` | `next dev --turbopack` | Development server (Turbopack) |
-| `pnpm build`     | `next build --webpack` | Production build               |
-| `pnpm start`     | `next start`           | Serve production build         |
-| `pnpm lint`      | `eslint .`             | Lint                           |
-| `pnpm test:e2e`  | `playwright test`      | End-to-end smoke tests         |
-
-## 10. Configuration
-
-Environment variables (all optional — the site runs with zero configuration):
-
-| Variable                      | Scope  | Purpose                                                                                                                        |
-| ----------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------ |
-| `NEXT_PUBLIC_PILOT_LOGIN_URL` | Client | "Tes Pilot Login" CTA target. Validated against an allow-list of `sentrahai.com` hosts; falls back to `/dashboard`             |
-| `SENTRA_DASHBOARD_URL`        | Server | When set, `next.config.mjs` rewrites `/dashboard/:path*` to that origin so the marketing host can front the clinical dashboard |
-
-## 11. Testing
+### Validation
 
 ```bash
-pnpm test:e2e     # Playwright smoke suite (e2e/smoke.spec.ts)
+pnpm lint
+pnpm build
+pnpm test:e2e
 ```
 
-Every change is also gated by `pnpm lint` and a full `pnpm build` (strict
-TypeScript) before commit.
+Execution notes:
 
-## 12. SEO & Discoverability
+- Use `pnpm`, not npm/yarn/bun.
+- The site runs with zero required environment configuration.
+- Production-facing changes should pass build, lint, and Playwright smoke
+  validation.
+- Scroll-driven sections require visual sanity checks after layout or animation
+  changes.
 
-- Dynamic `sitemap.xml` (`app/sitemap.ts`) and `robots.txt` (`app/robots.ts`,
-  disallows `/dashboard`)
-- Generated OpenGraph images for the site and `/story`
-- JSON-LD structured data — Organization, Person (founder), FAQPage
-- `public/llms.txt` for AI crawlers
-- Google Search Console verification file
+---
 
-## 13. Documentation
+## Environment Variables
 
-| Document                                                   | Content                            |
-| ---------------------------------------------------------- | ---------------------------------- |
-| [`docs/README.md`](./docs/README.md)                       | Documentation index (categorized)  |
-| [`ARCHITECTURE.md`](./ARCHITECTURE.md)                     | Architecture deep-dive             |
-| [`docs/design-governance.md`](./docs/design-governance.md) | Spacing, typography, density rules |
-| [`docs/ai-governance.md`](./docs/ai-governance.md)         | Clinical-AI governance             |
-| [`CHANGELOG.md`](./CHANGELOG.md)                           | Release history                    |
-| [`CONTRIBUTING.md`](./CONTRIBUTING.md)                     | Contribution workflow              |
-| [`SECURITY.md`](./SECURITY.md)                             | Security policy                    |
+All environment variables are optional.
 
-## 14. Medical Disclaimer
+| Variable                      | Scope  | Purpose                                                                                                                               |
+| ----------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_PILOT_LOGIN_URL` | Client | Target URL for the “Tes Pilot Login” CTA. Validated against an allow-list of `sentrahai.com` hosts and falls back to `/dashboard`.    |
+| `SENTRA_DASHBOARD_URL`        | Server | When set, `next.config.mjs` rewrites `/dashboard/:path*` to that origin, allowing the marketing host to front the clinical dashboard. |
 
-Sentra AI functions as a **clinical decision support system** — an aid to
-clinical decision-making. It does not replace professional medical judgment and
-is not registered as a medical device. All diagnostic, therapeutic, and
-follow-up decisions remain the full responsibility of licensed medical
-professionals.
+---
 
-## 15. License
+## Testing and Governance
 
-[ISC](./LICENSE) © 2026 Sentra Healthcare Solutions
+```mermaid
+flowchart TD
+    Change["Code Change"] --> Typecheck["TypeScript Strict Build"]
+    Change --> Lint["ESLint"]
+    Change --> E2E["Playwright Smoke Test"]
+    Change --> Visual["Visual Scroll Review"]
+    Change --> Safety["Clinical Claim Review"]
+    Change --> SEO["SEO / Metadata Check"]
 
-## 16. Contact
+    Typecheck --> Pass["Can Merge"]
+    Lint --> Pass
+    E2E --> Pass
+    Visual --> Pass
+    Safety --> Pass
+    SEO --> Pass
 
-**dr. Ferdi Iskandar** — Founder & CEO, Sentra Healthcare AI
+    Typecheck -. fail .-> Block["Block Merge"]
+    Lint -. fail .-> Block
+    E2E -. fail .-> Block
+    Visual -. fail .-> Block
+    Safety -. fail .-> Block
+    SEO -. fail .-> Block
 
-📧 [drferdiiskandar@sentrahai.com](mailto:drferdiiskandar@sentrahai.com) 📍
-Melinda Advanced Technology Laboratory, RSIA Melinda DHAI, Kediri, Jawa Timur,
-Indonesia 🌐 [sentrahai.com](https://sentrahai.com) ·
-[@sentraai](https://instagram.com/sentraai)
+    classDef change fill:#FFF7D6,stroke:#D97706,color:#422006,stroke-width:2px;
+    classDef check fill:#E0F2FE,stroke:#0284C7,color:#0C4A6E,stroke-width:2px;
+    classDef pass fill:#ECFDF5,stroke:#10B981,color:#064E3B,stroke-width:3px;
+    classDef block fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D,stroke-width:3px;
+
+    class Change change;
+    class Typecheck,Lint,E2E,Visual,Safety,SEO check;
+    class Pass pass;
+    class Block block;
+```
+
+### Required Validation
+
+| Area               | Minimum Check                                                       |
+| ------------------ | ------------------------------------------------------------------- |
+| Type safety        | TypeScript strict build must pass                                   |
+| Lint               | ESLint must pass                                                    |
+| E2E                | Playwright smoke suite must pass                                    |
+| Scroll experience  | GSAP pinned sections must remain stable                             |
+| Accessibility      | Motion should respect reduced-motion preferences                    |
+| Clinical language  | Claims must remain within CDSS boundary                             |
+| Medical disclaimer | Disclaimer must remain visible and accurate                         |
+| SEO                | Sitemap, robots, metadata, OpenGraph, and JSON-LD must remain valid |
+
+---
+
+## SEO and Discoverability
+
+Sentraverse includes structured SEO and AI-discoverability support.
+
+| Asset                      | Purpose                                      |
+| -------------------------- | -------------------------------------------- |
+| `app/sitemap.ts`           | Dynamic sitemap                              |
+| `app/robots.ts`            | Robots convention and `/dashboard` exclusion |
+| `app/opengraph-image.tsx`  | Generated OpenGraph image                    |
+| JSON-LD Organization       | Identifies Sentra Healthcare AI              |
+| JSON-LD Person             | Identifies founder profile                   |
+| JSON-LD FAQPage            | Supports FAQ discoverability                 |
+| `public/llms.txt`          | Context surface for AI crawlers              |
+| Google Search Console file | Search verification                          |
+
+---
+
+## Documentation
+
+| Document                    | Content                                        |
+| --------------------------- | ---------------------------------------------- |
+| `docs/README.md`            | Documentation index                            |
+| `ARCHITECTURE.md`           | Architecture deep-dive                         |
+| `docs/design-governance.md` | Spacing, typography, density, and layout rules |
+| `docs/ai-governance.md`     | Clinical-AI governance principles              |
+| `CHANGELOG.md`              | Release history                                |
+| `CONTRIBUTING.md`           | Contribution workflow                          |
+| `SECURITY.md`               | Security policy                                |
+
+---
+
+## Most Important Files
+
+| File                           | Why It Matters                                        |
+| ------------------------------ | ----------------------------------------------------- |
+| `app/page.tsx`                 | Main landing page and 15-section composition          |
+| `app/layout.tsx`               | Root layout, fonts, JSON-LD, and SmoothScrollProvider |
+| `app/globals.css`              | Design tokens, scoped themes, keyframes               |
+| `lib/design-governance.ts`     | Layout and typography governance                      |
+| `lib/use-smooth-scroll.ts`     | Custom lerp wheel-smoothing hook                      |
+| `lib/site-links.ts`            | Internal link single source of truth                  |
+| `components/Hero.tsx`          | Main product thesis and first impression              |
+| `components/Ecosystem.tsx`     | Horizontally pinned product ecosystem                 |
+| `components/SentraSim.tsx`     | Embedded clinical screen simulation                   |
+| `components/ClinicalSuite.tsx` | Triage, trajectory, and prognosis workspace           |
+| `components/blueprint-story/*` | Pinned blueprint scenes                               |
+| `components/sentrapedia/*`     | 144-disease clinical reference                        |
+| `components/sentrawiki/*`      | Knowledge base, engine cards, and document library    |
+| `components/ekosistem/*`       | Product and application catalog                       |
+
+---
+
+## Product Truth Principles
+
+Sentraverse is intentionally governed by these rules:
+
+1. **Clinical-AI must be explained without exaggeration.**
+2. **Sentra is clinical decision support, not a doctor replacement.**
+3. **The website must communicate workflow, not just aesthetics.**
+4. **Every clinical claim must remain bounded and responsible.**
+5. **Motion must clarify the product story, not distract from it.**
+6. **Sentrapedia is reference support, not diagnosis automation.**
+7. **SentraWiki is the architecture and governance anchor.**
+8. **The ecosystem must feel integrated, not like disconnected products.**
+9. **Trust is built through clarity, boundaries, and disciplined language.**
+10. **The public surface must protect the seriousness of the clinical mission.**
+
+---
+
+## Medical Disclaimer
+
+Sentra AI functions as a **clinical decision support system**.
+
+It is designed to support clinical reasoning, triage awareness, workflow
+acceleration, and timely escalation. It does **not** replace professional
+medical judgment, licensed clinical responsibility, clinical examination,
+diagnosis, therapy, referral decisions, or formal follow-up planning by
+healthcare professionals.
+
+Sentra AI is not registered as a medical device.
+
+All diagnostic, therapeutic, referral, and follow-up decisions remain the full
+responsibility of licensed medical professionals.
+
+---
+
+## License
+
+ISC © 2026 **Sentra Healthcare Solutions**
+
+---
+
+## Contact
+
+**dr. Ferdi Iskandar** Founder & CEO, Sentra Healthcare AI
+
+<p>
+  <a href="mailto:drferdiiskandar@sentrahai.com">
+    <img src="https://img.shields.io/badge/Email-drferdiiskandar%40sentrahai.com-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email badge" />
+  </a>
+  <a href="https://sentrahai.com">
+    <img src="https://img.shields.io/badge/Website-sentrahai.com-EB5939?style=for-the-badge" alt="Website badge" />
+  </a>
+  <img src="https://img.shields.io/badge/Lab-Melinda%20Advanced%20Technology%20Laboratory-8B5CF6?style=for-the-badge" alt="Lab badge" />
+  <img src="https://img.shields.io/badge/Location-Kediri%2C%20East%20Java-10B981?style=for-the-badge" alt="Location badge" />
+</p>
+
+---
+
+## Instrumentation
+
+<p align="center">
+  <img src="https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white" alt="PowerShell" />
+  <img src="https://img.shields.io/badge/Node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js" />
+  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=111111" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/TailwindCSS-38BDF8?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="TailwindCSS" />
+  <img src="https://img.shields.io/badge/GSAP-88CE02?style=for-the-badge" alt="GSAP" />
+  <img src="https://img.shields.io/badge/Framer%20Motion-FF69B4?style=for-the-badge&logo=framer&logoColor=white" alt="Framer Motion" />
+  <img src="https://img.shields.io/badge/Playwright-2EAD33?style=for-the-badge&logo=playwright&logoColor=white" alt="Playwright" />
+  <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" />
+</p>
+
+---
+
+<div align="center">
+
+### Sentraverse
+
+**The home of Sentra Healthcare AI.** **Clinical intelligence for Indonesia’s
+frontline healthcare system.**
+
+</div>
