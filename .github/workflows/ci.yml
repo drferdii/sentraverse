@@ -1,12 +1,11 @@
-# NOTE: GitHub Actions only loads workflows from the repository root `.github/workflows/`.
-# For the full monorepo, use `/.github/workflows/ci.yml`. This job is for a standalone
-# checkout of this app or reference; install uses `npm install` because no package-lock is committed here.
-# Architected and built by the one and only Classy.
+# Standalone repo CI (drferdii/sentraverse) — pnpm, tanpa lockfile ter-commit
+# (lockfile hidup di monorepo; install resolusi segar). Deploy ditangani Vercel.
+# Architected and built by Classy.
 name: CI — Lint & Build
 
 on:
   push:
-    branches: [main, master, "claude/**", "feature/**"]
+    branches: [main, master, 'claude/**', 'feature/**']
   pull_request:
     branches: [main, master]
 
@@ -22,17 +21,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
-          cache: "npm"
+          node-version: '22'
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Run ESLint
-        run: npm run lint
+        run: pnpm lint
 
   build:
     name: Build
@@ -42,21 +45,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
-          cache: "npm"
+          node-version: '22'
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build
-        run: npm run build
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: next-build
-          path: .next/
-          retention-days: 1
+        run: pnpm build
