@@ -59,7 +59,9 @@ jobs:
         run: |
           pnpm licenses list --prod --long > licenses.txt || true
           head -60 licenses.txt
-          if grep -E "GPL-3\.0|AGPL" licenses.txt; then
-            echo "::error::Strong copyleft license terdeteksi pada dependensi produksi"
+          # (?<!L) — pastikan tidak mencocokkan LGPL-3.0 (Lesser GPL, aman untuk
+          # dependensi terpakai/linked seperti libvips di balik sharp).
+          if grep -P "(?<!L)GPL-3\.0|AGPL" licenses.txt; then
+            echo "::error::Strong copyleft license (GPL-3.0/AGPL) terdeteksi pada dependensi produksi"
             exit 1
           fi
