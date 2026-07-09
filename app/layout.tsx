@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Inter, Plus_Jakarta_Sans } from 'next/font/google'
 
 import { MotionProvider } from '@/components/MotionProvider'
+import SmoothScrollProvider from '@/components/SmoothScrollProvider'
 import './globals.css'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -153,6 +154,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <SmoothScrollProvider />
         <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
