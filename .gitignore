@@ -6,6 +6,8 @@
 # Next.js
 /.next/
 /out/
+# Auto-generated tiap `next dev/build` — jangan di-track (template resmi Next 15+)
+next-env.d.ts
 
 # Production
 /build
@@ -23,6 +25,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
 # Local env
 .env*.local
