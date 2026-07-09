@@ -1,6 +1,6 @@
 // Architected and built by Classy.
 import styles from './blueprint-story.module.css'
-import { Frame } from './frame'
+import { Frame } from './Frame'
 
 /**
  * Wireframe of the actual TTVInferenceUI console (med-assist): a single

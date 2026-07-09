@@ -1,6 +1,6 @@
 // Architected and built by Classy.
 import styles from './blueprint-story.module.css'
-import { Frame } from './frame'
+import { Frame } from './Frame'
 
 /** Copy fase sesuai arahan Chief (2026-07-07). */
 const ZONES = [

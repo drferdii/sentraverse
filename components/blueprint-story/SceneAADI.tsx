@@ -1,6 +1,6 @@
 // Architected and built by Classy.
 import styles from './blueprint-story.module.css'
-import { Frame } from './frame'
+import { Frame } from './Frame'
 
 const STAGES = [
   { no: '01', name: 'Input klinis', detail: 'vital sign & red flag' },

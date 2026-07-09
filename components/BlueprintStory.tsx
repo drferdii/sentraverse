@@ -5,10 +5,10 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useLayoutEffect, useRef } from 'react'
 
-import styles from '@/components/blueprintstory/blueprint-story.module.css'
-import { SceneAADI } from '@/components/blueprintstory/SceneAADI'
-import { SceneConsole } from '@/components/blueprintstory/SceneConsole'
-import { SceneTrajectory } from '@/components/blueprintstory/SceneTrajectory'
+import styles from '@/components/blueprint-story/blueprint-story.module.css'
+import { SceneAADI } from '@/components/blueprint-story/SceneAADI'
+import { SceneConsole } from '@/components/blueprint-story/SceneConsole'
+import { SceneTrajectory } from '@/components/blueprint-story/SceneTrajectory'
 
 gsap.registerPlugin(ScrollTrigger)
 
