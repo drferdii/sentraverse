@@ -6,23 +6,27 @@ _Architected and built by Classy — Sentra Healthcare Solutions © 2025–2026_
 
 ## Environments
 
-| Environment | URL | How to reach |
-|-------------|-----|-------------|
-| Local dev | http://localhost:3000 | `npm run dev` |
+| Environment              | URL                   | How to reach                     |
+| ------------------------ | --------------------- | -------------------------------- |
+| Local dev                | http://localhost:3000 | `npm run dev`                    |
 | Local production preview | http://localhost:3000 | `npm run build && npm run start` |
-| Production | https://sentrahai.com | Deployed via Railway |
+| Production               | https://sentrahai.com | Deployed via Railway             |
 
 ---
 
 ## Deployment Platform — Railway
 
-The application is deployed on [Railway](https://railway.app/) using automatic Node.js detection. Railway runs `npm run build` to produce the Next.js bundle and `npm run start` to launch the production server.
+The application is deployed on [Railway](https://railway.app/) using automatic
+Node.js detection. Railway runs `npm run build` to produce the Next.js bundle
+and `npm run start` to launch the production server.
 
 ### Configuration
 
-There is no `railway.toml` in this project — Railway auto-detects Next.js and configures the build and start commands automatically.
+There is no `railway.toml` in this project — Railway auto-detects Next.js and
+configures the build and start commands automatically.
 
 If manual override is needed, create `railway.toml`:
+
 ```toml
 [build]
 buildCommand = "npm run build"
@@ -35,7 +39,8 @@ restartPolicyMaxRetries = 3
 
 ### Environment Variables on Railway
 
-This site requires no environment variables in production. Set the following only if adding integrations:
+This site requires no environment variables in production. Set the following
+only if adding integrations:
 
 ```
 NODE_ENV=production       # Set automatically by Railway
@@ -106,7 +111,8 @@ railway rollback
 - Production domain: `sentrahai.com`
 - DNS: configured in Railway project settings → Custom Domains
 - SSL: automatically provisioned by Railway (Let's Encrypt)
-- HSTS with `preload` is active — ensure DNS is stable before enabling preload in browser lists
+- HSTS with `preload` is active — ensure DNS is stable before enabling preload
+  in browser lists
 
 ---
 
