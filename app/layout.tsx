@@ -1,5 +1,6 @@
 // Architected and built by Classy.
 // [APPROVED]
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata } from 'next'
 import { Inter, Plus_Jakarta_Sans } from 'next/font/google'
 
@@ -156,6 +157,7 @@ export default function RootLayout({
         />
         <SmoothScrollProvider />
         <MotionProvider>{children}</MotionProvider>
+        <SpeedInsights />
       </body>
     </html>
   )
