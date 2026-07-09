@@ -10,6 +10,7 @@ import Ecosystem from '@/components/Ecosystem'
 import FAQ from '@/components/FAQ'
 import Footer from '@/components/Footer'
 import Hero from '@/components/Hero'
+import Interlude from '@/components/Interlude'
 import Navbar from '@/components/Navbar'
 import ProjectSlider from '@/components/ProjectSlider'
 import ScrollGallery from '@/components/ScrollGallery'
@@ -30,6 +31,7 @@ export default function Home() {
       <Ecosystem />
       <Clients />
       <SentraSim />
+      <Interlude />
       <BlueprintStory />
       <Showcase />
       <Services />

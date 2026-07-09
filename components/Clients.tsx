@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useId } from 'react'
 
 import { Reveal } from '@/components/ui/reveal'
+import { layoutGovernance } from '@/lib/design-governance'
 
 function OpenAILogo({ className }: { className?: string }) {
   return (
@@ -276,7 +277,9 @@ const partners = [
 
 export default function Clients() {
   return (
-    <section className="py-20 border-b border-muted/20 overflow-hidden">
+    <section
+      className={`${layoutGovernance.sectionY.spacious} border-b border-muted/20 overflow-hidden`}
+    >
       <div className="max-w-[1440px] mx-auto px-6 md:px-12 mb-12">
         <Reveal>
           <h2 className="text-2xl md:text-3xl font-medium text-center text-foreground leading-snug max-w-[800px] mx-auto font-jakarta uppercase tracking-tighter">

@@ -190,7 +190,8 @@ export default function Ecosystem() {
         >
           {PRODUCTS.map((product) => {
             const cardClassName =
-              'group relative w-full md:w-[560px] lg:w-[640px] shrink-0 rounded-2xl border border-muted/20 bg-background overflow-hidden transition-colors hover:border-accent/40'
+              // 600px = 6 kolom + gutter pada grid 1440 — snap seragam di md & lg.
+              'group relative w-full md:w-[600px] shrink-0 rounded-2xl border border-muted/20 bg-background overflow-hidden transition-colors hover:border-accent/40'
 
             const cardBody = (
               <>

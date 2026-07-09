@@ -6,6 +6,7 @@ import Link from 'next/link'
 
 import { articles, formatDate, substackUrl } from '@/app/insights/data'
 import { Reveal } from '@/components/ui/reveal'
+import { layoutGovernance } from '@/lib/design-governance'
 
 // Editorial serif for article headlines only — global brand typography untouched.
 const newsreader = Newsreader({
@@ -21,7 +22,10 @@ export default function News() {
   const sideArticles = rest.slice(0, 2)
 
   return (
-    <section id="insights" className={`${newsreader.variable} py-24 border-b border-muted/20`}>
+    <section
+      id="insights"
+      className={`${newsreader.variable} ${layoutGovernance.sectionY.spacious} border-b border-muted/20`}
+    >
       <div className="max-w-[1440px] mx-auto px-6 md:px-12">
         {/* Publication masthead — Substack-style */}
         <Reveal>

@@ -134,7 +134,7 @@ export default function InsightsPage() {
                 >
                   {featured.title}
                 </h2>
-                <p className="mt-4 text-base md:text-lg text-[#4a4a4a] leading-relaxed max-w-[640px]">
+                <p className="mt-4 text-[16px] text-[#4a4a4a] leading-relaxed max-w-[640px]">
                   {featured.description}
                 </p>
                 <div className="mt-5 flex items-center gap-2 text-xs text-[#6b6b6b]">

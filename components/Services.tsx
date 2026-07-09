@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import { Reveal } from '@/components/ui/reveal'
+import { layoutGovernance } from '@/lib/design-governance'
 import { siteLinks } from '@/lib/site-links'
 
 const services = [
@@ -58,7 +59,10 @@ export default function Services() {
   const [activeId, setActiveId] = useState<string | null>('01')
 
   return (
-    <section id="services" className="py-20 border-b border-muted/20">
+    <section
+      id="services"
+      className={`${layoutGovernance.sectionY.spacious} border-b border-muted/20`}
+    >
       <div className="max-w-[1440px] mx-auto px-6 md:px-12">
         {/* Section Header */}
         <div className="grid lg:grid-cols-2 gap-10 mb-14">

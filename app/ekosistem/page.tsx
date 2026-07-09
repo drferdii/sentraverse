@@ -121,7 +121,7 @@ export default function EkosistemPage() {
                     </span>
                     <div className="ml-auto">
                       <span
-                        className="rounded-full border px-3 py-1 font-jakarta text-[10px] font-bold uppercase tracking-widest"
+                        className="inline-flex h-7 items-center rounded-full border px-3 font-jakarta text-[10px] font-bold uppercase tracking-widest"
                         style={{
                           color,
                           borderColor: `${color}33`,
