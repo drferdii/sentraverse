@@ -3,6 +3,7 @@
 
 import gsap from 'gsap'
 import { X } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback, useEffect, useRef } from 'react'
 
@@ -317,6 +318,17 @@ export function SentraKineticNav({ isOpen, onClose }: SentraKineticNavProps) {
 
           {/* Menu Content */}
           <div className="relative z-10 flex flex-col justify-center min-h-full px-6 sm:px-10 pt-24 pb-8">
+            {/* Brand lockup — panel selalu gelap, logo putih transparan aman */}
+            <div className="mb-8" data-fade>
+              <Image
+                src="/images/sentraverse-logo.png"
+                alt="Sentraverse"
+                width={892}
+                height={804}
+                className="h-16 w-auto"
+              />
+            </div>
+
             {/* Links */}
             <ul className="list-none m-0 p-0 flex flex-col gap-0.5">
               {menuItems.map((item, idx) => (

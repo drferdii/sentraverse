@@ -3,6 +3,7 @@
 'use client'
 
 import { Menu, ArrowUpRight } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -56,7 +57,15 @@ export default function Navbar() {
       >
         <div className="max-w-[1440px] mx-auto px-6 md:px-12 flex justify-between items-center">
           {/* Logo */}
-          <Link href={siteLinks.home} className="flex items-center">
+          <Link href={siteLinks.home} className="flex items-center gap-2.5">
+            <Image
+              src="/images/sentraverse-mark.png"
+              alt="Sentraverse"
+              width={32}
+              height={32}
+              priority
+              className="h-8 w-8"
+            />
             <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-foreground leading-tight font-jakarta">
               Sentra<span className="text-accent ml-0.5">.</span> Healthcare
               <br />
