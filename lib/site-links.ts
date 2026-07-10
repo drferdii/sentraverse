@@ -3,6 +3,7 @@ export const siteLinks = {
   home: '#top',
   about: '#about',
   contact: '#contact',
+  asistenMedis: 'https://sentrahai.com/asisten-medis',
   insights: '/insights',
   sentrapedia: '/sentrapedia',
   ekosistem: '/ekosistem',

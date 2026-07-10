@@ -19,6 +19,7 @@ interface SentraKineticNavProps {
 const menuItems = [
   { label: 'Home', href: '/' },
   { label: 'Our Story', href: '/story' },
+  { label: 'Asisten Medis', href: 'https://sentrahai.com/asisten-medis' },
   { label: 'Insights', href: '/insights' },
   { label: 'Sentrapedia', href: '/sentrapedia' },
   { label: 'Ekosistem', href: '/ekosistem' },

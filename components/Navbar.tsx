@@ -17,6 +17,7 @@ import { cn } from '@/lib/utils'
 const navLinks = [
   { name: 'Home', href: '/' },
   { name: 'Story', href: siteLinks.story },
+  { name: 'Asisten Medis', href: siteLinks.asistenMedis },
   { name: 'Insights', href: siteLinks.insights },
   { name: 'Sentrapedia', href: siteLinks.sentrapedia },
   { name: 'Ekosistem', href: siteLinks.ekosistem },
@@ -76,8 +77,11 @@ export default function Navbar() {
           {/* Desktop Links — semua halaman + indikator halaman aktif */}
           <div className="hidden lg:flex items-center gap-6">
             {navLinks.map((link) => {
-              const isActive =
-                link.href === '/' ? pathname === '/' : !!pathname?.startsWith(link.href)
+              const isActive = link.href.startsWith('http')
+                ? false
+                : link.href === '/'
+                  ? pathname === '/'
+                  : !!pathname?.startsWith(link.href)
               return (
                 <Link
                   key={link.name}
