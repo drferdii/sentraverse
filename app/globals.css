@@ -289,15 +289,10 @@ body > * { position: relative; z-index: 1; }
 
 /* ── Entrance & decorative motion (additive, transform/opacity only) ── */
 
-/* Hero on-load reveal: pure CSS so the headline never depends on JS/Framer hydration. */
-@keyframes sentraFadeUp {
-  from { opacity: 0; transform: translateY(18px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.sentra-load-reveal { animation: sentraFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
-.sentra-load-reveal--d1 { animation-delay: 0.12s; }
-.sentra-load-reveal--d2 { animation-delay: 0.24s; }
+/* Hero "Blueprint Draw" entrance (GSAP): targets start hidden, GSAP reveals
+   with autoAlpha. Chief-approved 2026-07-10: hero entrance may depend on JS;
+   the <noscript> block below is the no-JS safety net. */
+.sentra-hero-prep { visibility: hidden; }
 
 /* Slow decorative drift for sparse background layers (CTA band). */
 @keyframes sentraDriftY {
@@ -319,9 +314,6 @@ body > * { position: relative; z-index: 1; }
 .sentra-scan--alt { animation-duration: 19s; animation-delay: -9s; }
 
 @media (prefers-reduced-motion: reduce) {
-  .sentra-load-reveal,
-  .sentra-load-reveal--d1,
-  .sentra-load-reveal--d2,
   .sentra-drift-slow,
   .sentra-scan {
     animation: none;

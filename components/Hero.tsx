@@ -3,6 +3,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import gsap from 'gsap'
+import { SplitText } from 'gsap/SplitText'
 import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 import { type ReactNode, useEffect, useRef, useState } from 'react'
@@ -108,38 +109,10 @@ function Divider({ text, color = 'var(--sentra-audrey-teal)' }: { text: string; 
   )
 }
 
-// --- Kata kunci judul yang berganti (GSAP slide-up) ---
+// --- Kata kunci judul yang berganti ---
+// Rotasi dijalankan oleh GSAP dari master timeline hero (bukan React state):
+// span di-query segar dari DOM tiap tick, sehingga aman terhadap SplitText revert.
 const TITLE_WORDS = ['Cepat', 'Presisi', 'Terstruktur', 'Aman']
-
-function RotatingWord() {
-  const ref = useRef<HTMLSpanElement>(null)
-  const [idx, setIdx] = useState(0)
-
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const id = setInterval(() => setIdx((p) => (p + 1) % TITLE_WORDS.length), 2600)
-    return () => clearInterval(id)
-  }, [])
-
-  useEffect(() => {
-    if (!ref.current) return
-    // Crossfade-rise (tanpa overflow clip agar ekor huruf tidak terpotong).
-    const tween = gsap.fromTo(
-      ref.current,
-      { y: 14, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }
-    )
-    return () => {
-      tween.kill()
-    }
-  }, [idx])
-
-  return (
-    <span ref={ref} className="inline-block text-accent">
-      {TITLE_WORDS[idx]}
-    </span>
-  )
-}
 
 // --- Metrik count-up (GSAP, dipicu saat masuk viewport) ---
 const METRICS: { label: string; value: number; suffix?: string }[] = [
@@ -156,42 +129,8 @@ function formatCount(n: number) {
     .replace(/\B(?=(\d{3})+(?!\d))/g, '.')
 }
 
-function MetricCounter({ value, suffix = '' }: { value: number; suffix?: string }) {
-  const ref = useRef<HTMLSpanElement>(null)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      el.textContent = formatCount(value) + suffix
-      return
-    }
-    const proxy = { n: 0 }
-    let tween: gsap.core.Tween | null = null
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (!entries[0].isIntersecting) return
-        io.disconnect()
-        tween = gsap.to(proxy, {
-          n: value,
-          duration: 1.6,
-          ease: 'power2.out',
-          onUpdate: () => {
-            el.textContent = formatCount(proxy.n) + suffix
-          },
-        })
-      },
-      { threshold: 0.4 }
-    )
-    io.observe(el)
-    return () => {
-      io.disconnect()
-      tween?.kill()
-    }
-  }, [value, suffix])
-
-  return <span ref={ref}>0{suffix}</span>
-}
+// Count-up dijalankan dari master timeline hero (bukan IntersectionObserver —
+// hero selalu terlihat saat load). SSR merender nilai final agar tetap benar tanpa JS.
 
 // --- Scan-line ambient (GSAP): hairline menyapu pelan di latar hero ---
 function HeroScanLine() {
@@ -551,37 +490,187 @@ function KonsultasiCard() {
 // --- Main Hero Component ---
 export default function Hero() {
   const pilotLogin = getPilotLoginHref(process.env.NEXT_PUBLIC_PILOT_LOGIN_URL)
+  const sectionRef = useRef<HTMLElement>(null)
+
+  // "Blueprint Draw": garis sketsa menggambar dulu, teks mengikuti — satu master timeline.
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
+    gsap.registerPlugin(SplitText)
+    const q = gsap.utils.selector(section)
+    let splitCleanup: (() => void) | null = null
+
+    // Entrance always-on tanpa cek prefers-reduced-motion — keputusan produk
+    // Chief (preseden marquee & BlueprintStory scrub 2026-07: mesin dengan
+    // Windows animation-effects off tetap harus melihat animasi brand).
+    const ctx = gsap.context(() => {
+      {
+        const headline = q('[data-hero-headline]')[0] as HTMLElement | undefined
+        let split: SplitText | null = null
+        let headlineTargets: Element[] = headline ? [headline] : []
+        try {
+          if (headline) {
+            split = SplitText.create(headline, { type: 'lines', mask: 'lines' })
+            headlineTargets = split.lines
+          }
+        } catch {
+          split = null // fallback: h1 naik utuh tanpa split per baris
+        }
+
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+
+        // Beat 1 — garis vertikal menggambar dari atas ke bawah
+        tl.set(q('[data-hero-line-v]'), { autoAlpha: 1 }, 0)
+        tl.fromTo(
+          q('[data-hero-line-v]'),
+          { scaleY: 0 },
+          { scaleY: 1, duration: 0.7, ease: 'power2.inOut' },
+          0
+        )
+
+        // Beat 2 — garis horizontal menggambar kiri ke kanan
+        tl.set(q('[data-hero-line-h]'), { autoAlpha: 1 }, 0.3)
+        tl.fromTo(
+          q('[data-hero-line-h]'),
+          { scaleX: 0 },
+          { scaleX: 1, duration: 0.8, ease: 'power2.inOut' },
+          0.3
+        )
+
+        // Beat 3 — poin 01/02/03 muncul seperti stempel mengikuti arah garis
+        tl.fromTo(
+          q('[data-hero-point]'),
+          { autoAlpha: 0, scale: 0.96, y: 8 },
+          { autoAlpha: 1, scale: 1, y: 0, duration: 0.5, stagger: 0.1 },
+          0.45
+        )
+
+        // Beat 4 — baris headline naik dari balik mask
+        tl.set(q('[data-hero-headline]'), { autoAlpha: 1 }, 0.7)
+        tl.from(
+          headlineTargets,
+          { yPercent: 110, duration: 0.9, ease: 'power4.out', stagger: 0.12 },
+          0.7
+        )
+        // Kembalikan DOM headline ke bentuk asli SEBELUM RotatingWord berganti
+        // (tick pertama di 2.6s) agar React tidak menyentuh DOM hasil split.
+        tl.call(() => split?.revert(), [], '>')
+
+        // Beat 5 — subcopy
+        tl.fromTo(
+          q('[data-hero-subcopy]'),
+          { autoAlpha: 0, y: 14 },
+          { autoAlpha: 1, y: 0, duration: 0.6 },
+          1.2
+        )
+
+        // Beat 6 — baris metrik naik + count-up
+        tl.fromTo(
+          q('[data-hero-metrics]'),
+          { autoAlpha: 0, y: 16 },
+          { autoAlpha: 1, y: 0, duration: 0.6 },
+          1.4
+        )
+        q('[data-hero-count]').forEach((node, i) => {
+          const el = node as HTMLElement
+          const value = Number(el.dataset.countValue ?? '0')
+          const suffix = el.dataset.countSuffix ?? ''
+          const proxy = { n: 0 }
+          el.textContent = `0${suffix}`
+          tl.to(
+            proxy,
+            {
+              n: value,
+              duration: 1.6,
+              ease: 'power2.out',
+              onUpdate: () => {
+                el.textContent = formatCount(proxy.n) + suffix
+              },
+            },
+            1.4 + i * 0.06
+          )
+        })
+
+        // Beat 7 — CTA
+        tl.fromTo(
+          q('[data-hero-cta]'),
+          { autoAlpha: 0, y: 12 },
+          { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.08 },
+          1.5
+        )
+
+        // Beat 8 — KonsultasiCard container (paralel dengan metrik)
+        tl.fromTo(
+          q('[data-hero-card]'),
+          { autoAlpha: 0, y: 20 },
+          { autoAlpha: 1, y: 0, duration: 0.8 },
+          1.4
+        )
+
+        // Rotasi kata judul — query span segar tiap tick agar aman pasca-revert.
+        let wordIdx = 0
+        const rotator: gsap.core.Tween = gsap.delayedCall(2.6, () => {
+          const el = q('[data-hero-rotating]')[0] as HTMLElement | undefined
+          if (el) {
+            wordIdx = (wordIdx + 1) % TITLE_WORDS.length
+            el.textContent = TITLE_WORDS[wordIdx]
+            // Crossfade-rise (tanpa overflow clip agar ekor huruf tidak terpotong).
+            gsap.fromTo(
+              el,
+              { y: 14, autoAlpha: 0 },
+              { y: 0, autoAlpha: 1, duration: 0.5, ease: 'power3.out' }
+            )
+          }
+          rotator.restart(true)
+        })
+
+        splitCleanup = () => split?.revert()
+      }
+    }, section)
+
+    return () => {
+      splitCleanup?.()
+      ctx.revert()
+    }
+  }, [])
 
   return (
     <section
+      ref={sectionRef}
       className={cn(
         'relative overflow-hidden border-b border-muted/20',
         layoutGovernance.sectionY.hero
       )}
     >
+      {/* Jaring pengaman tanpa JS: entrance GSAP tidak jalan, konten tetap tampil */}
+      <noscript>
+        <style>{`.sentra-hero-prep{visibility:visible}`}</style>
+      </noscript>
       <HeroScanLine />
       <div className={cn('relative', layoutGovernance.container.wide, layoutGovernance.sectionX)}>
         <div className="grid lg:grid-cols-[1fr_480px] gap-12 items-start">
           {/* Left Side — Text */}
           <div className="relative flex flex-col gap-12">
-            {/* Garis sketsa: vertikal di batas kiri teks hero — draw lalu stay */}
-            <motion.div
-              className="hidden md:block absolute -left-6 top-0 bottom-0 w-px bg-foreground/15 origin-top"
-              initial={{ scaleY: 0 }}
-              animate={{ scaleY: 1 }}
-              transition={{ delay: 0.5, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            {/* Garis sketsa: vertikal di batas kiri teks hero — beat 1 Blueprint Draw */}
+            <div
+              data-hero-line-v
+              className="sentra-hero-prep hidden md:block absolute -left-6 top-0 bottom-0 w-px bg-foreground/15 origin-top"
               aria-hidden
             />
 
             {/* 01, 02, 03 Points */}
-            <div className="sentra-load-reveal flex flex-col gap-5">
+            <div className="flex flex-col gap-5">
               <div className="flex flex-col md:flex-row gap-8 md:gap-16">
                 {[
                   { id: '01', text: 'Program Indonesia Sehat' },
                   { id: '02', text: '6 Pilar Transformasi Kesehatan' },
                   { id: '03', text: 'Hak Asasi Manusia' },
                 ].map((point) => (
-                  <div key={point.id} className="flex flex-col gap-2">
+                  <div
+                    key={point.id}
+                    data-hero-point
+                    className="sentra-hero-prep flex flex-col gap-2"
+                  >
                     <span className={cn(typeGovernance.eyebrow, 'text-xs md:text-xs')}>
                       {point.id}
                     </span>
@@ -591,44 +680,59 @@ export default function Hero() {
                   </div>
                 ))}
               </div>
-              {/* Garis sketsa: horizontal di bawah susunan poin — draw lalu stay */}
-              <motion.div
-                className="h-px bg-foreground/15 origin-left"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ delay: 1.0, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+              {/* Garis sketsa: horizontal di bawah susunan poin — beat 2 Blueprint Draw */}
+              <div
+                data-hero-line-h
+                className="sentra-hero-prep h-px bg-foreground/15 origin-left"
                 aria-hidden
               />
             </div>
 
-            {/* Main Title — static DOM (no motion) so headline never depends on Framer hydration;
-                entrance uses CSS-only sentra-load-reveal, which still renders without JS */}
-            <div className="sentra-load-reveal sentra-load-reveal--d1 flex flex-col gap-7">
+            {/* Main Title — entrance via GSAP SplitText (Blueprint Draw beat 4);
+                DOM dikembalikan (revert) setelah entrance agar RotatingWord aman */}
+            <div className="flex flex-col gap-7">
               <h1
+                data-hero-headline
                 className={cn(
                   typeGovernance.editorialDisplay,
-                  'max-w-[980px] text-[42px] sm:text-[52px] md:text-[76px] lg:text-[84px] xl:text-[92px] leading-[0.92]'
+                  'sentra-hero-prep max-w-[980px] text-[42px] sm:text-[52px] md:text-[76px] lg:text-[84px] xl:text-[92px] leading-[0.92]'
                 )}
               >
                 Bantu Dokter Ambil Keputusan Klinis{' '}
                 <span className="whitespace-nowrap">
-                  Lebih <RotatingWord />
+                  Lebih{' '}
+                  <span data-hero-rotating className="inline-block text-accent">
+                    {TITLE_WORDS[0]}
+                  </span>
                 </span>
               </h1>
-              <p className={cn(typeGovernance.editorialBody, 'max-w-[720px] text-base md:text-xl')}>
+              <p
+                data-hero-subcopy
+                className={cn(
+                  typeGovernance.editorialBody,
+                  'sentra-hero-prep max-w-[720px] text-base md:text-xl'
+                )}
+              >
                 Sentra membaca keluhan pasien, menghitung kemungkinan diagnosis, dan menyiapkan
                 rekomendasi — dalam hitungan detik. Dokter tetap yang memutuskan, Sentra yang
                 mempercepat prosesnya. Hadir 2026 untuk fasilitas kesehatan Indonesia.
               </p>
             </div>
 
-            {/* Ticker metrik — count-up saat masuk viewport */}
-            <div className="sentra-load-reveal sentra-load-reveal--d2 border-t border-muted/15 pt-6">
+            {/* Ticker metrik — count-up dari master timeline (beat 6) */}
+            <div data-hero-metrics className="sentra-hero-prep border-t border-muted/15 pt-6">
               <div className="grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4">
                 {METRICS.map((m) => (
                   <div key={m.label} className="flex flex-col gap-1.5">
                     <span className="font-jakarta text-[26px] font-bold leading-none text-foreground tabular-nums md:text-[32px]">
-                      <MetricCounter value={m.value} suffix={m.suffix} />
+                      <span
+                        data-hero-count
+                        data-count-value={m.value}
+                        data-count-suffix={m.suffix ?? ''}
+                      >
+                        {formatCount(m.value)}
+                        {m.suffix ?? ''}
+                      </span>
                     </span>
                     <span className="font-jakarta text-[10px] font-bold uppercase tracking-[0.14em] text-muted/70">
                       {m.label}
@@ -638,11 +742,12 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* CTA — Baca Cerita Kami + Tes Pilot Login */}
-            <div className="sentra-load-reveal sentra-load-reveal--d2 flex flex-col sm:flex-row flex-wrap gap-4 items-stretch sm:items-center">
+            {/* CTA — Baca Cerita Kami + Tes Pilot Login (beat 7) */}
+            <div className="flex flex-col sm:flex-row flex-wrap gap-4 items-stretch sm:items-center">
               <Link
                 href="/story"
-                className="group inline-flex items-center justify-center gap-3 border border-muted/30 rounded-full px-8 py-4 hover:border-accent/50 hover:bg-accent/5 transition-all"
+                data-hero-cta
+                className="sentra-hero-prep group inline-flex items-center justify-center gap-3 border border-muted/30 rounded-full px-8 py-4 hover:border-accent/50 hover:bg-accent/5 transition-all"
               >
                 <span className="text-sm font-bold uppercase tracking-widest text-muted group-hover:text-accent transition-colors">
                   Baca Cerita Kami
@@ -655,7 +760,8 @@ export default function Hero() {
               <Link
                 href={pilotLogin.href}
                 {...(pilotLogin.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                className="group inline-flex items-center justify-center gap-3 border border-accent/30 rounded-full px-8 py-4 hover:border-accent/60 hover:bg-accent/10 transition-all"
+                data-hero-cta
+                className="sentra-hero-prep group inline-flex items-center justify-center gap-3 border border-accent/30 rounded-full px-8 py-4 hover:border-accent/60 hover:bg-accent/10 transition-all"
               >
                 <span className="text-sm font-bold uppercase tracking-widest text-accent/90 group-hover:text-accent transition-colors">
                   Tes Pilot Login
@@ -668,8 +774,8 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right Side — Konsultasi Card (kini tampil juga di mobile) */}
-          <div className="w-full lg:sticky lg:top-32">
+          {/* Right Side — Konsultasi Card (beat 8; isi chat tetap Framer Motion) */}
+          <div data-hero-card className="sentra-hero-prep w-full lg:sticky lg:top-32">
             <KonsultasiCard />
           </div>
         </div>
