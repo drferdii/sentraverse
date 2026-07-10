@@ -34,11 +34,25 @@ const nextConfig = {
   // For production, configure a Railway/Nginx-level reverse proxy for /dashboard/socket.io path.
   async rewrites() {
     const dashboardUrl = process.env.SENTRA_DASHBOARD_URL
+    const assistverseUrl =
+      process.env.SENTRA_ASSISTVERSE_URL || 'https://site-assist-seven.vercel.app'
+    const rewrites = [
+      {
+        // Proxy the public Assistverse deployment under the official sentrahai.com subpath.
+        source: '/asisten-medis',
+        destination: `${assistverseUrl}/asisten-medis`,
+      },
+      {
+        source: '/asisten-medis/:path*',
+        destination: `${assistverseUrl}/asisten-medis/:path*`,
+      },
+    ]
     if (!dashboardUrl) {
       // In local dev, skip proxy — run sentra-dashboard separately on a different port.
-      return []
+      return rewrites
     }
     return [
+      ...rewrites,
       {
         // Forward /dashboard/:path* to the dashboard app preserving the /dashboard prefix.
         // sentra-dashboard routes are under app/dashboard/* so the full path must be forwarded.
