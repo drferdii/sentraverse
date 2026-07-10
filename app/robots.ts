@@ -2,6 +2,20 @@
 import type { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
+  const aiBots = [
+    'GPTBot',
+    'ChatGPT-User',
+    'ClaudeBot',
+    'PerplexityBot',
+    'Google-Extended',
+    'Applebot-Extended',
+    'Bytespider',
+    'CCBot',
+    'anthropic-ai',
+    'FacebookBot',
+    'Amazonbot',
+  ]
+
   return {
     rules: [
       {
@@ -9,6 +23,11 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
         disallow: ['/dashboard', '/dashboard/'],
       },
+      ...aiBots.map((bot) => ({
+        userAgent: bot,
+        allow: '/',
+        disallow: ['/dashboard', '/dashboard/'],
+      })),
     ],
     sitemap: 'https://sentrahai.com/sitemap.xml',
   }

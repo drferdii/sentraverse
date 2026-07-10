@@ -54,6 +54,11 @@ const nextConfig = {
     return [
       ...rewrites,
       {
+        // Forward exactly /dashboard to the dashboard app.
+        source: '/dashboard',
+        destination: `${dashboardUrl}/dashboard`,
+      },
+      {
         // Forward /dashboard/:path* to the dashboard app preserving the /dashboard prefix.
         // sentra-dashboard routes are under app/dashboard/* so the full path must be forwarded.
         source: '/dashboard/:path*',

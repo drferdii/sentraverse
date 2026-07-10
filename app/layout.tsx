@@ -21,7 +21,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL('https://sentrahai.com'),
   title: {
-    default: 'Sentra AI - Clinical Decision Support Powered by Artificial Intelligence',
+    default: 'Sentra AI - Clinical Decision Support',
     template: '%s | Sentra Healthcare AI',
   },
   description:
