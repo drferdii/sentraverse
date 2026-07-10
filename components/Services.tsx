@@ -1,14 +1,20 @@
 // Architected and built by Classy.
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
+import gsap from 'gsap'
+import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useRef } from 'react'
 
-import { Reveal } from '@/components/ui/reveal'
-import { layoutGovernance } from '@/lib/design-governance'
+import { typeGovernance } from '@/lib/design-governance'
 import { siteLinks } from '@/lib/site-links'
+import { cn } from '@/lib/utils'
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin)
+}
 
 const services = [
   {
@@ -55,126 +61,200 @@ const services = [
   },
 ]
 
+// Karakter scramble bernuansa komputasi-klinis untuk formula protokol.
+const SCRAMBLE_CHARS = '01∑∫∆βθπλ×/=+·'
+
+const slugify = (s: string) => s.toLowerCase().replace(/\s+/g, '-')
+
 export default function Services() {
-  const [activeId, setActiveId] = useState<string | null>('01')
+  const sectionRef = useRef<HTMLElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const progressRef = useRef<HTMLDivElement>(null)
+
+  // Horizontal pinned scroll ala section Ekosistem: track 7 kartu protokol
+  // bergeser mengikuti scroll (scrub), garis progres di bawah. Formula tiap
+  // kartu menyusun diri (ScrambleText) saat kartunya masuk viewport.
+  useEffect(() => {
+    const section = sectionRef.current
+    const track = trackRef.current
+    if (!section || !track) return
+
+    const mm = gsap.matchMedia()
+
+    const scrambleFormula = (formula: HTMLElement, scrollTrigger: ScrollTrigger.Vars) => {
+      const finalText = formula.textContent ?? ''
+      gsap.to(formula, {
+        duration: 1.1,
+        scrambleText: { text: finalText, chars: SCRAMBLE_CHARS, speed: 0.5 },
+        scrollTrigger,
+      })
+    }
+
+    // ≥768px: pin + geser horizontal. Scrub mengikuti tangan user sendiri.
+    mm.add('(min-width: 768px)', () => {
+      const distance = () => track.scrollWidth - window.innerWidth
+
+      const slide = gsap.to(track, {
+        x: () => -distance(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: () => `+=${distance()}`,
+          pin: true,
+          anticipatePin: 1,
+          scrub: 0.6,
+          invalidateOnRefresh: true,
+          // Section ini ada SETELAH pin Ecosystem DAN pin BlueprintStory.
+          // Tanpa refreshPriority lebih rendah, start/end dihitung sebelum
+          // pin-spacer keduanya masuk layout (preseden BlueprintStory: -1).
+          refreshPriority: -2,
+          onUpdate: (self) => {
+            if (progressRef.current) {
+              progressRef.current.style.transform = `scaleX(${self.progress})`
+            }
+          },
+        },
+      })
+
+      // Scramble per kartu saat masuk dari kanan (trigger horizontal via
+      // containerAnimation pada tween geser di atas).
+      track.querySelectorAll<HTMLElement>('[data-proto-formula]').forEach((formula) => {
+        scrambleFormula(formula, {
+          trigger: formula.closest('[data-proto-card]') as Element,
+          containerAnimation: slide,
+          start: 'left 85%',
+          toggleActions: 'play none none none',
+        })
+      })
+    })
+
+    // <768px: track vertikal tanpa pin — scramble via trigger vertikal biasa.
+    mm.add('(max-width: 767px)', () => {
+      track.querySelectorAll<HTMLElement>('[data-proto-formula]').forEach((formula) => {
+        scrambleFormula(formula, {
+          trigger: formula.closest('[data-proto-card]') as Element,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        })
+      })
+    })
+
+    // Refresh ulang setelah layout settle (pola yang sama dengan Ekosistem).
+    const settleTimer = setTimeout(() => ScrollTrigger.refresh(), 1200)
+    const onLoad = () => ScrollTrigger.refresh()
+    window.addEventListener('load', onLoad)
+
+    return () => {
+      clearTimeout(settleTimer)
+      window.removeEventListener('load', onLoad)
+      mm.revert()
+    }
+  }, [])
 
   return (
     <section
+      ref={sectionRef}
       id="services"
-      className={`${layoutGovernance.sectionY.spacious} border-b border-muted/20`}
+      className="relative border-b border-muted/20 overflow-hidden"
     >
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12">
-        {/* Section Header */}
-        <div className="grid lg:grid-cols-2 gap-10 mb-14">
-          <div className="flex flex-col gap-4">
-            <Reveal>
-              <p className="text-[10px] font-bold tracking-widest text-accent uppercase font-jakarta">
-                Our Service
-              </p>
-            </Reveal>
-            <Reveal delay={0.08}>
-              <h2 className="text-[22px] md:text-[32px] font-bold text-foreground leading-[1.15] font-jakarta uppercase">
-                Introducing the Protocols 7
-              </h2>
-            </Reveal>
-          </div>
-          <div className="flex flex-col gap-8">
-            <Reveal delay={0.14}>
-              <p className="text-sm text-muted leading-relaxed">
-                Sentra menggunakan arsitektur Artificial Intelligence modular yang dirancang khusus
-                untuk alur kerja klinis. Setiap protokol beroperasi sebagai lapisan komputasi
-                independen — dari sintesis bahasa alami dan inferensi Bayesian hingga prognosis
-                prediktif — dirancang untuk mengaugmentasi pengambilan keputusan dokter tanpa
-                mengganggu standar klinis yang berlaku.
-              </p>
-            </Reveal>
-          </div>
+      <div className="flex flex-col py-20 md:h-screen md:justify-center md:py-0">
+        {/* Header */}
+        <div className="mb-12 w-full md:mb-14 max-w-[1440px] mx-auto px-6 md:px-12">
+          <p className={typeGovernance.eyebrow}>Our Service</p>
+          <h2 className={typeGovernance.sectionTitle}>Introducing the Protocols 7</h2>
+          <p className={cn(typeGovernance.bodySm, 'mt-3 max-w-[680px]')}>
+            Arsitektur Artificial Intelligence modular untuk alur kerja klinis — tujuh lapisan
+            komputasi independen yang mengaugmentasi keputusan dokter tanpa mengganggu standar
+            klinis yang berlaku.
+          </p>
         </div>
 
-        {/* Service List */}
-        <div className="flex flex-col border-t border-muted/20">
-          {services.map((service, index) => {
-            const isActive = activeId === service.id
-
-            return (
-              <Reveal key={service.id} delay={Math.min(index * 0.06, 0.18)}>
-                <div
-                  className={`flex flex-col md:flex-row justify-between p-5 border-b border-muted/20 transition-colors duration-300 ${
-                    isActive ? 'bg-accent' : 'hover:bg-muted/5'
-                  }`}
-                >
-                  <button
-                    type="button"
-                    aria-controls={`service-panel-${service.id}`}
-                    aria-expanded={isActive}
-                    onClick={() => setActiveId(isActive ? null : service.id)}
-                    className="flex-1 flex flex-col gap-3 text-left"
-                  >
-                    <div className="flex justify-between items-center">
-                      <div className="flex flex-col gap-1">
-                        <h3
-                          className={`text-base md:text-lg font-bold font-jakarta tracking-tight transition-colors duration-300 ${
-                            isActive ? 'text-background' : 'text-foreground'
-                          }`}
-                        >
-                          {service.title}
-                        </h3>
-                        <code
-                          className={`text-[10px] font-mono tracking-wide transition-colors duration-300 ${
-                            isActive ? 'text-background/60' : 'text-accent/70'
-                          }`}
-                        >
-                          {service.formula}
-                        </code>
-                      </div>
-                      <span
-                        className={`text-xs font-bold font-jakarta tracking-widest transition-colors duration-300 ${
-                          isActive ? 'text-background' : 'text-muted'
-                        }`}
-                      >
-                        {service.id}
-                      </span>
-                    </div>
-
-                    <AnimatePresence>
-                      {isActive && (
-                        <motion.p
-                          id={`service-panel-${service.id}`}
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.4, ease: 'easeInOut' }}
-                          className="text-background text-sm max-w-[800px] leading-relaxed mt-2 overflow-hidden"
-                        >
-                          {service.desc}
-                        </motion.p>
-                      )}
-                    </AnimatePresence>
-                  </button>
-
-                  <div className="flex items-start justify-end mt-4 md:mt-0 md:pl-10">
-                    <Link
-                      href={siteLinks.contact}
-                      className={`flex items-center gap-2 px-4 py-2 border transition-all ${
-                        isActive
-                          ? 'bg-background text-foreground border-transparent hover:scale-105'
-                          : 'border-muted text-muted hover:border-accent hover:text-accent'
-                      }`}
-                    >
-                      <span className="text-[10px] font-bold uppercase tracking-wider">Active</span>
-                      <div
-                        className={`w-6 h-6 flex items-center justify-center border ${
-                          isActive ? 'border-foreground/20' : 'border-muted/20'
-                        }`}
-                      >
-                        <ArrowUpRight size={12} />
-                      </div>
-                    </Link>
-                  </div>
+        {/* Track — bergeser ke kanan mengikuti scroll */}
+        <div
+          ref={trackRef}
+          className="flex flex-col md:flex-row gap-6 md:gap-8 px-6 md:px-12 md:w-max will-change-transform"
+        >
+          {services.map((service) => (
+            <article
+              key={service.id}
+              data-proto-card
+              className="group relative w-full md:w-[600px] shrink-0 rounded-2xl border border-muted/20 bg-background overflow-hidden transition-colors hover:border-accent/40"
+            >
+              {/* Header — mac window chrome */}
+              <div className="flex items-center gap-3 px-5 py-3.5 border-b border-muted/20">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
                 </div>
-              </Reveal>
-            )
-          })}
+                <div className="h-3.5 w-px bg-muted/20" />
+                <span className="min-w-0 truncate text-xs font-bold uppercase tracking-widest text-muted font-jakarta">
+                  protocol / {slugify(service.title)}
+                </span>
+                <div className="ml-auto flex shrink-0 items-center gap-3">
+                  <div className="hidden sm:block w-6 h-px bg-muted/20" />
+                  <span className="whitespace-nowrap text-[10px] font-mono uppercase tracking-widest text-muted/50">
+                    P-{service.id}
+                  </span>
+                </div>
+              </div>
+              {/* Double rule accent */}
+              <div className="mt-[3px] h-px bg-muted/10" />
+
+              {/* Body */}
+              <div className="px-6 md:px-8 py-10 md:py-12 min-h-[280px] md:min-h-[340px] flex flex-col justify-between gap-8">
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-xs font-bold tracking-widest text-accent font-jakarta">
+                    {service.id}
+                  </span>
+                  <code
+                    data-proto-formula
+                    className="text-[11px] font-mono tracking-wide text-accent/70 text-right"
+                  >
+                    {service.formula}
+                  </code>
+                </div>
+                <div>
+                  <h3 className={cn(typeGovernance.editorialDisplay, 'text-3xl md:text-[40px]')}>
+                    {service.title}
+                  </h3>
+                  <p
+                    className={cn(typeGovernance.body, 'mt-4 max-w-[480px] text-sm md:text-[15px]')}
+                  >
+                    {service.desc}
+                  </p>
+                </div>
+                <Link
+                  href={siteLinks.contact}
+                  className="inline-flex w-fit items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted/60 transition-colors hover:text-accent font-jakarta"
+                >
+                  Aktifkan Protokol
+                  <ArrowUpRight size={12} />
+                </Link>
+              </div>
+
+              {/* Corner ticks */}
+              <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-2.5 left-2.5 w-3 h-3 border-t border-l border-muted/30 rounded-tl" />
+                <div className="absolute top-2.5 right-2.5 w-3 h-3 border-t border-r border-muted/30 rounded-tr" />
+                <div className="absolute bottom-2.5 left-2.5 w-3 h-3 border-b border-l border-muted/30 rounded-bl" />
+                <div className="absolute bottom-2.5 right-2.5 w-3 h-3 border-b border-r border-muted/30 rounded-br" />
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* Garis progres perjalanan horizontal */}
+        <div className="hidden md:block w-full max-w-[1440px] mx-auto px-6 md:px-12 mt-14">
+          <div className="relative h-px bg-muted/20">
+            <div ref={progressRef} className="absolute inset-0 origin-left scale-x-0 bg-accent" />
+          </div>
+          <div className="mt-3 flex justify-between text-[10px] font-mono uppercase tracking-widest text-muted/50">
+            {services.map((service) => (
+              <span key={service.id}>{service.id}</span>
+            ))}
+          </div>
         </div>
       </div>
     </section>

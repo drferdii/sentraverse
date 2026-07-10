@@ -1,8 +1,10 @@
 // Architected and built by Classy.
 'use client'
 
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Sparkles, Activity, TrendingUp } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import Audrey from '@/components/Audrey'
 import ClinicalPrognosis from '@/components/ClinicalPrognosis'
@@ -33,15 +35,91 @@ const tabs = [
 
 export default function ClinicalSuite() {
   const [activeTab, setActiveTab] = useState(0)
+  const sectionRef = useRef<HTMLElement>(null)
+
+  // Ledger Draw (scroll): header rise, workspace naik, tab cascade dari kiri,
+  // double-rule accent menyapu. Sekali jalan; always-on (keputusan produk Chief).
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
+    gsap.registerPlugin(ScrollTrigger)
+    const q = gsap.utils.selector(section)
+
+    const ctx = gsap.context(() => {
+      // Semua entrance pakai fromTo dengan endpoint eksplisit — `gsap.from()`
+      // merekam end-state dari DOM saat build; di dev StrictMode (double effect)
+      // rekaman itu bisa tercemar inline-hidden milik tween effect pertama,
+      // membuat elemen "selesai" dalam keadaan tetap tersembunyi.
+      const header = q('[data-suite-header]')[0]
+      if (header) {
+        gsap.fromTo(
+          q('[data-suite-header] > *'),
+          { autoAlpha: 0, y: 22 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power3.out',
+            stagger: 0.1,
+            // refreshPriority: section ini di bawah 3 pin (Ecosystem, BlueprintStory,
+            // Services) — tanpa prioritas lebih rendah, start dihitung sebelum
+            // pin-spacer di atasnya masuk layout.
+            scrollTrigger: {
+              trigger: header,
+              start: 'top 82%',
+              toggleActions: 'play none none none',
+              refreshPriority: -3,
+            },
+          }
+        )
+      }
+
+      const frame = q('[data-suite-frame]')[0]
+      if (frame) {
+        const enter = () => ({
+          trigger: frame,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+          refreshPriority: -3,
+        })
+        gsap.fromTo(
+          frame,
+          { autoAlpha: 0, y: 28 },
+          { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: enter() }
+        )
+        gsap.fromTo(
+          q('[data-suite-tab]'),
+          { autoAlpha: 0, x: -16 },
+          {
+            autoAlpha: 1,
+            x: 0,
+            duration: 0.5,
+            ease: 'power3.out',
+            stagger: 0.09,
+            delay: 0.35,
+            scrollTrigger: enter(),
+          }
+        )
+        gsap.fromTo(
+          q('[data-suite-rule]'),
+          { scaleX: 0 },
+          { scaleX: 1, duration: 0.9, ease: 'power2.inOut', delay: 0.5, scrollTrigger: enter() }
+        )
+      }
+    }, section)
+
+    return () => ctx.revert()
+  }, [])
 
   return (
     <section
+      ref={sectionRef}
       id="clinical-suite"
       className={cn('bg-background border-b border-muted/20', layoutGovernance.sectionY.standard)}
     >
       <div className={cn(layoutGovernance.container.wide, layoutGovernance.sectionX)}>
         {/* === Header Area === */}
-        <div className="mb-10">
+        <div className="mb-10" data-suite-header>
           <span className={cn(typeGovernance.eyebrow, 'mb-3 block')}>• RUANG KERJA KLINIS</span>
           <h2 className={cn(typeGovernance.sectionTitle, 'mb-3 max-w-[800px] uppercase')}>
             Ruang kerja klinis yang berjalan otonom
@@ -53,7 +131,7 @@ export default function ClinicalSuite() {
         </div>
 
         {/* === Workspace — border tipis + aksen double-rule ala Sentra === */}
-        <div className="rounded-xl border border-muted/15 overflow-hidden">
+        <div className="rounded-xl border border-muted/15 overflow-hidden" data-suite-frame>
           <div className="grid md:grid-cols-[260px_1fr]">
             {/* Left Sidebar Tabs */}
             <div className="border-r border-muted/15 flex flex-col bg-foreground/[0.015]">
@@ -64,6 +142,7 @@ export default function ClinicalSuite() {
                 return (
                   <button
                     key={tab.id}
+                    data-suite-tab
                     onClick={() => setActiveTab(tab.id)}
                     className={`relative p-5 text-left flex items-start gap-4 border-b border-muted/15 transition-all duration-300 cursor-pointer hover:bg-muted/5 ${
                       isActive ? 'bg-foreground/[0.03]' : ''
@@ -104,7 +183,7 @@ export default function ClinicalSuite() {
           </div>
 
           {/* Aksen double-rule penutup ala kartu Sentra favorit */}
-          <div className="h-[2px] bg-accent" />
+          <div data-suite-rule className="h-[2px] origin-left bg-accent" />
           <div className="h-px bg-muted/15" />
         </div>
       </div>

@@ -114,36 +114,43 @@ export default function About() {
       const frameStrokes = frameRef.current?.querySelectorAll('[data-frame-draw]') ?? []
       if (frameStrokes.length > 0) gsap.set(frameStrokes, { strokeDashoffset: 1 })
 
+      // Konten jalan PARALEL dengan gambar bingkai (mulai detik 0) dan tanpa
+      // reverse saat scroll balik — sebelumnya konten menunggu bingkai selesai
+      // (±0,8–1,5 dtk) sehingga isi section terasa muncul terlambat.
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: 'top 92%',
-          toggleActions: 'play none none reverse',
+          toggleActions: 'play none none none',
         },
       })
 
       if (frameStrokes.length > 0) {
-        tl.to(frameStrokes, {
-          strokeDashoffset: 0,
-          duration: 0.9,
-          ease: 'power2.out',
-          stagger: 0.08,
-        })
+        tl.to(
+          frameStrokes,
+          {
+            strokeDashoffset: 0,
+            duration: 0.9,
+            ease: 'power2.out',
+            stagger: 0.08,
+          },
+          0
+        )
       }
 
       tl.fromTo(
         content,
         { x: -96, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1, ease: 'power3.out' },
-        '-=0.5'
+        { x: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
+        0
       )
       ;[tesisRef.current, pillarsRef.current, quoteRef.current].forEach((el, i) => {
         if (!el) return
         tl.fromTo(
           el,
           { x: -48, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.7, ease: 'power3.out' },
-          0.35 + i * 0.15
+          { x: 0, opacity: 1, duration: 0.6, ease: 'power3.out' },
+          0.12 + i * 0.12
         )
       })
     }, section)
@@ -282,13 +289,19 @@ export default function About() {
             </motion.div>
 
             <Reveal delay={0.2} y={32}>
-              <Image
-                src="/drferdi.png"
-                alt="dr Ferdi Iskandar"
-                width={800}
-                height={800}
-                className="w-full h-auto [mask-image:linear-gradient(to_bottom,black_88%,transparent_100%)]"
-              />
+              {/* PNG punya 8,6% ruang transparan di bawah lengan (piksel opaque
+                  terakhir = baris 456/500) — dipangkas via negative margin +
+                  overflow-hidden agar lengan menempel tepat di garis bawah
+                  bingkai (permintaan Chief). */}
+              <div className="overflow-hidden">
+                <Image
+                  src="/drferdi.png"
+                  alt="dr Ferdi Iskandar"
+                  width={800}
+                  height={800}
+                  className="block w-full h-auto -mb-[9%]"
+                />
+              </div>
             </Reveal>
 
             {/* Corner ticks — penutup gaya card Sentra */}

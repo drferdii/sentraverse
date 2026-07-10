@@ -691,18 +691,27 @@ export default function Hero() {
             {/* Main Title — entrance via GSAP SplitText (Blueprint Draw beat 4);
                 DOM dikembalikan (revert) setelah entrance agar RotatingWord aman */}
             <div className="flex flex-col gap-7">
+              {/* Ukuran font dikalibrasi agar judul stabil maksimal 2 baris di md+
+                  bahkan dengan kata rotasi terpanjang; lebar kata rotasi dipesan
+                  selebar "Terstruktur" (sizer invisible) supaya jumlah baris tidak
+                  pernah berubah saat kata berganti — halaman tidak bergeser sendiri. */}
               <h1
                 data-hero-headline
                 className={cn(
                   typeGovernance.editorialDisplay,
-                  'sentra-hero-prep max-w-[980px] text-[42px] sm:text-[52px] md:text-[76px] lg:text-[84px] xl:text-[92px] leading-[0.92]'
+                  'sentra-hero-prep max-w-[980px] text-[34px] sm:text-[42px] md:text-[48px] lg:text-[40px] xl:text-[46px] min-[1400px]:text-[56px] leading-[1.02]'
                 )}
               >
                 Bantu Dokter Ambil Keputusan Klinis{' '}
                 <span className="whitespace-nowrap">
                   Lebih{' '}
-                  <span data-hero-rotating className="inline-block text-accent">
-                    {TITLE_WORDS[0]}
+                  <span className="relative inline-block align-baseline">
+                    <span aria-hidden className="invisible">
+                      {TITLE_WORDS.reduce((a, b) => (a.length >= b.length ? a : b))}
+                    </span>
+                    <span data-hero-rotating className="absolute left-0 top-0 text-accent">
+                      {TITLE_WORDS[0]}
+                    </span>
                   </span>
                 </span>
               </h1>

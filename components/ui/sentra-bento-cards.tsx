@@ -1,10 +1,11 @@
 // Architected and built by Classy.
 'use client'
 
-import React from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import React, { useEffect, useRef } from 'react'
 
 import { CountUp } from '@/components/ui/count-up'
-import { Reveal } from '@/components/ui/reveal'
 import { cn } from '@/lib/utils'
 
 // --- Card Data: Healthcare AI Statistics ---
@@ -50,19 +51,23 @@ const STAT_COUNTS: Record<string, { value: number; decimals?: number; suffix: st
   // '24/7' is intentionally not counted — intermediate values would read as nonsense.
 }
 
+// Arah "berarak masuk" per kartu: -1 dari kiri, +1 dari kanan — selang-seling
+// mengikuti posisi kolom kartu pada grid lg (kiri/kanan/kiri/kanan/kiri).
+const CONVERGE_DIRS = [-1, 1, -1, 1, -1]
+
 // --- Plus Card Component ---
+// Root div = target efek "berarak masuk" (converge scrub dari sisi luar).
 const PlusCard: React.FC<{
   className?: string
   stat: string
   title: string
   description: string
-  revealDelay?: number
-}> = ({ className = '', stat, title, description, revealDelay = 0 }) => {
+}> = ({ className = '', stat, title, description }) => {
   const count = STAT_COUNTS[stat]
 
   return (
-    <Reveal
-      delay={revealDelay}
+    <div
+      data-bento-card
       className={cn(
         'relative border border-dashed border-muted/30 rounded-lg p-6 bg-background min-h-[200px]',
         'flex flex-col justify-between group/card hover:border-accent/40 transition-colors duration-500',
@@ -83,7 +88,7 @@ const PlusCard: React.FC<{
         <h3 className="text-xl font-bold text-foreground font-jakarta">{title}</h3>
         <p className="text-muted leading-relaxed">{description}</p>
       </div>
-    </Reveal>
+    </div>
   )
 }
 
@@ -117,37 +122,104 @@ const PlusIcon = ({ className }: { className?: string }) => (
 
 // --- Main Bento Grid ---
 export default function SentraBentoCards() {
+  const rootRef = useRef<HTMLDivElement>(null)
+
+  // Ledger Draw (scroll): header/footer rise; kartu berarak masuk dari luar
+  // ke dalam (converge scrub). Always-on (keputusan produk Chief).
+  useEffect(() => {
+    const root = rootRef.current
+    if (!root) return
+    gsap.registerPlugin(ScrollTrigger)
+    const q = gsap.utils.selector(root)
+
+    const ctx = gsap.context(() => {
+      // fromTo (endpoint eksplisit) — hindari gotcha `gsap.from()` yang merekam
+      // end-state tercemar inline-hidden di dev StrictMode double-effect.
+      q('[data-bento-reveal]').forEach((el) => {
+        gsap.fromTo(
+          el,
+          { autoAlpha: 0, y: 24 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power3.out',
+            // refreshPriority: section ini di bawah 3 pin (Ecosystem, BlueprintStory,
+            // Services) — tanpa prioritas lebih rendah, start dihitung sebelum
+            // pin-spacer di atasnya masuk layout.
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+              refreshPriority: -3,
+            },
+          }
+        )
+      })
+
+      // Kartu berarak masuk dari luar ke dalam — tiap kartu meluncur dari sisi
+      // kiri/kanan menuju posisinya, terikat scroll (scrub) sehingga arak-arakan
+      // terasa mengikuti tangan user. Offset lebih kecil di layar sempit;
+      // diukur saat mount (posisi trigger tetap di-refresh oleh ScrollTriggerSync).
+      const offset = window.matchMedia('(min-width: 1024px)').matches ? 180 : 70
+      q('[data-bento-card]').forEach((card, i) => {
+        const dir = CONVERGE_DIRS[i % CONVERGE_DIRS.length]
+        gsap.fromTo(
+          card,
+          { x: dir * offset, autoAlpha: 0 },
+          {
+            x: 0,
+            autoAlpha: 1,
+            ease: 'power1.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 96%',
+              end: 'top 55%',
+              scrub: 0.5,
+              refreshPriority: -3,
+            },
+          }
+        )
+      })
+    }, root)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <div className="mx-auto max-w-[1440px] px-6 md:px-12 py-24">
+    <div ref={rootRef} className="mx-auto max-w-[1440px] px-6 md:px-12 py-24">
       {/* Section Header */}
-      <Reveal className="flex flex-col gap-6 mb-6">
+      <div className="flex flex-col gap-6 mb-6" data-bento-reveal>
         <p className="text-xs font-bold tracking-widest text-accent uppercase">
           Prediksi & Statistik
         </p>
         <h2 className="text-[32px] md:text-[45px] font-bold text-foreground font-jakarta">
           Keunggulan Artificial Intelligence dalam Klinis
         </h2>
-      </Reveal>
+      </div>
 
       {/* Metodologi — angka di bawah bukan klaim hasil uji klinis */}
-      <Reveal className="mb-10 px-4">
+      <div className="mb-10 px-4" data-bento-reveal>
         <p className="text-[11px] leading-relaxed text-muted/70">
           Metrik di bawah merupakan rasio hasil pengujian internal — disimulasikan ribuan kali
           selama 14 bulan masa pengembangan, sebelum memasuki masa uji klinis (trial).
         </p>
-      </Reveal>
+      </div>
 
       {/* Bento Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 auto-rows-auto gap-5">
+      <div
+        data-bento-grid
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 auto-rows-auto gap-5"
+      >
         <PlusCard {...cardContents[0]} className="lg:col-span-3 lg:row-span-2" />
-        <PlusCard {...cardContents[1]} className="lg:col-span-3 lg:row-span-2" revealDelay={0.08} />
-        <PlusCard {...cardContents[2]} className="lg:col-span-4 lg:row-span-1" revealDelay={0.16} />
-        <PlusCard {...cardContents[3]} className="lg:col-span-2 lg:row-span-1" revealDelay={0.24} />
-        <PlusCard {...cardContents[4]} className="lg:col-span-2 lg:row-span-1" revealDelay={0.32} />
+        <PlusCard {...cardContents[1]} className="lg:col-span-3 lg:row-span-2" />
+        <PlusCard {...cardContents[2]} className="lg:col-span-4 lg:row-span-1" />
+        <PlusCard {...cardContents[3]} className="lg:col-span-2 lg:row-span-1" />
+        <PlusCard {...cardContents[4]} className="lg:col-span-2 lg:row-span-1" />
       </div>
 
       {/* Section Footer */}
-      <Reveal className="max-w-2xl ml-auto text-right px-4 mt-8 lg:-mt-16">
+      <div className="max-w-2xl ml-auto text-right px-4 mt-8 lg:-mt-16" data-bento-reveal>
         <h2 className="text-3xl md:text-5xl font-bold text-foreground font-jakarta mb-4">
           Dibangun untuk presisi. Dirancang untuk keselamatan.
         </h2>
@@ -156,7 +228,7 @@ export default function SentraBentoCards() {
           keputusan klinis lebih cepat dan akurat — tanpa menggantikan penilaian manusia sebagai
           otoritas akhir.
         </p>
-      </Reveal>
+      </div>
     </div>
   )
 }
