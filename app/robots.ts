@@ -21,12 +21,10 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/dashboard', '/dashboard/'],
       },
       ...aiBots.map((bot) => ({
         userAgent: bot,
         allow: '/',
-        disallow: ['/dashboard', '/dashboard/'],
       })),
     ],
     sitemap: 'https://sentrahai.com/sitemap.xml',
